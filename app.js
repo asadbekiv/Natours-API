@@ -1,20 +1,30 @@
 'use strict'
 
-const express = require('express');
 const fs = require('fs');
+const tourRouter = require('./routes/tourRoute');
+const usersRouter = require('./routes/usersRoute');
 const morgan = require('morgan');
+const express = require('express');
+
+
 const app = express();
 
 // Our first Middlware
+console.log(process.env.NODE_ENV);
+if(process.env.NODE_ENV === 'development'){
+    
+    app.use(morgan('dev'));
+}
+
+
 app.use(express.json());  // Middlware 
+app.use(express.static(`${__dirname}/public`))
 
-app.use(morgan('dev'));
-
-app.use((req,res,next)=>{
+app.use((req, res, next) => {
     console.log('Hello from the Middlware ! 🧑‍💻');
     next();
 });
-app.use((req,res,next)=>{
+app.use((req, res, next) => {
     req.requestTime = new Date().toISOString();
     next();
 });
@@ -24,107 +34,11 @@ app.use((req,res,next)=>{
 
 const tours = JSON.parse(fs.readFileSync(`${__dirname}/dev-data/data/tours-simple.json`))
 
-// Route Handlers
-const getAllTours = (req,res)=>{
-    console.log(req.requestTime);
-    res.status(200).json({
-        status:"success",
-        requestedAt: req.requestTime,
-        result:tours.length,
-        data:{
-            tours
-        }
-    })
-}
-const getTour = (req,res)=>{
-    // console.log(req.params);
-
-    const id=req.params.id*1;
-    const tour = tours.find(el=>el.id === id);
-
-    if(id > tours.length){
-        return res.status(404).json({
-            status:"fail",
-            message:"Invalid ID number !"
-
-        })
-    }
-
-
-    res.status(200).json({
-        status:'success',
-        result: tours.length,
-        data:{
-            tour
-        }
-    })
-}
-const createTour = (req,res)=>{
-
-    const newId = tours[tours.length-1].id+1;
-    const newTour = Object.assign({id:newId},req.body);
-    tours.push(newTour);
-
-    fs.writeFile(`${__dirname}/dev-data/data/tours-simple.json`,JSON.stringify(tours),err=>{
-        res.status(201).json({
-            status:"success",
-            data:{
-                tour:newTour
-            }
-        });
-
-    });
-         
-}
-const updateTour = (req,res)=>{
-
-    if(req.params.id*1 > tours.length){
-        return res.status(404).json({
-            status:"fail",
-            message:"Invalid ID number !"
-
-        });
-    }
-
-    res.status(200).json({
-        status:"success",
-        data:{
-            tour:"<Update tour here...>"
-        }
-    });
-}
-const deleteTour = (req,res)=>{
-
-    if(req.params.id*1 > tours.length){
-        return res.status(404).json({
-            status:"fail",
-            message:"Invalid ID number !"
-
-        });
-    }
-
-    res.status(204).json({
-        status:"success",
-        data:{
-            tour: null
-        }
-    });
-}
-
-// app.get('/api/v1/tours',getAllTours);
-// app.post('/api/v1/tours',createTour);
-// app.get('/api/v1/tours/:id',getTour);
-// app.patch('/api/v1/tours/:id',updateTour);
-// app.delete('/api/v1/tours/:id',deleteTour);
 
 // Routes
-app.route('/api/v1/tours').get(getAllTours).post(createTour);
+app.use('/api/v1/tours', tourRouter);
+app.use('/api/v1/users', usersRouter);
 
-app.route('/api/v1/tours/:id').get(getTour).patch(updateTour).delete(deleteTour);
 
 // Start the server
-const port = 5000;
-app.listen(port,()=>{
-    console.log(`App is running on port ${port}`);
-})
- 
+module.exports = app;
