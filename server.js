@@ -1,12 +1,36 @@
+const mongoose=require('mongoose');
 const dotenv = require('dotenv');
-const app = require('./app');
 
 dotenv.config({ path: './config.env' });
-console.log(process.env);
-// console.log(process.env.NODE_ENV);
-// console.log(process.env.PORT);
-// console.log(process.env.USERNAME);
-// console.log(process.env.PASWORD);
+
+const app = require('./app');
+
+
+
+
+
+
+const DB=process.env.DATABASE;
+
+
+mongoose
+.connect(DB,{
+    // .connect(process.env.DATABASE_LOCAL,{
+    useNewUrlParser:true,
+    useCreateIndex:true,
+    useUnifiedTopology:true,
+    useFindAndModify:false
+})
+.then(()=>{
+    console.log('DB Connected successfull !');
+})
+.catch((err)=>{
+    console.log(err);
+    process.exit(1)
+});
+
+
+ 
 
 
 const port = process.env.PORT; 
