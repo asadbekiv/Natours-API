@@ -11,6 +11,7 @@ const app = require('./app');
 
 
 const DB=process.env.DATABASE;
+console.log(process.env.NODE_ENV);
 
 
 mongoose
@@ -28,6 +29,8 @@ mongoose
     console.log(err);
     process.exit(1)
 });
+
+
 
 
  

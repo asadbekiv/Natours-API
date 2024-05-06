@@ -1,8 +1,8 @@
 'use strict';
 const express = require('express');
-// const {getAllTours,createTour,getTour,updateTour,deleteTour} = require('./../controllers/tourController');
 const tourController = require('../controllers/tourController');
 const router = express.Router();
+const authController = require('./../controllers/authController.js');
 
 // router.param('id',tourController.checkID)
 
@@ -16,7 +16,7 @@ router
 
 router
   .route('/')
-  .get(tourController.getAllTours)
+  .get(authController.protect, tourController.getAllTours)
   .post(tourController.createTour);
 
 router
@@ -25,6 +25,6 @@ router
   .patch(tourController.updateTour)
   .delete(tourController.deleteTour);
 
-// app.use('/api/v1/tours',tourRouter);
+
 
 module.exports = router;

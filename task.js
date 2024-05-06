@@ -40,9 +40,14 @@
 // }
 
 // console.log(filter);
-const dotenv = require('dotenv');
-dotenv.config({ path: './config.env' });
+// const dotenv = require('dotenv');
+// dotenv.config({ path: './config.env' });
 
 // const app = require('./app');
 
-console.log(process.env.NODE_ENV);
+// console.log(process.env.NODE_ENV);
+
+
+
+
+//  newly created user token name is Clinte Jef yJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2Mzg1ZjdiNjQyNDhjZDU4YTE5YzU1ZCIsImlhdCI6MTcxNDk3MDQ5MSwiZXhwIjoxNzE3NTYyNDkxfQ.kMFndSsZeBCeSmyKz9ESNE08aNceCvPNXmiBq95Luss
