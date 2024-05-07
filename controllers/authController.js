@@ -1,5 +1,5 @@
 const { promisify } = require('util');
-const User = require('./../modules/userModule.js');
+const User = require('../models/userModel.js');
 const catchAsync = require('./../utils/catchAsync.js');
 const jwt = require('jsonwebtoken');
 const AppError = require('./../utils/appError.js');
@@ -38,13 +38,11 @@ exports.login = catchAsync(async (req, res, next) => {
   }
 
   const user = await User.findOne({ email }).select('+password');
-  console.log(user,password);
+  console.log(user, password);
 
-  if (!user || !(await user.correctPassword(password, user.passowrd))) {
+  if (!user || !(await user.correctPassword(password, user.password))) {
     return next(new AppError('incorrect email or password ', 401));
   }
-
-
 
   const token = signToken(user._id);
   res.status(200).json({
@@ -75,15 +73,33 @@ exports.protect = catchAsync(async (req, res, next) => {
   console.log(decoded);
 
   // 3 Check if user still exsist
-  const freshUser = await User.findById(decoded.id);
-  if (!freshUser) {
+  const currentUser = await User.findById(decoded.id);
+  if (!currentUser) {
     return next(
       new AppError('The user belonging to this token does not exsist !', 401),
     );
   }
 
   // 4 if user changes password after token was issued
-  freshUser.changedPasswordAfter(decoded.iat);
+  if (currentUser.changedPasswordAfter(decoded.iat)) {
+    return next(
+      new AppError('User recenlty changed password, pls login again', 401),
+    );
+  }
 
+  // GRANT ACCESS TO PROTECTED ROUTE
+  req.user = currentUser;
   next();
 });
+
+exports.restrictTo = (...roles) => {
+  return (req, res, next) => {
+    // roles ['admin','user','lead-user]
+    if (!roles.includes(req.user.role)) {
+      return next(
+        new AppError('You do not have permission to perform this actions', 403),
+      );
+    }
+    return next();
+  };
+};

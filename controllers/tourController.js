@@ -2,7 +2,7 @@
 
 const { query } = require('express');
 // const fs = require('fs');
-const Tour = require('./../modules/tourModule.js');
+const Tour = require('./../models/tourModel.js');
 const catchAsync = require('./../utils/catchAsync.js');
 const APIFeatures = require('./../utils/apiFeatures.js');
 const AppError = require('./../utils/appError.js');

@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const { validate } = require('./tourModule');
+const { validate } = require('./tourModel');
 const validator = require('validator');
 const bcrypt = require('bcryptjs');
 
@@ -15,6 +15,11 @@ const userSchema = new mongoose.Schema({
     validate: [validator.isEmail, 'Please provide  a vaild email !'],
   },
   photo: { data: Buffer, contentType: String },
+  role: {
+    type: String,
+    enum: ['user', 'guide', 'lead-guide', 'admin'],
+    default: 'user',
+  },
   password: {
     type: String,
     required: [true, 'please provide a password !'],
@@ -56,7 +61,8 @@ userSchema.methods.correctPassword = async function (
 userSchema.methods.changedPasswordAfter = function (JWTTimestamp) {
   if (this.passwordChangedAt) {
     const changedTimestamp = this.passwordChangedAt.getTime();
-    console.log(changedTimestamp, JWTTimestamp);
+
+    return JWTTimestamp < changedTimestamp;
   }
   return false;
 };

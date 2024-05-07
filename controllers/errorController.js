@@ -67,7 +67,3 @@ module.exports = (err, req, res, next) => {
     sendErrorProd(err, res);
   }
 };
-
-// shaxristam metor
-
-// chilonzor metro 69 avtobus

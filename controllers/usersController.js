@@ -1,6 +1,6 @@
 'use strict';
 
-const User = require('./../modules/userModule.js');
+const User = require('./../models/userModel.js');
 const catchAsync = require('./../utils/catchAsync.js');
 
 exports.getAllUsers = catchAsync(async (req, res, next) => {
