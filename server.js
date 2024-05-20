@@ -6,7 +6,7 @@ dotenv.config({ path: './config.env' });
 const app = require('./app');
 
 const DB = process.env.DATABASE;
-console.log(process.env.NODE_ENV);
+// console.log(process.env.EMAIL_PASSWORD);
 
 mongoose
   .connect(DB, {

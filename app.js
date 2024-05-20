@@ -1,22 +1,38 @@
 'use strict';
 
 const fs = require('fs');
+
 const tourRouter = require('./routes/tourRoute.js');
 const usersRouter = require('./routes/usersRoute.js');
 const morgan = require('morgan');
 const express = require('express');
 const AppError = require('./utils/appError');
 const globalErrorHandler = require('./controllers/errorController.js');
+const rateLimit = require('express-rate-limit');
+const helmet = require('helmet');
 
 const app = express();
 
 // Our first Middlware
 // console.log(process.env.NODE_ENV);
+// Set Security HTTP headers
+app.use(helmet());
+
+// Developmet logging
 if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'));
 }
+// Limit request  from the samw API
+const limiter = rateLimit({
+  max: 100,
+  window: 60 * 60 * 1000,
+  message: 'Too many request from his IP,please try again later',
+});
 
-app.use(express.json()); // Middlware
+app.use('/api', limiter);
+
+// Body parser reafiing data from body into req.body
+app.use(express.json({ limit: '10kb' })); // Middlware
 app.use('/media', express.static(`${__dirname}/public`));
 
 app.use((req, res, next) => {
