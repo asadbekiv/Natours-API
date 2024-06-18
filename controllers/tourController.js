@@ -6,6 +6,8 @@ const Tour = require('./../models/tourModel.js');
 const catchAsync = require('./../utils/catchAsync.js');
 const APIFeatures = require('./../utils/apiFeatures.js');
 const AppError = require('./../utils/appError.js');
+const factory = require('./handlerFactory.js');
+const { Model } = require('mongoose');
 
 exports.aliasTopTour = (req, res, next) => {
   req.query.limit = '5';
@@ -32,55 +34,10 @@ exports.getAllTours = catchAsync(async (req, res) => {
   });
 });
 
-exports.getTour = catchAsync(async (req, res) => {
-  // console.log(req.body);
-  // const id = req.params.id * 1;
-  const tours = await Tour.findById(req.params.id);
-
-  if (!tour) {
-    return next(new AppError('No tour find with that ID', 404));
-  }
-
-  res.status(200).json({
-    status: 'success asad',
-    data: {
-      tours,
-    },
-  });
-});
-
-exports.createTour = catchAsync(async (req, res) => {
-  const newTour = await Tour.create(req.body); // Create a new tour using the request body
-  res.status(201).json({
-    status: 'success',
-    data: {
-      tour: newTour,
-    },
-  });
-});
-
-exports.updateTour = catchAsync(async (req, res) => {
-  const tour = await Tour.findByIdAndUpdate(req.params.id, req.body, {
-    new: true,
-    runValidators: true,
-  });
-  res.status(200).json({
-    status: 'success',
-    data: {
-      tour,
-    },
-  });
-});
-
-exports.deleteTour = catchAsync(async (req, res) => {
-  await Tour.findByIdAndDelete(req.params.id);
-  res.status(204).json({
-    status: 'success',
-    data: {
-      tour: null,
-    },
-  });
-});
+exports.getTour = factory.getOne(Tour, { path: 'reviews' });
+exports.createTour = factory.createOne(Tour);
+exports.deleteTour = factory.deleteOne(Tour);
+exports.updateTour = factory.updateOne(Tour);
 
 exports.getTourStats = catchAsync(async (req, res) => {
   try {

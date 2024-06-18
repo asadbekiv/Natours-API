@@ -101,11 +101,11 @@ exports.protect = catchAsync(async (req, res, next) => {
   }
 
   // 4 if user changes password after token was issued
-  // if (currentUser.changedPasswordAfter(decoded.iat)) {
-  //   return next(
-  //     new AppError('User recenlty changed password, pls login again', 401),
-  //   );
-  // }
+  if (currentUser.changedPasswordAfter(decoded.iat)) {
+    return next(
+      new AppError('User recenlty changed password, pls login again', 401),
+    );
+  }
 
   // GRANT ACCESS TO PROTECTED ROUTE
   req.user = currentUser;
@@ -139,7 +139,7 @@ exports.forgotPassword = catchAsync(async (req, res, next) => {
 
   // 3 Send it to user's eamil
   const resetURL = `${req.protocol}://${req.get('host')}/api/v1/users/resetPassword/${resetToken}`;
-  const message = `Forgot your password ? Submit a PATCH request with your new password and passwordConfirm to:${resetURL}.\n If you didn't  forget your passord.Ignore this email !`;
+  const message = `Forgot your password ? Submit a PATCH request with your new password and passwordConfirm to: <a href='${resetURL}' target='_blank' >Press this button</a>.\n If you didn't  forget your passord.Ignore this email !`;
 
   try {
     await sendEmail({
@@ -177,6 +177,8 @@ exports.resetPassword = catchAsync(async (req, res, next) => {
     passwordResetToken: hashedToken,
     passwordResetExpires: { $gt: Date.now() },
   });
+
+  console.log(user);
   // 2) if token has not expired, and there has user,change pasword
   if (!user) {
     return next(new AppError('Token is invalid or has expired', 400));
@@ -186,10 +188,12 @@ exports.resetPassword = catchAsync(async (req, res, next) => {
   user.passwordConfirm = req.body.passwordConfirm;
   user.passwordResetToken = undefined;
   user.passwordResetExpires = undefined;
+  console.log(1234);
   await user.save();
 
   // 3) Update ChangedPasswordAt property for user
   // 4) Log this user in , send JWt token
+  console.log('asdfghjk');
 
   createSendToken(user, 200, res);
 });

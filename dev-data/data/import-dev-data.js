@@ -10,10 +10,10 @@ const DB = process.env.DATABASE;
 mongoose
   .connect(DB, {
     // .connect(process.env.DATABASE_LOCAL,{
-    useNewUrlParser: true,
-    useCreateIndex: true,
-    useUnifiedTopology: true,
-    useFindAndModify: false,
+    // useNewUrlParser: true,
+    // useCreateIndex: true,
+    // useUnifiedTopology: true,
+    // useFindAndModify: false,
   })
   .then(() => {
     console.log('DB Connected successfull !');
@@ -24,9 +24,7 @@ mongoose
   });
 
 // Reading DATA
-const tours = JSON.parse(
-  fs.readFileSync(`${__dirname}/tours-simple.json`, 'utf-8'),
-);
+const tours = JSON.parse(fs.readFileSync(`${__dirname}/tours.json`, 'utf-8'));
 
 // Importing DATA
 
@@ -40,7 +38,7 @@ const importData = async (req, res) => {
 };
 // Delated all the data in collections
 
-const delateData = async (req, res) => {
+const deleteData = async (req, res) => {
   try {
     await Tour.deleteMany();
     console.log('Data successfully del !');
@@ -52,10 +50,10 @@ const delateData = async (req, res) => {
 
 if (process.argv[2] == '--import') {
   importData();
-} else if (process.argv[2] == '--delate') {
-  delateData();
+} else if (process.argv[2] == '--delete') {
+  deleteData();
 } else {
   console.log('Something went wrong 1');
 }
 
-console.log(process.argv);
+// console.log(process.argv);

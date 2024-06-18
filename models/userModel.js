@@ -37,7 +37,7 @@ const userSchema = new mongoose.Schema({
       message: 'Password confirmation does not match.',
     },
   },
-  // passwordChangedAt: Date,
+  passwordChangedAt: Date,
   passwordResetToken: String,
   passwordResetExpires: Date,
   active: {
@@ -50,9 +50,7 @@ const userSchema = new mongoose.Schema({
 userSchema.pre('save', async function (next) {
   // this function only works , when password modefied
   if (!this.isModified('password')) return next();
-
   //   Hashing the passowrd with const 12
-
   this.password = await bcrypt.hash(this.password, 12);
   //   Hideing passwordConfirm
   this.passwordConfirm = undefined;
@@ -62,8 +60,8 @@ userSchema.pre('save', async function (next) {
 userSchema.pre('save', function (next) {
   if (!this.isModified('password') || this.isNew) {
     this.passwordChangedAt = Date.now() - 1000;
-    next();
   }
+  next();
 });
 
 userSchema.pre(/^find/, function (next) {
@@ -80,10 +78,13 @@ userSchema.methods.correctPassword = async function (
 
 userSchema.methods.changedPasswordAfter = function (JWTTimestamp) {
   if (this.passwordChangedAt) {
-    const changedTimestamp = this.passwordChangedAt.getTime();
+    const changedTimestamp = this.passwordChangedAt.getTime()/10000;
+    console.log(JWTTimestamp,changedTimestamp);
 
     return JWTTimestamp < changedTimestamp;
   }
+
+
   return false;
 };
 userSchema.methods.createPasswordResetToken = function () {
