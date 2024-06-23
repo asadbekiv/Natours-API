@@ -44,6 +44,7 @@ const tourSchema = new mongoose.Schema(
       default: 4.5,
       max: [5, 'Rating must have below 5'],
       min: [1, 'Rating must have above 1'],
+      set: (val) => Math.round(val * 10) / 10,
     },
     ratingsQuantity: {
       type: Number,
@@ -84,17 +85,6 @@ const tourSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
-    // startLocation: {
-    //   // GeoJSON
-    //   type: {
-    //     type: String,
-    //     default: 'Point',
-    //     enum: ['Point'],
-    //   },
-    //   coordinates: [Number],
-    //   address: String,
-    //   description: String,
-    // },
     startLocation: {
       // GeoJSON
       type: {
@@ -143,6 +133,10 @@ tourSchema.virtual('reviews', {
   localField: '_id',
 });
 // Document Middleware
+
+tourSchema.index({ price: 1, ratingsAverage: -1 });
+tourSchema.index({ slug: 1 });
+tourSchema.index({ startLocation: '2dsphere' });
 
 tourSchema.pre('save', function (next) {
   this.slug = slugify(this.name, { lower: true });

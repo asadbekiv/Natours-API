@@ -1,5 +1,7 @@
 const catchAsync = require('./../utils/catchAsync.js');
 const AppError = require('./../utils/appError.js');
+const { Model } = require('mongoose');
+const APIFeatures = require('./../utils/apiFeatures.js');
 
 exports.deleteOne = (Model) =>
   catchAsync(async (req, res, next) => {
@@ -60,6 +62,28 @@ exports.getOne = (Model, popOptions) =>
 
     res.status(200).json({
       status: 'success asad',
+      data: {
+        data: doc,
+      },
+    });
+  });
+
+exports.getAll = (Model) =>
+  catchAsync(async (req, res) => {
+    // Get allow for nested GET reviews on Tour
+    let filter = {};
+    if (req.params.tourId) filter = { tour: req.params.tourId };
+    // Execute Query
+    const features = new APIFeatures(Model.find(filter), req.query)
+      .filter()
+      .sort()
+      .limitFileds()
+      .paginate();
+    const doc = await features.query;
+    // Sending Response
+    res.status(200).json({
+      status: 'success asad',
+      result: doc.length,
       data: {
         data: doc,
       },

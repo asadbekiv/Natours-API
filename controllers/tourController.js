@@ -4,10 +4,9 @@ const { query } = require('express');
 // const fs = require('fs');
 const Tour = require('./../models/tourModel.js');
 const catchAsync = require('./../utils/catchAsync.js');
-const APIFeatures = require('./../utils/apiFeatures.js');
 const AppError = require('./../utils/appError.js');
 const factory = require('./handlerFactory.js');
-const { Model } = require('mongoose');
+// const { Model } = require('mongoose');
 
 exports.aliasTopTour = (req, res, next) => {
   req.query.limit = '5';
@@ -16,28 +15,7 @@ exports.aliasTopTour = (req, res, next) => {
   next();
 };
 
-exports.getAllTours = catchAsync(async (req, res) => {
-  // Execute Query
-  const features = new APIFeatures(Tour.find(), req.query)
-    .filter()
-    .sort()
-    .limitFileds()
-    .paginate();
-  const tours = await features.query;
-  // Sending Response
-  res.status(200).json({
-    status: 'success asad',
-    result: tours.length,
-    data: {
-      tours,
-    },
-  });
-});
-
 exports.getTour = factory.getOne(Tour, { path: 'reviews' });
-exports.createTour = factory.createOne(Tour);
-exports.deleteTour = factory.deleteOne(Tour);
-exports.updateTour = factory.updateOne(Tour);
 
 exports.getTourStats = catchAsync(async (req, res) => {
   try {
@@ -116,5 +94,39 @@ exports.getMonthlyPlan = catchAsync(async (req, res) => {
     data: {
       plan,
     },
+  });
+});
+
+exports.getAllTours = factory.getAll(Tour);
+exports.createTour = factory.createOne(Tour);
+exports.deleteTour = factory.deleteOne(Tour);
+exports.updateTour = factory.updateOne(Tour);
+
+// /tours-within/:distance/center/:41.27796394756191,69.33892211514004/unit/:unit
+// latlng=41.27796394756191, 69.33892211514004
+
+exports.getToursWithin = catchAsync(async (req, res, next) => {
+  const { distance, latlng, unit } = req.params;
+  const [lat, lng] = latlng.split(',');
+
+  const radius = unit === 'mi' ? distance / 3963.2 : distance / 6378.1;
+
+  if (!lat || !lng) {
+    next(
+      new AppError(
+        'Please provide latitude,longitude in format : lat,lng',
+        400,
+      ),
+    );
+  }
+
+  const tours = await Tour.find({
+    startLocation: { $geoWithin: { $centerShpere: [[lng, lat], radius] } },
+  });
+
+  res.status(200).json({
+    results: tours.length, 
+    status: 'success !',
+    data: { data: tours },
   });
 });
