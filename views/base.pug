@@ -1,0 +1,25 @@
+doctype html 
+html
+  head
+    block head
+      meta(charset='UTF-8')
+      meta(name='viewport' content='width=device-width, initial-scale=1.0')
+      //- meta(http-equiv='Content-Security-Policy' content='script-src 'self' https://cdnjs.cloudflare.com')
+      link(rel='stylesheet', href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css')
+      link(rel='stylesheet', href='/media/css/style.css')
+      link(rel='shortcut icon',type='image/png', href='/media/img/favicon.png')
+      link(rel='stylesheet', href='https://fonts.googleapis.com/css?family=Lato:300,300i,700')
+      title Natours | #{title}
+
+
+  body
+    include _header
+    block content
+      h1 The is the placeholder heading
+    include _footer
+
+    script(src='https://cdnjs.cloudflare.com/ajax/libs/axios/1.7.2/axios.min.js')
+    //- script(src='/media/js/mapbox.js')
+    script(src='/media/js/login.js')
+    //- script(src='/media/js/index.js')
+
