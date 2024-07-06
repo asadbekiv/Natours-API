@@ -15,7 +15,7 @@ const userSchema = new mongoose.Schema({
     required: [true, 'Email adress required,enter email addres'],
     validate: [validator.isEmail, 'Please provide  a vaild email !'],
   },
-  photo: { data: Buffer, contentType: String },
+  photo: String,
   role: {
     type: String,
     enum: ['user', 'guide', 'lead-guide', 'admin'],
@@ -47,15 +47,15 @@ const userSchema = new mongoose.Schema({
   },
 });
 
-userSchema.pre('save', async function (next) {
-  // this function only works , when password modefied
-  if (!this.isModified('password')) return next();
-  //   Hashing the passowrd with const 12
-  this.password = await bcrypt.hash(this.password, 12);
-  //   Hideing passwordConfirm
-  this.passwordConfirm = undefined;
-  next();
-});
+// userSchema.pre('save', async function (next) {
+//   // this function only works , when password modefied
+//   if (!this.isModified('password')) return next();
+//   //   Hashing the passowrd with const 12
+//   this.password = await bcrypt.hash(this.password, 12);
+//   //   Hideing passwordConfirm
+//   this.passwordConfirm = undefined;
+//   next();
+// });
 
 userSchema.pre('save', function (next) {
   if (!this.isModified('password') || this.isNew) {

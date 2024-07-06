@@ -44,7 +44,7 @@ const sendErrorProd = (err, res) => {
     console.error('ERROR ', err);
     res.status(500).json({
       ststus: 'error',
-      message: 'some messy error happened !',
+      message: "some messy error happened !",
     });
   }
 };

@@ -37,6 +37,8 @@ router
   .route('/tours-within/:distance/center/:latlng/unit/:unit')
   .get(tourController.getToursWithin);
 
+router.route('/distances/:latlng/unit/:unit').get(tourController.getDistances);
+
 // tours-within/200/center/41.134234,-40.2425/unit/km
 
 router
