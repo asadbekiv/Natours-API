@@ -14,12 +14,15 @@ html
 
   body
     include _header
+
     block content
       h1 The is the placeholder heading
+
     include _footer
 
-    script(src='https://cdnjs.cloudflare.com/ajax/libs/axios/1.7.2/axios.min.js')
+    //- script(src='https://cdnjs.cloudflare.com/ajax/libs/axios/1.7.2/axios.min.js')
     //- script(src='/media/js/mapbox.js')
-    script(src='/media/js/login.js')
-    //- script(src='/media/js/index.js')
+    //- script(src='/media/js/login.js')
+    script(src='/media/js/bundled/index.js')
+    //- script(type='module' src='/media/js/index.js')
 

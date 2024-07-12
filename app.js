@@ -53,12 +53,13 @@ app.use(
 
       imgSrc: ["'self'", 'data:', 'blob:'],
 
-      connectSrc: ["'self'", 'blob:', 'https://*.mapbox.com'],
+      // connectSrc: ["'self'", 'blob:', 'https://*.mapbox.com'],
 
       upgradeInsecureRequests: [],
     },
   }),
 );
+
 // Developmet logging
 if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'));
@@ -74,6 +75,7 @@ app.use('/api', limiter);
 
 // Body parser reafiing data from body into req.body
 app.use(express.json({ limit: '10kb' })); // Middlware
+app.use(express.urlencoded({ extended: true, limit: '10kb' }));
 app.use(cookieParser());
 app.use(mongoSanitize());
 

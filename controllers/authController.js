@@ -71,7 +71,13 @@ exports.login = catchAsync(async (req, res, next) => {
 
   createSendToken(user, 200, res);
 });
-
+exports.logout = (req, res) => {
+  res.cookie('jwt', 'shmitment', {
+    expires: new Date(Date.now() + 10 * 1000),
+    httpOnly: true,
+  });
+  res.status(200).json({ status: 'success' });
+};
 exports.protect = catchAsync(async (req, res, next) => {
   // 1 cheking the token if it is there
   let token;
@@ -112,6 +118,7 @@ exports.protect = catchAsync(async (req, res, next) => {
 
   // GRANT ACCESS TO PROTECTED ROUTE
   req.user = currentUser;
+  res.locals.user = currentUser;
   next();
 });
 
@@ -140,7 +147,8 @@ exports.isLoggedIn = async (req, res, next) => {
       res.locals.user = currentUser;
       return next();
     } catch (err) {
-      message: err;
+      // message: err;
+      return next();
     }
   }
   next();
@@ -245,3 +253,5 @@ exports.updatePassword = catchAsync(async (req, res, next) => {
 
   createSendToken(user, 201, res);
 });
+
+
