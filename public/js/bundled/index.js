@@ -584,52 +584,16 @@ function hmrAccept(bundle /*: ParcelRequire */ , id /*: string */ ) {
 }
 
 },{}],"f2QDv":[function(require,module,exports) {
-// import 'core-js/stable';
-// import 'regenerator-runtime/runtime';
-// import { login, logout } from './login';
-// import updateSettings  from './updateSettings';
-// const logOutBtn = document.querySelector('.nav__el--logout');
-// const loginForm = document.querySelector('.login-form');
-// const userDataForm = document.querySelector('.form-user-data');
-// const userPasswordForm = document.querySelector('.form-user-password');
-// if (loginForm)
-//   loginForm.addEventListener('submit', (e) => {
-//     e.preventDefault();
-//     const email = document.getElementById('email').value;
-//     const password = document.getElementById('password').value;
-//     login(email, password);
-//   });
-// if (logOutBtn) logOutBtn.addEventListener('click', logout);
-// if (userDataForm)
-//   userDataForm.addEventListener('submit', (e) => {
-//     e.preventDefault();
-//     // const form = new FormData();
-//     // form.append('name', document.getElementById('name').value);
-//     // form.append('email', document.getElementById('email').value);
-//     // // form.append('photo', document.getElementById('photo').files[0]);
-//     // console.log(form);
-//     // updateSettings(form, 'data');
-//     const name=document.getElementById('name').value,
-//     const email=document.getElementById('email').value,
-//     updateSettings({name,email},'data');
-//   });
-// if (userPasswordForm)
-//   userPasswordForm.addEventListener('submit', (e) => {
-//     e.preventDefault();
-//     const passwordCurrent=document.getElementById('password-current').value,
-//     const password=document.getElementById('password').value,
-//     const passwordConfirm=document.getElementById('password-confirm').value,
-//     updateSettings({passwordCurrent,password,passwordConfirm},'password');
-//   });
-// // console.log('are you sure , parcel are you kiding me boy really a');
 var _webImmediateJs = require("core-js/modules/web.immediate.js");
 var _runtime = require("regenerator-runtime/runtime");
 var _login = require("./login");
 var _updateSettings = require("./updateSettings");
+var _stripe = require("./stripe");
 const logOutBtn = document.querySelector(".nav__el--logout");
 const loginForm = document.querySelector(".login-form");
 const userDataForm = document.querySelector(".form-user-data");
 const userPasswordForm = document.querySelector(".form-user-password");
+const bookBtn = document.getElementById("book-tour");
 if (loginForm) loginForm.addEventListener("submit", (e)=>{
     e.preventDefault();
     const email = document.getElementById("email").value;
@@ -640,12 +604,12 @@ if (logOutBtn) logOutBtn.addEventListener("click", (0, _login.logout));
 if (userDataForm) userDataForm.addEventListener("submit", async (e)=>{
     e.preventDefault();
     document.querySelector(".btn--save ").textContent = "Saving ...";
-    const name = document.getElementById("name").value;
-    const email = document.getElementById("email").value;
-    await (0, _updateSettings.updateSettings)({
-        name,
-        email
-    }, "data");
+    const form = new FormData();
+    form.append("name", document.getElementById("name").value);
+    form.append("email", document.getElementById("email").value);
+    form.append("photo", document.getElementById("photo").files[0]);
+    await (0, _updateSettings.updateSettings)(form, "data");
+    console.log(form);
     document.querySelector(".btn--save ").textContent = "Save Settings";
 });
 if (userPasswordForm) userPasswordForm.addEventListener("submit", async (e)=>{
@@ -665,9 +629,25 @@ if (userPasswordForm) userPasswordForm.addEventListener("submit", async (e)=>{
     document.getElementById("password").value = "";
     document.getElementById("password-confirm").value = "";
 });
-console.log("hi there");
+if (bookBtn) bookBtn.addEventListener("click", async (e)=>{
+    const button = e.target;
+    button.textContent = `Processing.... `;
+    button.disabled = true;
+    const { tourId } = button.dataset;
+    console.log(tourId);
+    console.log(button.dataset);
+    try {
+        await (0, _stripe.bookTour)(tourId);
+        button.textContent = "Booked";
+    } catch (error) {
+        button.textContent = "Try Again";
+        console.error(error);
+    } finally{
+        button.disabled = false;
+    }
+});
 
-},{"core-js/modules/web.immediate.js":"49tUX","regenerator-runtime/runtime":"dXNgZ","./login":"7yHem","./updateSettings":"l3cGY","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"49tUX":[function(require,module,exports) {
+},{"core-js/modules/web.immediate.js":"49tUX","regenerator-runtime/runtime":"dXNgZ","./login":"7yHem","./updateSettings":"l3cGY","./stripe":"10tSC"}],"49tUX":[function(require,module,exports) {
 "use strict";
 // TODO: Remove this module from `core-js@4` since it's split to modules listed below
 require("52e9b3eefbbce1ed");
@@ -2651,6 +2631,7 @@ parcelHelpers.defineInteropFlag(exports);
 var _bindJs = require("./helpers/bind.js");
 var _bindJsDefault = parcelHelpers.interopDefault(_bindJs);
 var global = arguments[3];
+var process = require("a8d2c3349c87a903");
 "use strict";
 // utils is a library of generic helper functions non-specific to axios
 const { toString } = Object.prototype;
@@ -3149,6 +3130,22 @@ const toJSONObject = (obj)=>{
 };
 const isAsyncFn = kindOfTest("AsyncFunction");
 const isThenable = (thing)=>thing && (isObject(thing) || isFunction(thing)) && isFunction(thing.then) && isFunction(thing.catch);
+// original code
+// https://github.com/DigitalBrainJS/AxiosPromise/blob/16deab13710ec09779922131f3fa5954320f83ab/lib/utils.js#L11-L34
+const _setImmediate = ((setImmediateSupported, postMessageSupported)=>{
+    if (setImmediateSupported) return setImmediate;
+    return postMessageSupported ? ((token, callbacks)=>{
+        _global.addEventListener("message", ({ source, data })=>{
+            if (source === _global && data === token) callbacks.length && callbacks.shift()();
+        }, false);
+        return (cb)=>{
+            callbacks.push(cb);
+            _global.postMessage(token, "*");
+        };
+    })(`axios@${Math.random()}`, []) : (cb)=>setTimeout(cb);
+})(typeof setImmediate === "function", isFunction(_global.postMessage));
+const asap = typeof queueMicrotask !== "undefined" ? queueMicrotask.bind(_global) : typeof process !== "undefined" && process.nextTick || _setImmediate;
+// *********************
 exports.default = {
     isArray,
     isArrayBuffer,
@@ -3204,10 +3201,157 @@ exports.default = {
     isSpecCompliantForm,
     toJSONObject,
     isAsyncFn,
-    isThenable
+    isThenable,
+    setImmediate: _setImmediate,
+    asap
 };
 
-},{"./helpers/bind.js":"haRQb","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"haRQb":[function(require,module,exports) {
+},{"a8d2c3349c87a903":"d5jf4","./helpers/bind.js":"haRQb","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"d5jf4":[function(require,module,exports) {
+// shim for using process in browser
+var process = module.exports = {};
+// cached from whatever global is present so that test runners that stub it
+// don't break things.  But we need to wrap it in a try catch in case it is
+// wrapped in strict mode code which doesn't define any globals.  It's inside a
+// function because try/catches deoptimize in certain engines.
+var cachedSetTimeout;
+var cachedClearTimeout;
+function defaultSetTimout() {
+    throw new Error("setTimeout has not been defined");
+}
+function defaultClearTimeout() {
+    throw new Error("clearTimeout has not been defined");
+}
+(function() {
+    try {
+        if (typeof setTimeout === "function") cachedSetTimeout = setTimeout;
+        else cachedSetTimeout = defaultSetTimout;
+    } catch (e) {
+        cachedSetTimeout = defaultSetTimout;
+    }
+    try {
+        if (typeof clearTimeout === "function") cachedClearTimeout = clearTimeout;
+        else cachedClearTimeout = defaultClearTimeout;
+    } catch (e) {
+        cachedClearTimeout = defaultClearTimeout;
+    }
+})();
+function runTimeout(fun) {
+    if (cachedSetTimeout === setTimeout) //normal enviroments in sane situations
+    return setTimeout(fun, 0);
+    // if setTimeout wasn't available but was latter defined
+    if ((cachedSetTimeout === defaultSetTimout || !cachedSetTimeout) && setTimeout) {
+        cachedSetTimeout = setTimeout;
+        return setTimeout(fun, 0);
+    }
+    try {
+        // when when somebody has screwed with setTimeout but no I.E. maddness
+        return cachedSetTimeout(fun, 0);
+    } catch (e) {
+        try {
+            // When we are in I.E. but the script has been evaled so I.E. doesn't trust the global object when called normally
+            return cachedSetTimeout.call(null, fun, 0);
+        } catch (e) {
+            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error
+            return cachedSetTimeout.call(this, fun, 0);
+        }
+    }
+}
+function runClearTimeout(marker) {
+    if (cachedClearTimeout === clearTimeout) //normal enviroments in sane situations
+    return clearTimeout(marker);
+    // if clearTimeout wasn't available but was latter defined
+    if ((cachedClearTimeout === defaultClearTimeout || !cachedClearTimeout) && clearTimeout) {
+        cachedClearTimeout = clearTimeout;
+        return clearTimeout(marker);
+    }
+    try {
+        // when when somebody has screwed with setTimeout but no I.E. maddness
+        return cachedClearTimeout(marker);
+    } catch (e) {
+        try {
+            // When we are in I.E. but the script has been evaled so I.E. doesn't  trust the global object when called normally
+            return cachedClearTimeout.call(null, marker);
+        } catch (e) {
+            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error.
+            // Some versions of I.E. have different rules for clearTimeout vs setTimeout
+            return cachedClearTimeout.call(this, marker);
+        }
+    }
+}
+var queue = [];
+var draining = false;
+var currentQueue;
+var queueIndex = -1;
+function cleanUpNextTick() {
+    if (!draining || !currentQueue) return;
+    draining = false;
+    if (currentQueue.length) queue = currentQueue.concat(queue);
+    else queueIndex = -1;
+    if (queue.length) drainQueue();
+}
+function drainQueue() {
+    if (draining) return;
+    var timeout = runTimeout(cleanUpNextTick);
+    draining = true;
+    var len = queue.length;
+    while(len){
+        currentQueue = queue;
+        queue = [];
+        while(++queueIndex < len)if (currentQueue) currentQueue[queueIndex].run();
+        queueIndex = -1;
+        len = queue.length;
+    }
+    currentQueue = null;
+    draining = false;
+    runClearTimeout(timeout);
+}
+process.nextTick = function(fun) {
+    var args = new Array(arguments.length - 1);
+    if (arguments.length > 1) for(var i = 1; i < arguments.length; i++)args[i - 1] = arguments[i];
+    queue.push(new Item(fun, args));
+    if (queue.length === 1 && !draining) runTimeout(drainQueue);
+};
+// v8 likes predictible objects
+function Item(fun, array) {
+    this.fun = fun;
+    this.array = array;
+}
+Item.prototype.run = function() {
+    this.fun.apply(null, this.array);
+};
+process.title = "browser";
+process.browser = true;
+process.env = {};
+process.argv = [];
+process.version = ""; // empty string to avoid regexp issues
+process.versions = {};
+function noop() {}
+process.on = noop;
+process.addListener = noop;
+process.once = noop;
+process.off = noop;
+process.removeListener = noop;
+process.removeAllListeners = noop;
+process.emit = noop;
+process.prependListener = noop;
+process.prependOnceListener = noop;
+process.listeners = function(name) {
+    return [];
+};
+process.binding = function(name) {
+    throw new Error("process.binding is not supported");
+};
+process.cwd = function() {
+    return "/";
+};
+process.chdir = function(dir) {
+    throw new Error("process.chdir is not supported");
+};
+process.umask = function() {
+    return 0;
+};
+
+},{}],"haRQb":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "default", ()=>bind);
@@ -6050,7 +6194,6 @@ var _indexJsDefault = parcelHelpers.interopDefault(_indexJs);
 var _axiosHeadersJs = require("../core/AxiosHeaders.js");
 var _axiosHeadersJsDefault = parcelHelpers.interopDefault(_axiosHeadersJs);
 var _progressEventReducerJs = require("../helpers/progressEventReducer.js");
-var _progressEventReducerJsDefault = parcelHelpers.interopDefault(_progressEventReducerJs);
 var _resolveConfigJs = require("../helpers/resolveConfig.js");
 var _resolveConfigJsDefault = parcelHelpers.interopDefault(_resolveConfigJs);
 const isXHRAdapterSupported = typeof XMLHttpRequest !== "undefined";
@@ -6059,11 +6202,15 @@ exports.default = isXHRAdapterSupported && function(config) {
         const _config = (0, _resolveConfigJsDefault.default)(config);
         let requestData = _config.data;
         const requestHeaders = (0, _axiosHeadersJsDefault.default).from(_config.headers).normalize();
-        let { responseType } = _config;
+        let { responseType, onUploadProgress, onDownloadProgress } = _config;
         let onCanceled;
+        let uploadThrottled, downloadThrottled;
+        let flushUpload, flushDownload;
         function done() {
-            if (_config.cancelToken) _config.cancelToken.unsubscribe(onCanceled);
-            if (_config.signal) _config.signal.removeEventListener("abort", onCanceled);
+            flushUpload && flushUpload(); // flush events
+            flushDownload && flushDownload(); // flush events
+            _config.cancelToken && _config.cancelToken.unsubscribe(onCanceled);
+            _config.signal && _config.signal.removeEventListener("abort", onCanceled);
         }
         let request = new XMLHttpRequest();
         request.open(_config.method.toUpperCase(), _config.url, true);
@@ -6109,7 +6256,7 @@ exports.default = isXHRAdapterSupported && function(config) {
         // Handle browser request cancellation (as opposed to a manual cancellation)
         request.onabort = function handleAbort() {
             if (!request) return;
-            reject(new (0, _axiosErrorJsDefault.default)("Request aborted", (0, _axiosErrorJsDefault.default).ECONNABORTED, _config, request));
+            reject(new (0, _axiosErrorJsDefault.default)("Request aborted", (0, _axiosErrorJsDefault.default).ECONNABORTED, config, request));
             // Clean up request
             request = null;
         };
@@ -6117,7 +6264,7 @@ exports.default = isXHRAdapterSupported && function(config) {
         request.onerror = function handleError() {
             // Real errors are hidden from us by the browser
             // onerror should only fire if it's a network error
-            reject(new (0, _axiosErrorJsDefault.default)("Network Error", (0, _axiosErrorJsDefault.default).ERR_NETWORK, _config, request));
+            reject(new (0, _axiosErrorJsDefault.default)("Network Error", (0, _axiosErrorJsDefault.default).ERR_NETWORK, config, request));
             // Clean up request
             request = null;
         };
@@ -6126,7 +6273,7 @@ exports.default = isXHRAdapterSupported && function(config) {
             let timeoutErrorMessage = _config.timeout ? "timeout of " + _config.timeout + "ms exceeded" : "timeout exceeded";
             const transitional = _config.transitional || (0, _transitionalJsDefault.default);
             if (_config.timeoutErrorMessage) timeoutErrorMessage = _config.timeoutErrorMessage;
-            reject(new (0, _axiosErrorJsDefault.default)(timeoutErrorMessage, transitional.clarifyTimeoutError ? (0, _axiosErrorJsDefault.default).ETIMEDOUT : (0, _axiosErrorJsDefault.default).ECONNABORTED, _config, request));
+            reject(new (0, _axiosErrorJsDefault.default)(timeoutErrorMessage, transitional.clarifyTimeoutError ? (0, _axiosErrorJsDefault.default).ETIMEDOUT : (0, _axiosErrorJsDefault.default).ECONNABORTED, config, request));
             // Clean up request
             request = null;
         };
@@ -6141,9 +6288,16 @@ exports.default = isXHRAdapterSupported && function(config) {
         // Add responseType to request if needed
         if (responseType && responseType !== "json") request.responseType = _config.responseType;
         // Handle progress if needed
-        if (typeof _config.onDownloadProgress === "function") request.addEventListener("progress", (0, _progressEventReducerJsDefault.default)(_config.onDownloadProgress, true));
+        if (onDownloadProgress) {
+            [downloadThrottled, flushDownload] = (0, _progressEventReducerJs.progressEventReducer)(onDownloadProgress, true);
+            request.addEventListener("progress", downloadThrottled);
+        }
         // Not all browsers support upload events
-        if (typeof _config.onUploadProgress === "function" && request.upload) request.upload.addEventListener("progress", (0, _progressEventReducerJsDefault.default)(_config.onUploadProgress));
+        if (onUploadProgress && request.upload) {
+            [uploadThrottled, flushUpload] = (0, _progressEventReducerJs.progressEventReducer)(onUploadProgress);
+            request.upload.addEventListener("progress", uploadThrottled);
+            request.upload.addEventListener("loadend", flushUpload);
+        }
         if (_config.cancelToken || _config.signal) {
             // Handle cancellation
             // eslint-disable-next-line func-names
@@ -6195,11 +6349,16 @@ function parseProtocol(url) {
 },{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"bN9Fp":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "progressEventReducer", ()=>progressEventReducer);
+parcelHelpers.export(exports, "progressEventDecorator", ()=>progressEventDecorator);
+parcelHelpers.export(exports, "asyncDecorator", ()=>asyncDecorator);
 var _speedometerJs = require("./speedometer.js");
 var _speedometerJsDefault = parcelHelpers.interopDefault(_speedometerJs);
 var _throttleJs = require("./throttle.js");
 var _throttleJsDefault = parcelHelpers.interopDefault(_throttleJs);
-exports.default = (listener, isDownloadStream, freq = 3)=>{
+var _utilsJs = require("../utils.js");
+var _utilsJsDefault = parcelHelpers.interopDefault(_utilsJs);
+const progressEventReducer = (listener, isDownloadStream, freq = 3)=>{
     let bytesNotified = 0;
     const _speedometer = (0, _speedometerJsDefault.default)(50, 250);
     return (0, _throttleJsDefault.default)((e)=>{
@@ -6217,14 +6376,26 @@ exports.default = (listener, isDownloadStream, freq = 3)=>{
             rate: rate ? rate : undefined,
             estimated: rate && total && inRange ? (total - loaded) / rate : undefined,
             event: e,
-            lengthComputable: total != null
+            lengthComputable: total != null,
+            [isDownloadStream ? "download" : "upload"]: true
         };
-        data[isDownloadStream ? "download" : "upload"] = true;
         listener(data);
     }, freq);
 };
+const progressEventDecorator = (total, throttled)=>{
+    const lengthComputable = total != null;
+    return [
+        (loaded)=>throttled[0]({
+                lengthComputable,
+                total,
+                loaded
+            }),
+        throttled[1]
+    ];
+};
+const asyncDecorator = (fn)=>(...args)=>(0, _utilsJsDefault.default).asap(()=>fn(...args));
 
-},{"./speedometer.js":"gQeo1","./throttle.js":"6fmRS","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"gQeo1":[function(require,module,exports) {
+},{"./speedometer.js":"gQeo1","./throttle.js":"6fmRS","../utils.js":"5By4s","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"gQeo1":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 "use strict";
@@ -6263,35 +6434,44 @@ parcelHelpers.defineInteropFlag(exports);
 exports.default = speedometer;
 
 },{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"6fmRS":[function(require,module,exports) {
-var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
-parcelHelpers.defineInteropFlag(exports);
-"use strict";
 /**
  * Throttle decorator
  * @param {Function} fn
  * @param {Number} freq
  * @return {Function}
- */ function throttle(fn, freq) {
+ */ var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+function throttle(fn, freq) {
     let timestamp = 0;
-    const threshold = 1000 / freq;
-    let timer = null;
-    return function throttled() {
-        const force = this === true;
-        const now = Date.now();
-        if (force || now - timestamp > threshold) {
-            if (timer) {
-                clearTimeout(timer);
-                timer = null;
-            }
-            timestamp = now;
-            return fn.apply(null, arguments);
-        }
-        if (!timer) timer = setTimeout(()=>{
+    let threshold = 1000 / freq;
+    let lastArgs;
+    let timer;
+    const invoke = (args, now = Date.now())=>{
+        timestamp = now;
+        lastArgs = null;
+        if (timer) {
+            clearTimeout(timer);
             timer = null;
-            timestamp = Date.now();
-            return fn.apply(null, arguments);
-        }, threshold - (now - timestamp));
+        }
+        fn.apply(null, args);
     };
+    const throttled = (...args)=>{
+        const now = Date.now();
+        const passed = now - timestamp;
+        if (passed >= threshold) invoke(args, now);
+        else {
+            lastArgs = args;
+            if (!timer) timer = setTimeout(()=>{
+                timer = null;
+                invoke(lastArgs);
+            }, threshold - passed);
+        }
+    };
+    const flush = ()=>lastArgs && invoke(lastArgs);
+    return [
+        throttled,
+        flush
+    ];
 }
 exports.default = throttle;
 
@@ -6570,24 +6750,22 @@ var _trackStreamJs = require("../helpers/trackStream.js");
 var _axiosHeadersJs = require("../core/AxiosHeaders.js");
 var _axiosHeadersJsDefault = parcelHelpers.interopDefault(_axiosHeadersJs);
 var _progressEventReducerJs = require("../helpers/progressEventReducer.js");
-var _progressEventReducerJsDefault = parcelHelpers.interopDefault(_progressEventReducerJs);
 var _resolveConfigJs = require("../helpers/resolveConfig.js");
 var _resolveConfigJsDefault = parcelHelpers.interopDefault(_resolveConfigJs);
 var _settleJs = require("../core/settle.js");
 var _settleJsDefault = parcelHelpers.interopDefault(_settleJs);
-const fetchProgressDecorator = (total, fn)=>{
-    const lengthComputable = total != null;
-    return (loaded)=>setTimeout(()=>fn({
-                lengthComputable,
-                total,
-                loaded
-            }));
-};
 const isFetchSupported = typeof fetch === "function" && typeof Request === "function" && typeof Response === "function";
 const isReadableStreamSupported = isFetchSupported && typeof ReadableStream === "function";
 // used only inside the fetch adapter
 const encodeText = isFetchSupported && (typeof TextEncoder === "function" ? ((encoder)=>(str)=>encoder.encode(str))(new TextEncoder()) : async (str)=>new Uint8Array(await new Response(str).arrayBuffer()));
-const supportsRequestStream = isReadableStreamSupported && (()=>{
+const test = (fn, ...args)=>{
+    try {
+        return !!fn(...args);
+    } catch (e) {
+        return false;
+    }
+};
+const supportsRequestStream = isReadableStreamSupported && test(()=>{
     let duplexAccessed = false;
     const hasContentType = new Request((0, _indexJsDefault.default).origin, {
         body: new ReadableStream(),
@@ -6598,15 +6776,9 @@ const supportsRequestStream = isReadableStreamSupported && (()=>{
         }
     }).headers.has("Content-Type");
     return duplexAccessed && !hasContentType;
-})();
+});
 const DEFAULT_CHUNK_SIZE = 65536;
-const supportsResponseStream = isReadableStreamSupported && !!(()=>{
-    try {
-        return (0, _utilsJsDefault.default).isReadableStream(new Response("").body);
-    } catch (err) {
-    // return undefined
-    }
-})();
+const supportsResponseStream = isReadableStreamSupported && test(()=>(0, _utilsJsDefault.default).isReadableStream(new Response("").body));
 const resolvers = {
     stream: supportsResponseStream && ((res)=>res.body)
 };
@@ -6627,7 +6799,7 @@ const getBodyLength = async (body)=>{
     if (body == null) return 0;
     if ((0, _utilsJsDefault.default).isBlob(body)) return body.size;
     if ((0, _utilsJsDefault.default).isSpecCompliantForm(body)) return (await new Request(body).arrayBuffer()).byteLength;
-    if ((0, _utilsJsDefault.default).isArrayBufferView(body)) return body.byteLength;
+    if ((0, _utilsJsDefault.default).isArrayBufferView(body) || (0, _utilsJsDefault.default).isArrayBuffer(body)) return body.byteLength;
     if ((0, _utilsJsDefault.default).isURLSearchParams(body)) body = body + "";
     if ((0, _utilsJsDefault.default).isString(body)) return (await encodeText(body)).byteLength;
 };
@@ -6659,9 +6831,12 @@ exports.default = isFetchSupported && (async (config)=>{
             });
             let contentTypeHeader;
             if ((0, _utilsJsDefault.default).isFormData(data) && (contentTypeHeader = _request.headers.get("content-type"))) headers.setContentType(contentTypeHeader);
-            if (_request.body) data = (0, _trackStreamJs.trackStream)(_request.body, DEFAULT_CHUNK_SIZE, fetchProgressDecorator(requestContentLength, (0, _progressEventReducerJsDefault.default)(onUploadProgress)), null, encodeText);
+            if (_request.body) {
+                const [onProgress, flush] = (0, _progressEventReducerJs.progressEventDecorator)(requestContentLength, (0, _progressEventReducerJs.progressEventReducer)((0, _progressEventReducerJs.asyncDecorator)(onUploadProgress)));
+                data = (0, _trackStreamJs.trackStream)(_request.body, DEFAULT_CHUNK_SIZE, onProgress, flush, encodeText);
+            }
         }
-        if (!(0, _utilsJsDefault.default).isString(withCredentials)) withCredentials = withCredentials ? "cors" : "omit";
+        if (!(0, _utilsJsDefault.default).isString(withCredentials)) withCredentials = withCredentials ? "include" : "omit";
         request = new Request(url, {
             ...fetchOptions,
             signal: composedSignal,
@@ -6669,7 +6844,7 @@ exports.default = isFetchSupported && (async (config)=>{
             headers: headers.normalize().toJSON(),
             body: data,
             duplex: "half",
-            withCredentials
+            credentials: withCredentials
         });
         let response = await fetch(request);
         const isStreamResponse = supportsResponseStream && (responseType === "stream" || responseType === "response");
@@ -6683,7 +6858,11 @@ exports.default = isFetchSupported && (async (config)=>{
                 options[prop] = response[prop];
             });
             const responseContentLength = (0, _utilsJsDefault.default).toFiniteNumber(response.headers.get("content-length"));
-            response = new Response((0, _trackStreamJs.trackStream)(response.body, DEFAULT_CHUNK_SIZE, onDownloadProgress && fetchProgressDecorator(responseContentLength, (0, _progressEventReducerJsDefault.default)(onDownloadProgress, true)), isStreamResponse && onFinish, encodeText), options);
+            const [onProgress, flush] = onDownloadProgress && (0, _progressEventReducerJs.progressEventDecorator)(responseContentLength, (0, _progressEventReducerJs.progressEventReducer)((0, _progressEventReducerJs.asyncDecorator)(onDownloadProgress), true)) || [];
+            response = new Response((0, _trackStreamJs.trackStream)(response.body, DEFAULT_CHUNK_SIZE, onProgress, ()=>{
+                flush && flush();
+                isStreamResponse && onFinish();
+            }, encodeText), options);
         }
         responseType = responseType || "text";
         let responseData = await resolvers[(0, _utilsJsDefault.default).findKey(resolvers, responseType) || "text"](response, config);
@@ -6778,21 +6957,35 @@ const readBytes = async function*(iterable, chunkSize, encode) {
 const trackStream = (stream, chunkSize, onProgress, onFinish, encode)=>{
     const iterator = readBytes(stream, chunkSize, encode);
     let bytes = 0;
+    let done;
+    let _onFinish = (e)=>{
+        if (!done) {
+            done = true;
+            onFinish && onFinish(e);
+        }
+    };
     return new ReadableStream({
-        type: "bytes",
         async pull (controller) {
-            const { done, value } = await iterator.next();
-            if (done) {
-                controller.close();
-                onFinish();
-                return;
+            try {
+                const { done, value } = await iterator.next();
+                if (done) {
+                    _onFinish();
+                    controller.close();
+                    return;
+                }
+                let len = value.byteLength;
+                if (onProgress) {
+                    let loadedBytes = bytes += len;
+                    onProgress(loadedBytes);
+                }
+                controller.enqueue(new Uint8Array(value));
+            } catch (err) {
+                _onFinish(err);
+                throw err;
             }
-            let len = value.byteLength;
-            onProgress && onProgress(bytes += len);
-            controller.enqueue(new Uint8Array(value));
         },
         cancel (reason) {
-            onFinish(reason);
+            _onFinish(reason);
             return iterator.return();
         }
     }, {
@@ -6878,7 +7071,7 @@ exports.default = {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "VERSION", ()=>VERSION);
-const VERSION = "1.7.2";
+const VERSION = "1.7.3";
 
 },{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"45wzn":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
@@ -7094,13 +7287,36 @@ const updateSettings = async (data, type)=>{
             data
         });
         if (res.data.status === "success") {
-            (0, _alert.showAlert)("success", ` updated successfuly`);
+            (0, _alert.showAlert)("success", `${type.charAt(0).toUpperCase() + type.slice(1)} updated successfully`);
             window.setTimeout(()=>{
                 location.assign("/me");
             }, 1500);
         }
+    } catch (err) {
+        console.error("Error:", err);
+        (0, _alert.showAlert)("error", err.response ? err.response.data.message : "Something went wrong");
+    }
+};
+
+},{"axios":"jo6P5","./alert":"kxdiQ","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"10tSC":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "bookTour", ()=>bookTour);
+var _axios = require("axios");
+var _axiosDefault = parcelHelpers.interopDefault(_axios);
+var _alert = require("./alert");
+const stripe = Stripe("pk_test_51PgObBByYH3XmrRBBl0CvF5uO0nI00oLcJmrXvJf7v3BysfmP61ocP6MeEZZy765iQlw7ICM8vT47ateDSMVZWfb00hTJXDfNb");
+const bookTour = async (tourId)=>{
+    try {
+        // Get checkout session endpoint APi
+        const session = await (0, _axiosDefault.default)(`http://127.0.0.1:8000/api/v1/bookings/checkout-session/${tourId}`);
+        // Create checkout from+credit card
+        await stripe.redirectToCheckout({
+            sessionId: session.data.session.id
+        });
     } catch (error) {
-        (0, _alert.showAlert)("error", err.response.data.message);
+        console.log(error);
+        (0, _alert.showAlert)("Error happened !", error);
     }
 };
 
