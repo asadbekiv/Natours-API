@@ -1,5 +1,5 @@
 29636
-40/home/asadbek/Desktop/Natours-API/app.js1722252414618700337 0
+40/home/asadbek/Desktop/Natours-API/app.js1722904993704502498 0
 69/home/asadbek/Desktop/Natours-API/dev-data/templates/tourTemplate.pug1720456773840302135 0
 70/home/asadbek/Desktop/Natours-API/dev-data/templates/errorTemplate.pug1720456773836302097 0
 52/home/asadbek/Desktop/Natours-API/dev-data/templates1720456773836302097 1
@@ -9,39 +9,39 @@
 61/home/asadbek/Desktop/Natours-API/dev-data/img/new-tour-4.jpg1720456773836302097 0
 46/home/asadbek/Desktop/Natours-API/dev-data/img1720456773832302058 1
 42/home/asadbek/Desktop/Natours-API/dev-data1720456773836302097 1
-64/home/asadbek/Desktop/Natours-API/public/js/bundled/index.js.map1722857844166460317 0
-60/home/asadbek/Desktop/Natours-API/public/js/bundled/index.js1722857844166460317 0
-51/home/asadbek/Desktop/Natours-API/public/js/bundled1722857844170460195 1
-61/home/asadbek/Desktop/Natours-API/public/js/updateSettings.js1720974876818858737 0
-43/home/asadbek/Desktop/Natours-API/public/js1722443919725946921 1
+64/home/asadbek/Desktop/Natours-API/public/js/bundled/index.js.map1722904993716502456 0
+60/home/asadbek/Desktop/Natours-API/public/js/bundled/index.js1722904993712502470 0
+51/home/asadbek/Desktop/Natours-API/public/js/bundled1722904993712502470 1
+61/home/asadbek/Desktop/Natours-API/public/js/updateSettings.js1722904993716502456 0
+43/home/asadbek/Desktop/Natours-API/public/js1722904993716502456 1
 50/home/asadbek/Desktop/Natours-API/public/tour.html1720456773892302645 0
 54/home/asadbek/Desktop/Natours-API/public/css/style.css1720456773840302135 0
 44/home/asadbek/Desktop/Natours-API/public/css1720456773840302135 1
 54/home/asadbek/Desktop/Natours-API/public/overview.html1720456773892302645 0
 65/home/asadbek/Desktop/Natours-API/public/img/logo-green-round.png1720456773840302135 0
-95/home/asadbek/Desktop/Natours-API/public/img/users/user-669f6a2a1fbf8867ddc5528a-242306888.jpeg1721731435031114650 0
+95/home/asadbek/Desktop/Natours-API/public/img/users/user-669f6a2a1fbf8867ddc5528a-242306888.jpeg1722904993712502470 0
 61/home/asadbek/Desktop/Natours-API/public/img/users/user-4.jpg1720456773888302606 0
 61/home/asadbek/Desktop/Natours-API/public/img/users/user-3.jpg1720456773888302606 0
 61/home/asadbek/Desktop/Natours-API/public/img/users/user-1.jpg1720456773888302606 0
-95/home/asadbek/Desktop/Natours-API/public/img/users/user-6693b29b8d6da8ac96de67f0-104997382.jpeg1720975648458550705 0
+95/home/asadbek/Desktop/Natours-API/public/img/users/user-6693b29b8d6da8ac96de67f0-104997382.jpeg1722904993712502470 0
 61/home/asadbek/Desktop/Natours-API/public/img/users/user-5.jpg1720456773888302606 0
 62/home/asadbek/Desktop/Natours-API/public/img/users/user-10.jpg1720456773888302606 0
-50/home/asadbek/Desktop/Natours-API/public/img/users1721731435023114736 1
+50/home/asadbek/Desktop/Natours-API/public/img/users1722904993712502470 1
 56/home/asadbek/Desktop/Natours-API/public/img/favicon.png1720456773840302135 0
-101/home/asadbek/Desktop/Natours-API/public/img/tours/tour-669e5c28e1fa941f02458de8-1721654905687-3.jpeg1721654905837633781 0
+101/home/asadbek/Desktop/Natours-API/public/img/tours/tour-669e5c28e1fa941f02458de8-1721654905687-3.jpeg1722904993712502470 0
 63/home/asadbek/Desktop/Natours-API/public/img/tours/tour-3-3.jpg1720456773856302293 0
 63/home/asadbek/Desktop/Natours-API/public/img/tours/tour-6-2.jpg1720456773868302411 0
 67/home/asadbek/Desktop/Natours-API/public/img/tours/tour-2-cover.jpg1720456773852302253 0
 63/home/asadbek/Desktop/Natours-API/public/img/tours/tour-6-1.jpg1720456773864302371 0
 67/home/asadbek/Desktop/Natours-API/public/img/tours/tour-3-cover.jpg1720456773856302293 0
-105/home/asadbek/Desktop/Natours-API/public/img/tours/tour-66970d1738a13185a66bd32a-1721653820143-cover.jpeg1721653820238799845 0
+105/home/asadbek/Desktop/Natours-API/public/img/tours/tour-66970d1738a13185a66bd32a-1721653820143-cover.jpeg1722904993708502484 0
 63/home/asadbek/Desktop/Natours-API/public/img/tours/tour-1-3.jpg1720456773844302175 0
 63/home/asadbek/Desktop/Natours-API/public/img/tours/tour-1-2.jpg1720456773844302175 0
 63/home/asadbek/Desktop/Natours-API/public/img/tours/tour-4-3.jpg1720456773860302332 0
 63/home/asadbek/Desktop/Natours-API/public/img/tours/tour-6-3.jpg1720456773868302411 0
 67/home/asadbek/Desktop/Natours-API/public/img/tours/tour-1-cover.jpg1720456773848302214 0
 63/home/asadbek/Desktop/Natours-API/public/img/tours/tour-7-3.jpg1720456773872302449 0
-101/home/asadbek/Desktop/Natours-API/public/img/tours/tour-669e5c28e1fa941f02458de8-1721654905687-2.jpeg1721654905841633793 0
+101/home/asadbek/Desktop/Natours-API/public/img/tours/tour-669e5c28e1fa941f02458de8-1721654905687-2.jpeg1722904993712502470 0
 63/home/asadbek/Desktop/Natours-API/public/img/tours/tour-2-1.jpg1720456773848302214 0
 63/home/asadbek/Desktop/Natours-API/public/img/tours/tour-9-2.jpg1720456773884302567 0
 67/home/asadbek/Desktop/Natours-API/public/img/tours/tour-4-cover.jpg1720456773860302332 0
@@ -50,12 +50,12 @@
 63/home/asadbek/Desktop/Natours-API/public/img/tours/tour-3-2.jpg1720456773856302293 0
 67/home/asadbek/Desktop/Natours-API/public/img/tours/tour-8-cover.jpg1720456773880302527 0
 63/home/asadbek/Desktop/Natours-API/public/img/tours/tour-8-3.jpg1720456773880302527 0
-101/home/asadbek/Desktop/Natours-API/public/img/tours/tour-669e5c28e1fa941f02458de8-1721654905687-1.jpeg1721654905849633816 0
+101/home/asadbek/Desktop/Natours-API/public/img/tours/tour-669e5c28e1fa941f02458de8-1721654905687-1.jpeg1722904993708502484 0
 63/home/asadbek/Desktop/Natours-API/public/img/tours/tour-9-3.jpg1720456773888302606 0
 63/home/asadbek/Desktop/Natours-API/public/img/tours/tour-8-1.jpg1720456773876302488 0
 54/home/asadbek/Desktop/Natours-API/public/img/icons.svg1720456773840302135 0
 59/home/asadbek/Desktop/Natours-API/public/img/logo-green.png1720456773840302135 0
-41/home/asadbek/Desktop/Natours-API/task.js1721788779892271164 0
+41/home/asadbek/Desktop/Natours-API/task.js1722904993716502456 0
 75/home/asadbek/Desktop/Natours-API/node_modules/is-typed-array/test/index.js1720506692072453711 0
 69/home/asadbek/Desktop/Natours-API/node_modules/is-typed-array/LICENSE1720506692008454105 0
 72/home/asadbek/Desktop/Natours-API/node_modules/is-typed-array/index.d.ts1720506692164453145 0
@@ -2469,7 +2469,7 @@
 69/home/asadbek/Desktop/Natours-API/node_modules/is-bigint/package.json1720506692088453613 0
 65/home/asadbek/Desktop/Natours-API/node_modules/is-bigint/index.js1720506692024454007 0
 63/home/asadbek/Desktop/Natours-API/node_modules/is-bigint/.nycrc1720506691976454302 0
-53/home/asadbek/Desktop/Natours-API/public/js/stripe.js1722857907640592811 0
+53/home/asadbek/Desktop/Natours-API/public/js/stripe.js1722904993716502456 0
 56/home/asadbek/Desktop/Natours-API/node_modules/is-bigint1720506692132453342 1
 74/home/asadbek/Desktop/Natours-API/node_modules/es-abstract/2024/WeekDay.js1720506692908448564 0
 75/home/asadbek/Desktop/Natours-API/node_modules/es-abstract/2024/ToObject.js1720506692880448736 0
@@ -5438,7 +5438,7 @@
 65/home/asadbek/Desktop/Natours-API/node_modules/fast-fifo/index.js1720506691976454302 0
 92/home/asadbek/Desktop/Natours-API/node_modules/core-js/actual/symbol/is-concat-spreadable.js1720506692888448687 0
 64/home/asadbek/Desktop/Natours-API/node_modules/synckit/README.md1720506692140453292 0
-46/home/asadbek/Desktop/Natours-API/package.json1722857840886561165 0
+46/home/asadbek/Desktop/Natours-API/package.json1722904993708502484 0
 67/home/asadbek/Desktop/Natours-API/node_modules/synckit/package.json1720506692064453760 0
 81/home/asadbek/Desktop/Natours-API/node_modules/core-js/stable/set/intersection.js1720506692884448712 0
 59/home/asadbek/Desktop/Natours-API/node_modules/opn/xdg-open1720506692068453736 0
@@ -5857,7 +5857,7 @@
 75/home/asadbek/Desktop/Natours-API/node_modules/core-js/es/typed-array/at.js1720506692544450805 0
 61/home/asadbek/Desktop/Natours-API/node_modules/morgan/LICENSE1720506691936454549 0
 68/home/asadbek/Desktop/Natours-API/node_modules/lodash/isUndefined.js1720506692732449647 0
-105/home/asadbek/Desktop/Natours-API/public/img/tours/tour-669e5c28e1fa941f02458de8-1721654808357-cover.jpeg1721654808461294923 0
+105/home/asadbek/Desktop/Natours-API/public/img/tours/tour-669e5c28e1fa941f02458de8-1721654808357-cover.jpeg1722904993708502484 0
 79/home/asadbek/Desktop/Natours-API/node_modules/es-abstract/2023/Number/equal.js1720506692704449820 0
 73/home/asadbek/Desktop/Natours-API/node_modules/mongodb/src/mongo_types.ts1720506692704449820 0
 73/home/asadbek/Desktop/Natours-API/node_modules/deepmerge/rollup.config.js1721663075982220210 0
@@ -6591,7 +6591,7 @@
 80/home/asadbek/Desktop/Natours-API/node_modules/dom-serializer/lib/esm/index.d.ts1720506692224452775 0
 88/home/asadbek/Desktop/Natours-API/node_modules/@swc/helpers/_/_skip_first_generator_next1720506692688449918 1
 59/home/asadbek/Desktop/Natours-API/node_modules/.bin/resolve1720506693124447234 0
-39/home/asadbek/Desktop/Natours-API/utils1720456773892302645 1
+39/home/asadbek/Desktop/Natours-API/utils1722904993716502456 1
 80/home/asadbek/Desktop/Natours-API/node_modules/stripe/types/SourcesResource.d.ts1722250816308929001 0
 96/home/asadbek/Desktop/Natours-API/node_modules/@swc/helpers/_/_class_check_private_static_access1720506692584450558 1
 70/home/asadbek/Desktop/Natours-API/node_modules/flat-cache/src/utils.js1720506692120453415 0
@@ -8127,7 +8127,7 @@
 89/home/asadbek/Desktop/Natours-API/node_modules/mongodb/lib/cmap/auth/auth_provider.js.map1720506692552450756 0
 68/home/asadbek/Desktop/Natours-API/node_modules/axios/lib/env/data.js1722847114204186721 0
 95/home/asadbek/Desktop/Natours-API/node_modules/@parcel/optimizer-htmlnano/node_modules/mdn-data1720506692316452209 1
-45/home/asadbek/Desktop/Natours-API/sample.json1721756561597464072 0
+45/home/asadbek/Desktop/Natours-API/sample.json1722904993716502456 0
 79/home/asadbek/Desktop/Natours-API/node_modules/htmlparser2/lib/FeedHandler.d.ts1720506692216452825 0
 105/home/asadbek/Desktop/Natours-API/node_modules/eslint-plugin-import/lib/rules/dynamic-import-chunkname.js1720506692164453145 0
 80/home/asadbek/Desktop/Natours-API/node_modules/@swc/helpers/src/_export_star.mjs1720506692724449697 0
@@ -8975,7 +8975,7 @@
 87/home/asadbek/Desktop/Natours-API/node_modules/@types/eslint/rules/possible-errors.d.ts1720506692224452775 0
 88/home/asadbek/Desktop/Natours-API/node_modules/eslint-plugin-import/docs/rules/no-amd.md1720506692484451174 0
 86/home/asadbek/Desktop/Natours-API/node_modules/@types/eslint/rules/best-practices.d.ts1720506692168453120 0
-53/home/asadbek/Desktop/Natours-API/routes/tourRoute.js1721642087986187446 0
+53/home/asadbek/Desktop/Natours-API/routes/tourRoute.js1722904993716502456 0
 74/home/asadbek/Desktop/Natours-API/node_modules/eslint/lib/eslint/eslint.js1720506692432451495 0
 77/home/asadbek/Desktop/Natours-API/node_modules/stripe/cjs/resources/Prices.js1722250816024924270 0
 86/home/asadbek/Desktop/Natours-API/node_modules/es-abstract/2016/OrdinaryHasInstance.js1720506692828449057 0
@@ -9839,7 +9839,7 @@
 68/home/asadbek/Desktop/Natours-API/node_modules/lodash/fp/overArgs.js1720506692756449500 0
 71/home/asadbek/Desktop/Natours-API/node_modules/lodash/fp/flattenDeep.js1720506692692449894 0
 75/home/asadbek/Desktop/Natours-API/node_modules/abortcontroller-polyfill/src1720506692228452750 1
-64/home/asadbek/Desktop/Natours-API/controllers/errorController.js1721790359073578526 0
+64/home/asadbek/Desktop/Natours-API/controllers/errorController.js1722904993704502498 0
 66/home/asadbek/Desktop/Natours-API/node_modules/has-symbols/.github1720506692200452923 1
 67/home/asadbek/Desktop/Natours-API/node_modules/lodash/fp/reverse.js1720506692768449426 0
 61/home/asadbek/Desktop/Natours-API/node_modules/lodash/drop.js1720506692676449992 0
@@ -11055,7 +11055,7 @@
 79/home/asadbek/Desktop/Natours-API/node_modules/eslint-plugin-prettier/worker.js1720506692012454081 0
 107/home/asadbek/Desktop/Natours-API/node_modules/csso/node_modules/css-tree/lib/syntax/function/expression.js1720506692588450534 0
 80/home/asadbek/Desktop/Natours-API/node_modules/mongodb/lib/operations/command.js1720506692312452233 0
-52/home/asadbek/Desktop/Natours-API/public/js/index.js1722857913656423738 0
+52/home/asadbek/Desktop/Natours-API/public/js/index.js1722904993716502456 0
 75/home/asadbek/Desktop/Natours-API/node_modules/es-set-tostringtag/.eslintrc1720506691936454549 0
 82/home/asadbek/Desktop/Natours-API/node_modules/core-js/actual/function/metadata.js1720506692916448515 0
 90/home/asadbek/Desktop/Natours-API/node_modules/@babel/highlight/node_modules/chalk/license1720506692020454031 0
@@ -11237,7 +11237,7 @@
 133/home/asadbek/Desktop/Natours-API/node_modules/puppeteer/node_modules/puppeteer-core/lib/cjs/puppeteer/bidi/core/BrowsingContext.d.ts1720506692844448958 0
 108/home/asadbek/Desktop/Natours-API/node_modules/html-to-text/node_modules/domutils/lib/esm/stringify.d.ts.map1721663075990220218 0
 71/home/asadbek/Desktop/Natours-API/node_modules/csso/lib/clean/Atrule.js1720506692348452012 0
-54/home/asadbek/Desktop/Natours-API/routes/viewsRoute.js1722844258310869528 0
+54/home/asadbek/Desktop/Natours-API/routes/viewsRoute.js1722904993716502456 0
 73/home/asadbek/Desktop/Natours-API/node_modules/shebang-regex/package.json1720506691912454696 0
 71/home/asadbek/Desktop/Natours-API/node_modules/babel-walk/lib/test.d.ts1720506692228452750 0
 122/home/asadbek/Desktop/Natours-API/node_modules/html-to-text/node_modules/entities/lib/esm/generated/decode-data-xml.js.map1721663075990220218 0
@@ -11976,7 +11976,7 @@
 64/home/asadbek/Desktop/Natours-API/node_modules/zod/lib/index.mjs1720506692328452135 0
 77/home/asadbek/Desktop/Natours-API/node_modules/stream-browserify/CHANGELOG.md1720506692116453441 0
 107/home/asadbek/Desktop/Natours-API/node_modules/puppeteer/node_modules/puppeteer-core/lib/cjs/puppeteer/node1720506692884448712 1
-33/home/asadbek/Desktop/Natours-API1722871138275317181 1
+33/home/asadbek/Desktop/Natours-API1722904993716502456 1
 80/home/asadbek/Desktop/Natours-API/node_modules/core-js/features/instance/trim.js1720506692968448194 0
 68/home/asadbek/Desktop/Natours-API/node_modules/htmlnano/CHANGELOG.md1720506692432451495 0
 79/home/asadbek/Desktop/Natours-API/node_modules/iterator.prototype/test/index.js1720506692024454007 0
@@ -12068,7 +12068,7 @@
 105/home/asadbek/Desktop/Natours-API/node_modules/eslint/lib/source-code/token-store/forward-token-cursor.js1720506692480451199 0
 95/home/asadbek/Desktop/Natours-API/node_modules/es-abstract/2020/AbstractRelationalComparison.js1720506692336452086 0
 72/home/asadbek/Desktop/Natours-API/node_modules/globalthis/test/native.js1720506692132453342 0
-45/home/asadbek/Desktop/Natours-API/controllers1722250195121458799 1
+45/home/asadbek/Desktop/Natours-API/controllers1722904993704502498 1
 64/home/asadbek/Desktop/Natours-API/node_modules/ast-types/LICENSE1720506691936454549 0
 126/home/asadbek/Desktop/Natours-API/node_modules/puppeteer/node_modules/puppeteer-core/lib/esm/puppeteer/cdp/NetworkManager.d.ts1720506692872448786 0
 67/home/asadbek/Desktop/Natours-API/node_modules/@babel/highlight/lib1720506692016454056 1
@@ -12411,7 +12411,7 @@
 103/home/asadbek/Desktop/Natours-API/node_modules/resolve/test/resolver/nested_symlinks/mylib/package.json1720506692496451100 0
 76/home/asadbek/Desktop/Natours-API/node_modules/@eslint/eslintrc/universal.js1720506692316452209 0
 90/home/asadbek/Desktop/Natours-API/node_modules/xterm/src/renderer/atlas/StaticCharAtlas.ts1720506692708449795 0
-60/home/asadbek/Desktop/Natours-API/views/emails/baseEmail.pug1721722801862899077 0
+60/home/asadbek/Desktop/Natours-API/views/emails/baseEmail.pug1722904993716502456 0
 83/home/asadbek/Desktop/Natours-API/node_modules/is-finalizationregistry/package.json1720506692088453613 0
 84/home/asadbek/Desktop/Natours-API/node_modules/degenerator/dist/degenerator.d.ts.map1720506692164453145 0
 68/home/asadbek/Desktop/Natours-API/node_modules/with/src/reference.ts1720506692232452726 0
@@ -12697,7 +12697,7 @@
 100/home/asadbek/Desktop/Natours-API/node_modules/@babel/highlight/node_modules/color-convert/README.md1720506692096453563 0
 126/home/asadbek/Desktop/Natours-API/node_modules/puppeteer/node_modules/puppeteer-core/lib/esm/puppeteer/api/CDPSession.d.ts.map1720506692756449500 0
 103/home/asadbek/Desktop/Natours-API/node_modules/html-to-text/node_modules/domutils/lib/manipulation.d.ts1721663075994220222 0
-51/home/asadbek/Desktop/Natours-API/package-lock.json1722847114640187333 0
+51/home/asadbek/Desktop/Natours-API/package-lock.json1722904993708502484 0
 95/home/asadbek/Desktop/Natours-API/node_modules/css-tree/cjs/tokenizer/char-code-definitions.cjs1720506692236452702 0
 58/home/asadbek/Desktop/Natours-API/node_modules/lodash.once1720506691972454327 1
 99/home/asadbek/Desktop/Natours-API/node_modules/webpack/schemas/plugins/LoaderOptionsPlugin.check.js1720506692712449771 0
@@ -12888,7 +12888,7 @@
 74/home/asadbek/Desktop/Natours-API/node_modules/fs-extra/lib/ensure/file.js1720506692120453415 0
 69/home/asadbek/Desktop/Natours-API/node_modules/validator/lib/ltrim.js1720506692552450756 0
 86/home/asadbek/Desktop/Natours-API/node_modules/core-js/features/string/virtual/trim.js1720506692968448194 0
-48/home/asadbek/Desktop/Natours-API/utils/email.js1721735432530605734 0
+48/home/asadbek/Desktop/Natours-API/utils/email.js1722904993716502456 0
 92/home/asadbek/Desktop/Natours-API/node_modules/csso/node_modules/css-tree/lib/lexer/match.js1720506692636450239 0
 84/home/asadbek/Desktop/Natours-API/node_modules/typed-array-byte-length/test/index.js1720506692040453908 0
 93/home/asadbek/Desktop/Natours-API/node_modules/csso/node_modules/css-tree/cjs/lexer/error.cjs1720506692340452061 0
@@ -13205,7 +13205,7 @@
 70/home/asadbek/Desktop/Natours-API/node_modules/is-plain-object/LICENSE1720506691976454302 0
 77/home/asadbek/Desktop/Natours-API/node_modules/stripe/types/Apps/Secrets.d.ts1722250816308929001 0
 62/home/asadbek/Desktop/Natours-API/node_modules/agent-base/test1720506692144453268 1
-39/home/asadbek/Desktop/Natours-API/views1721722454973387649 1
+39/home/asadbek/Desktop/Natours-API/views1722904993716502456 1
 91/home/asadbek/Desktop/Natours-API/node_modules/eslint-plugin-react/node_modules/resolve/lib1720506692480451199 1
 82/home/asadbek/Desktop/Natours-API/node_modules/@parcel/workers/src/web/WebChild.js1720506692316452209 0
 72/home/asadbek/Desktop/Natours-API/node_modules/lodash/fp/wrapperChain.js1720506692796449253 0
@@ -13365,7 +13365,7 @@
 119/home/asadbek/Desktop/Natours-API/node_modules/eslint-plugin-react/node_modules/resolve/test/resolver/same_names/foo.js1720506692308452258 0
 121/home/asadbek/Desktop/Natours-API/node_modules/puppeteer/node_modules/puppeteer-core/lib/cjs/puppeteer/cdp/utils.d.ts.map1720506692828449057 0
 89/home/asadbek/Desktop/Natours-API/node_modules/core-js/modules/es.weak-map.constructor.js1720506692780449352 0
-40/home/asadbek/Desktop/Natours-API/routes1722250105686762048 1
+40/home/asadbek/Desktop/Natours-API/routes1722904993716502456 1
 126/home/asadbek/Desktop/Natours-API/node_modules/puppeteer/node_modules/puppeteer-core/lib/cjs/puppeteer/api/BrowserContext.d.ts1720506692840448982 0
 74/home/asadbek/Desktop/Natours-API/node_modules/nodemon/doc/cli/authors.txt1720506692332452110 0
 85/home/asadbek/Desktop/Natours-API/node_modules/core-js/features/string/code-points.js1720506692652450140 0
@@ -13491,7 +13491,7 @@
 55/home/asadbek/Desktop/Natours-API/node_modules/leac/lib1721663076086220300 1
 84/home/asadbek/Desktop/Natours-API/node_modules/@puppeteer/browsers/lib/cjs/launch.js1720506692320452184 0
 74/home/asadbek/Desktop/Natours-API/node_modules/safe-array-concat/.eslintrc1720506691912454696 0
-57/home/asadbek/Desktop/Natours-API/views/emails/_style.pug1721721184288196713 0
+57/home/asadbek/Desktop/Natours-API/views/emails/_style.pug1722904993716502456 0
 86/home/asadbek/Desktop/Natours-API/node_modules/execa/node_modules/cross-spawn/lib/util1720506692176453071 1
 65/home/asadbek/Desktop/Natours-API/node_modules/p-locate/readme.md1720506692004454130 0
 73/home/asadbek/Desktop/Natours-API/node_modules/es-abstract/2020/Invoke.js1720506692764449450 0
@@ -13590,10 +13590,10 @@
 76/home/asadbek/Desktop/Natours-API/node_modules/eslint-module-utils/pkgDir.js1720506692144453268 0
 100/home/asadbek/Desktop/Natours-API/node_modules/ndb/.local-frontend/Images/toolbarResizerVertical.png1720506692448451396 0
 87/home/asadbek/Desktop/Natours-API/node_modules/function.prototype.name/test/uglified.js1720506692200452923 0
-64/home/asadbek/Desktop/Natours-API/views/emails/passwordReset.pug1721730193882694524 0
+64/home/asadbek/Desktop/Natours-API/views/emails/passwordReset.pug1722904993716502456 0
 109/home/asadbek/Desktop/Natours-API/node_modules/@selderee/plugin-htmlparser2/node_modules/domhandler/readme.md1721663075986220214 0
 91/home/asadbek/Desktop/Natours-API/node_modules/@jridgewell/resolve-uri/dist/resolve-uri.mjs1720506692124453391 0
-48/home/asadbek/Desktop/Natours-API/.eslintrc.json1722846698563529264 0
+48/home/asadbek/Desktop/Natours-API/.eslintrc.json1722904993680502585 0
 63/home/asadbek/Desktop/Natours-API/node_modules/zod/lib/types.js1720506692292452357 0
 65/home/asadbek/Desktop/Natours-API/node_modules/json5/lib/index.js1720506692072453711 0
 99/home/asadbek/Desktop/Natours-API/node_modules/enhanced-resolve/lib/SyncAsyncFileSystemDecorator.js1720506692308452258 0
@@ -13638,7 +13638,7 @@
 84/home/asadbek/Desktop/Natours-API/node_modules/core-js/stable/string/virtual/bold.js1720506692616450362 0
 97/home/asadbek/Desktop/Natours-API/node_modules/@parcel/reporter-dev-server/src/templates/404.html1720506692032453957 0
 76/home/asadbek/Desktop/Natours-API/node_modules/es-abstract/5/DateFromTime.js1720506692676449992 0
-48/home/asadbek/Desktop/Natours-API/views/tour.pug1722845216764170954 0
+48/home/asadbek/Desktop/Natours-API/views/tour.pug1722904993716502456 0
 96/home/asadbek/Desktop/Natours-API/node_modules/jest-worker/node_modules/supports-color/readme.md1720506692036453933 0
 84/home/asadbek/Desktop/Natours-API/node_modules/resolve/test/node_path/y/ccc/index.js1720506692372451864 0
 73/home/asadbek/Desktop/Natours-API/node_modules/@parcel/utils/package.json1720506692476451224 0
@@ -13656,7 +13656,7 @@
 88/home/asadbek/Desktop/Natours-API/node_modules/@img/sharp-libvips-linux-x64/lib/glib-2.01720963391060169975 1
 74/home/asadbek/Desktop/Natours-API/node_modules/domelementtype/lib/index.js1720506692076453686 0
 74/home/asadbek/Desktop/Natours-API/node_modules/eslint-plugin-import/config1720506692444451421 1
-53/home/asadbek/Desktop/Natours-API/models/userModel.js1721730814314138589 0
+53/home/asadbek/Desktop/Natours-API/models/userModel.js1722904993704502498 0
 74/home/asadbek/Desktop/Natours-API/node_modules/readable-stream/.travis.yml1720506692268452504 0
 68/home/asadbek/Desktop/Natours-API/node_modules/path-key/package.json1720506691968454352 0
 86/home/asadbek/Desktop/Natours-API/node_modules/array.prototype.findlastindex/.eslintrc1720506691936454549 0
@@ -13750,7 +13750,7 @@
 84/home/asadbek/Desktop/Natours-API/node_modules/json-stable-stringify-without-jsonify1720506692140453292 1
 59/home/asadbek/Desktop/Natours-API/node_modules/ndb/build.js1720506691972454327 0
 88/home/asadbek/Desktop/Natours-API/node_modules/eslint/lib/rules/no-constant-condition.js1720506692636450239 0
-63/home/asadbek/Desktop/Natours-API/controllers/tourController.js1721654900173616659 0
+63/home/asadbek/Desktop/Natours-API/controllers/tourController.js1722904993704502498 0
 77/home/asadbek/Desktop/Natours-API/node_modules/es-abstract/2022/IsCallable.js1720506692772449402 0
 97/home/asadbek/Desktop/Natours-API/node_modules/core-js/modules/esnext.array.is-template-object.js1720506692784449328 0
 79/home/asadbek/Desktop/Natours-API/node_modules/eslint/lib/rules/no-label-var.js1720506692664450066 0
@@ -13820,7 +13820,7 @@
 65/home/asadbek/Desktop/Natours-API/node_modules/lodash/fp/merge.js1720506692748449549 0
 82/home/asadbek/Desktop/Natours-API/node_modules/yargs/build/lib/utils/obj-filter.js1720506692260452554 0
 88/home/asadbek/Desktop/Natours-API/node_modules/eslint/lib/rules/array-bracket-spacing.js1720506692216452825 0
-57/home/asadbek/Desktop/Natours-API/routes/bookingRoutes.js1722252386343698557 0
+57/home/asadbek/Desktop/Natours-API/routes/bookingRoutes.js1722904993716502456 0
 76/home/asadbek/Desktop/Natours-API/node_modules/mongoose/lib/schema/string.js1720506692668450042 0
 106/home/asadbek/Desktop/Natours-API/node_modules/ndb/.local-frontend/workspace_diff/workspace_diff_module.js1720506692644450189 0
 78/home/asadbek/Desktop/Natours-API/node_modules/emoji-regex/es2015/RGI_Emoji.js1720506692088453613 0
@@ -14016,7 +14016,7 @@
 82/home/asadbek/Desktop/Natours-API/node_modules/htmlnano/lib/modules/minifyUrls.cjs1720506692256452578 0
 81/home/asadbek/Desktop/Natours-API/node_modules/core-js/full/instance/trim-left.js1720506692968448194 0
 82/home/asadbek/Desktop/Natours-API/node_modules/es-abstract/2019/GetGlobalObject.js1720506692728449673 0
-48/home/asadbek/Desktop/Natours-API/views/base.pug1722857898472853012 0
+48/home/asadbek/Desktop/Natours-API/views/base.pug1722904993716502456 0
 77/home/asadbek/Desktop/Natours-API/node_modules/define-properties/CHANGELOG.md1720506692076453686 0
 84/home/asadbek/Desktop/Natours-API/node_modules/@parcel/transformer-babel/src/flow.js1720506692204452899 0
 100/home/asadbek/Desktop/Natours-API/node_modules/@swc/helpers/_/_class_private_field_init/package.json1720506692608450411 0
@@ -14583,7 +14583,7 @@
 54/home/asadbek/Desktop/Natours-API/node_modules/zod/lib1720506692364451913 1
 76/home/asadbek/Desktop/Natours-API/node_modules/core-js/actual/set-timeout.js1720506692940448367 0
 96/home/asadbek/Desktop/Natours-API/node_modules/eslint-plugin-react/node_modules/semver/README.md1720506692144453268 0
-105/home/asadbek/Desktop/Natours-API/public/img/tours/tour-669e5c28e1fa941f02458de8-1721654905685-cover.jpeg1721654905841633793 0
+105/home/asadbek/Desktop/Natours-API/public/img/tours/tour-669e5c28e1fa941f02458de8-1721654905685-cover.jpeg1722904993708502484 0
 78/home/asadbek/Desktop/Natours-API/node_modules/caniuse-lite/data/regions/BZ.js1720506692392451741 0
 83/home/asadbek/Desktop/Natours-API/node_modules/es-abstract/2015/CompletionRecord.js1720506692636450239 0
 74/home/asadbek/Desktop/Natours-API/node_modules/zod/lib/benchmarks/index.js1720506692192452973 0
@@ -14601,7 +14601,7 @@
 77/home/asadbek/Desktop/Natours-API/node_modules/stream-browserify/node_modules1720506690056466124 1
 71/home/asadbek/Desktop/Natours-API/node_modules/cookie-parser/HISTORY.md1720506692012454081 0
 76/home/asadbek/Desktop/Natours-API/node_modules/eslint-plugin-es/package.json1720506692388451765 0
-63/home/asadbek/Desktop/Natours-API/controllers/authController.js1722222071336883968 0
+63/home/asadbek/Desktop/Natours-API/controllers/authController.js1722904993704502498 0
 115/home/asadbek/Desktop/Natours-API/node_modules/puppeteer/node_modules/puppeteer-core/lib/esm/puppeteer/api/Realm.js1720506692700449844 0
 100/home/asadbek/Desktop/Natours-API/node_modules/@img/sharp-libvips-linuxmusl-x64/lib/glib-2.0/include1721663077442221348 1
 83/home/asadbek/Desktop/Natours-API/node_modules/core-js/features/structured-clone.js1720506692952448293 0
@@ -14905,7 +14905,7 @@
 121/home/asadbek/Desktop/Natours-API/node_modules/puppeteer/node_modules/puppeteer-core/lib/esm/puppeteer/bidi/core/Realm.js1720506692704449820 0
 125/home/asadbek/Desktop/Natours-API/node_modules/puppeteer/node_modules/puppeteer-core/lib/esm/puppeteer/bidi/HTTPResponse.d.ts1720506692864448835 0
 72/home/asadbek/Desktop/Natours-API/node_modules/csso/lib/replace/index.js1720506692408451642 0
-64/home/asadbek/Desktop/Natours-API/controllers/usersController.js1721177211345793596 0
+64/home/asadbek/Desktop/Natours-API/controllers/usersController.js1722904993704502498 0
 87/home/asadbek/Desktop/Natours-API/node_modules/package-json/node_modules/semver/LICENSE1720506691940454524 0
 63/home/asadbek/Desktop/Natours-API/node_modules/lodash/_isKey.js1720506692544450805 0
 88/home/asadbek/Desktop/Natours-API/node_modules/ndb/front_end/ndb_ui/runConfiguration.css1720506692660450091 0
@@ -14944,7 +14944,7 @@
 121/home/asadbek/Desktop/Natours-API/node_modules/puppeteer/node_modules/puppeteer-core/lib/esm/puppeteer/api/Browser.js.map1720506692748449549 0
 73/home/asadbek/Desktop/Natours-API/node_modules/ndb/lib/filepath_to_url.js1720506692668450042 0
 53/home/asadbek/Desktop/Natours-API/node_modules/cookie1720506692076453686 1
-51/home/asadbek/Desktop/Natours-API/views/account.pug1720970536892929418 0
+51/home/asadbek/Desktop/Natours-API/views/account.pug1722904993716502456 0
 124/home/asadbek/Desktop/Natours-API/node_modules/chromium-bidi/lib/cjs/protocol-parser/generated/webdriver-bidi-permissions.js1720506692544450805 0
 67/home/asadbek/Desktop/Natours-API/node_modules/json-buffer/index.js1720506691972454327 0
 93/home/asadbek/Desktop/Natours-API/node_modules/csso/node_modules/css-tree/cjs/lexer/match.cjs1720506692408451642 0
@@ -14963,7 +14963,7 @@
 83/home/asadbek/Desktop/Natours-API/node_modules/@webassemblyjs/ast/lib/signatures.js1720506692328452135 0
 81/home/asadbek/Desktop/Natours-API/node_modules/webpack/lib/util/hash/wasm-hash.js1720506692776449376 0
 74/home/asadbek/Desktop/Natours-API/node_modules/lodash/isArrayLikeObject.js1720506692712449771 0
-66/home/asadbek/Desktop/Natours-API/controllers/bookingController.js1722844759063726211 0
+66/home/asadbek/Desktop/Natours-API/controllers/bookingController.js1722904993704502498 0
 81/home/asadbek/Desktop/Natours-API/node_modules/ndb/node_modules/mime/package.json1720506692136453317 0
 88/home/asadbek/Desktop/Natours-API/node_modules/mongodb/src/operations/find_and_modify.ts1720506692696449869 0
 78/home/asadbek/Desktop/Natours-API/node_modules/caniuse-lite/data/regions/TK.js1720506692768449426 0
@@ -15479,7 +15479,7 @@
 60/home/asadbek/Desktop/Natours-API/node_modules/ndb/README.md1720506692116453441 0
 66/home/asadbek/Desktop/Natours-API/node_modules/lodash/fp/random.js1720506692764449450 0
 83/home/asadbek/Desktop/Natours-API/node_modules/busboy/test/test-types-urlencoded.js1720866425842033339 0
-44/home/asadbek/Desktop/Natours-API/config.env1722250969723727081 0
+44/home/asadbek/Desktop/Natours-API/config.env1722904993704502498 0
 63/home/asadbek/Desktop/Natours-API/node_modules/url/node_modules1720506690056466124 1
 73/home/asadbek/Desktop/Natours-API/node_modules/core-js/full/math/index.js1720506692876448761 0
 103/home/asadbek/Desktop/Natours-API/node_modules/csso/node_modules/css-tree/cjs/tokenizer/TokenStream.cjs1720506692484451174 0
@@ -15749,7 +15749,7 @@
 79/home/asadbek/Desktop/Natours-API/node_modules/cosmiconfig/dist/readFile.js.map1720506692292452357 0
 96/home/asadbek/Desktop/Natours-API/node_modules/eslint/lib/linter/code-path-analysis/code-path.js1720506692352451987 0
 69/home/asadbek/Desktop/Natours-API/node_modules/is-async-function/test1720506692052453834 1
-54/home/asadbek/Desktop/Natours-API/routes/usersRoute.js1720963304755605062 0
+54/home/asadbek/Desktop/Natours-API/routes/usersRoute.js1722904993716502456 0
 65/home/asadbek/Desktop/Natours-API/node_modules/fastq/package.json1720506692132453342 0
 96/home/asadbek/Desktop/Natours-API/node_modules/ndb/.local-frontend/object_ui/object_ui_module.js1720506692568450657 0
 79/home/asadbek/Desktop/Natours-API/node_modules/ndb/node_modules/which/bin/which1720506692080453662 0
@@ -16245,7 +16245,7 @@
 90/home/asadbek/Desktop/Natours-API/node_modules/csso/node_modules/css-tree/lib/utils/url.js1720506692660450091 0
 83/home/asadbek/Desktop/Natours-API/node_modules/@tootallnate/quickjs-emscripten/dist1720506692484451174 1
 73/home/asadbek/Desktop/Natours-API/node_modules/es-define-property/.github1720506692144453268 1
-40/home/asadbek/Desktop/Natours-API/models1722531823729765643 1
+40/home/asadbek/Desktop/Natours-API/models1722904993704502498 1
 79/home/asadbek/Desktop/Natours-API/node_modules/es-abstract/2015/RegExpCreate.js1720506692836449007 0
 79/home/asadbek/Desktop/Natours-API/node_modules/mongodb/lib/operations/insert.js1720506692416451593 0
 104/home/asadbek/Desktop/Natours-API/node_modules/@parcel/optimizer-svgo/node_modules/csso/lib/clean/Raw.js1720506692356451963 0
@@ -18218,7 +18218,7 @@
 96/home/asadbek/Desktop/Natours-API/node_modules/json-stable-stringify-without-jsonify/test/cmp.js1720506692172453095 0
 102/home/asadbek/Desktop/Natours-API/node_modules/mongodb/lib/cmap/auth/mongodb_oidc/callback_workflow.js1720506692272452480 0
 87/home/asadbek/Desktop/Natours-API/node_modules/webpack/lib/javascript/StartupHelpers.js1720506692772449402 0
-58/home/asadbek/Desktop/Natours-API/views/emails/welcome.pug1721722719213690789 0
+58/home/asadbek/Desktop/Natours-API/views/emails/welcome.pug1722904993716502456 0
 98/home/asadbek/Desktop/Natours-API/node_modules/html-to-text/node_modules/entities/lib/esm/index.js1721663075990220218 0
 114/home/asadbek/Desktop/Natours-API/node_modules/puppeteer/node_modules/puppeteer-core/lib/cjs/puppeteer/api/Page.js1720506692684449943 0
 70/home/asadbek/Desktop/Natours-API/node_modules/yargs-parser/browser.js1720506692020454031 0
@@ -18287,7 +18287,7 @@
 70/home/asadbek/Desktop/Natours-API/node_modules/csso/lib/replace/atrule1720506692416451593 1
 100/home/asadbek/Desktop/Natours-API/node_modules/@babel/helper-validator-identifier/lib/keyword.js.map1720506692144453268 0
 85/home/asadbek/Desktop/Natours-API/node_modules/@puppeteer/browsers/lib/esm/debug.d.ts1720506692484451174 0
-56/home/asadbek/Desktop/Natours-API/models/bookingModel.js1722532434211355294 0
+56/home/asadbek/Desktop/Natours-API/models/bookingModel.js1722904993704502498 0
 76/home/asadbek/Desktop/Natours-API/node_modules/entities/lib/maps/legacy.json1720506692224452775 0
 91/home/asadbek/Desktop/Natours-API/node_modules/wrap-ansi/node_modules/string-width/index.js1720506691956454425 0
 61/home/asadbek/Desktop/Natours-API/node_modules/depd/Readme.md1720506692076453686 0
@@ -21920,7 +21920,7 @@
 138/home/asadbek/Desktop/Natours-API/node_modules/puppeteer/node_modules/puppeteer-core/lib/esm/puppeteer/common/ConnectionTransport.d.ts.map1720506692764449450 0
 84/home/asadbek/Desktop/Natours-API/node_modules/@parcel/utils/src/progress-message.js1720506692440451445 0
 80/home/asadbek/Desktop/Natours-API/node_modules/eslint/node_modules/ms/license.md1720506691988454228 0
-46/home/asadbek/Desktop/Natours-API/views/emails1721729987546358246 1
+46/home/asadbek/Desktop/Natours-API/views/emails1722904993716502456 1
 129/home/asadbek/Desktop/Natours-API/node_modules/puppeteer/node_modules/puppeteer-core/lib/esm/puppeteer/common/ConsoleMessage.d.ts1720506692848448934 0
 123/home/asadbek/Desktop/Natours-API/node_modules/puppeteer/node_modules/puppeteer-core/lib/esm/puppeteer/common/util.d.ts.map1720506692828449057 0
 93/home/asadbek/Desktop/Natours-API/node_modules/css-select/lib/pseudo-selectors/index.d.ts.map1720506692332452110 0
@@ -28021,7 +28021,7 @@
 64/home/asadbek/Desktop/Natours-API/node_modules/webpack/lib/rules1720506692776449376 1
 124/home/asadbek/Desktop/Natours-API/node_modules/@parcel/optimizer-htmlnano/node_modules/svgo/plugins/moveGroupAttrsToElems.js1720506692324452160 0
 89/home/asadbek/Desktop/Natours-API/node_modules/webpack/lib/rules/BasicEffectRulePlugin.js1720506692368451889 0
-50/home/asadbek/Desktop/Natours-API/public/img/tours1721654905685633325 1
+50/home/asadbek/Desktop/Natours-API/public/img/tours1722904993712502470 1
 74/home/asadbek/Desktop/Natours-API/node_modules/undici-types/connector.d.ts1720506692084453637 0
 70/home/asadbek/Desktop/Natours-API/node_modules/webpack/lib/Template.js1720506692772449402 0
 58/home/asadbek/Desktop/Natours-API/node_modules/media-typer1720506692008454105 1

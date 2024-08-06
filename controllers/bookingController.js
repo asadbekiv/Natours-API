@@ -48,7 +48,7 @@ exports.getCheckoutSession = catchAsync(async (req, res, next) => {
 });
 
 exports.createBookingCheckout = catchAsync(async (req, res, next) => {
-  // This is Temperoroy , couse it is UNSECURE Every one can make booking wihtout paying
+  // This is Temperoroy , couse it is UNSECURE Every one can make booking wihtout paying.
   const { tour, user, price } = req.query;
   if (!tour && !user && !price) {
     return next();
