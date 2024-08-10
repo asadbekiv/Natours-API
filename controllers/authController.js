@@ -3,7 +3,7 @@ const User = require('../models/userModel.js');
 const catchAsync = require('./../utils/catchAsync.js');
 const jwt = require('jsonwebtoken');
 const AppError = require('./../utils/appError.js');
-const sendEmail = require('../utils/email.js');
+const Email = require('../utils/email.js');
 const decode = require('punycode');
 const crypto = require('crypto');
 
@@ -45,6 +45,9 @@ exports.signup = catchAsync(async (req, res, next) => {
     password: req.body.password,
     passwordConfirm: req.body.passwordConfirm,
   });
+  const url = `${req.protocol}://${req.get('host')}/me`;
+  console.log(url);
+  await new Email(newUser, url).sendWelcome();
   const token = signToken(newUser._id);
 
   createSendToken(newUser, 201, res);
@@ -176,19 +179,14 @@ exports.forgotPassword = catchAsync(async (req, res, next) => {
   // 2 Gemerate random reset token
   const resetToken = user.createPasswordResetToken();
   await user.save({ validateBeforeSave: false });
-  console.log(resetToken);
-  // console.log(req.params);
+  // console.log(resetToken);
 
   // 3 Send it to user's eamil
-  const resetURL = `${req.protocol}://${req.get('host')}/api/v1/users/resetPassword/${resetToken}`;
-  const message = `Forgot your password ? Submit a PATCH request with your new password and passwordConfirm to: <a href='${resetURL}' target='_blank' >Press this button</a>.\n If you didn't  forget your passord.Ignore this email !`;
+  // const message = `Forgot your password ? Submit a PATCH request with your new password and passwordConfirm to: <a href='${resetURL}' target='_blank' >Press this button</a>.\n If you didn't  forget your passord.Ignore this email !`;
 
   try {
-    await sendEmail({
-      email: req.body.email,
-      subject: 'Your reset password token ( only valid in 10 minutes)',
-      message,
-    });
+    const resetURL = `${req.protocol}://${req.get('host')}/api/v1/users/resetPassword/${resetToken}`;
+    await new Email(user, resetURL).sendPasswordReset();
 
     res.status(200).json({
       status: 'success',
@@ -198,6 +196,8 @@ exports.forgotPassword = catchAsync(async (req, res, next) => {
     user.passwordResetToken = undefined;
     user.passwordResetExpires = undefined;
     await user.save({ validateBeforeSave: false });
+    console.error('Error sending email:', err);
+
     return next(
       new AppError(
         'There was an error sending the email . Try again later',
@@ -220,7 +220,6 @@ exports.resetPassword = catchAsync(async (req, res, next) => {
     passwordResetExpires: { $gt: Date.now() },
   });
 
-  console.log(user);
   // 2) if token has not expired, and there has user,change pasword
   if (!user) {
     return next(new AppError('Token is invalid or has expired', 400));
@@ -230,12 +229,11 @@ exports.resetPassword = catchAsync(async (req, res, next) => {
   user.passwordConfirm = req.body.passwordConfirm;
   user.passwordResetToken = undefined;
   user.passwordResetExpires = undefined;
-  console.log(1234);
+
   await user.save();
 
   // 3) Update ChangedPasswordAt property for user
   // 4) Log this user in , send JWt token
-  console.log('asdfghjk');
 
   createSendToken(user, 200, res);
 });
@@ -253,5 +251,3 @@ exports.updatePassword = catchAsync(async (req, res, next) => {
 
   createSendToken(user, 201, res);
 });
-
-

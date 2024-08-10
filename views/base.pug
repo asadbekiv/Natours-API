@@ -9,6 +9,7 @@ html
       link(rel='stylesheet', href='/media/css/style.css')
       link(rel='shortcut icon',type='image/png', href='/media/img/favicon.png')
       link(rel='stylesheet', href='https://fonts.googleapis.com/css?family=Lato:300,300i,700')
+      //- script(src="https://js.stripe.com/v3/")
       title Natours | #{title}
 
 
@@ -21,8 +22,7 @@ html
     include _footer
 
     //- script(src='https://cdnjs.cloudflare.com/ajax/libs/axios/1.7.2/axios.min.js')
-    //- script(src='/media/js/mapbox.js')
-    //- script(src='/media/js/login.js')
-    script(src='/media/js/bundled/index.js')
-    //- script(type='module' src='/media/js/index.js')
+    script(type='module',src='/media/js/bundled/index.js')
+    script(src='https://js.stripe.com/v3/')
+    script(type='module' src='/media/js/index.js')
 

@@ -14,12 +14,19 @@ export const updateSettings = async (data, type) => {
       data,
     });
     if (res.data.status === 'success') {
-      showAlert('success', ` updated successfuly`);
+      showAlert(
+        'success',
+        `${type.charAt(0).toUpperCase() + type.slice(1)} updated successfully`,
+      );
       window.setTimeout(() => {
         location.assign('/me');
       }, 1500);
     }
-  } catch (error) {
-    showAlert('error', err.response.data.message);
+  } catch (err) {
+    console.error('Error:', err);
+    showAlert(
+      'error',
+      err.response ? err.response.data.message : 'Something went wrong',
+    );
   }
 };

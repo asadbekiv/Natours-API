@@ -584,52 +584,16 @@ function hmrAccept(bundle /*: ParcelRequire */ , id /*: string */ ) {
 }
 
 },{}],"f2QDv":[function(require,module,exports) {
-// import 'core-js/stable';
-// import 'regenerator-runtime/runtime';
-// import { login, logout } from './login';
-// import updateSettings  from './updateSettings';
-// const logOutBtn = document.querySelector('.nav__el--logout');
-// const loginForm = document.querySelector('.login-form');
-// const userDataForm = document.querySelector('.form-user-data');
-// const userPasswordForm = document.querySelector('.form-user-password');
-// if (loginForm)
-//   loginForm.addEventListener('submit', (e) => {
-//     e.preventDefault();
-//     const email = document.getElementById('email').value;
-//     const password = document.getElementById('password').value;
-//     login(email, password);
-//   });
-// if (logOutBtn) logOutBtn.addEventListener('click', logout);
-// if (userDataForm)
-//   userDataForm.addEventListener('submit', (e) => {
-//     e.preventDefault();
-//     // const form = new FormData();
-//     // form.append('name', document.getElementById('name').value);
-//     // form.append('email', document.getElementById('email').value);
-//     // // form.append('photo', document.getElementById('photo').files[0]);
-//     // console.log(form);
-//     // updateSettings(form, 'data');
-//     const name=document.getElementById('name').value,
-//     const email=document.getElementById('email').value,
-//     updateSettings({name,email},'data');
-//   });
-// if (userPasswordForm)
-//   userPasswordForm.addEventListener('submit', (e) => {
-//     e.preventDefault();
-//     const passwordCurrent=document.getElementById('password-current').value,
-//     const password=document.getElementById('password').value,
-//     const passwordConfirm=document.getElementById('password-confirm').value,
-//     updateSettings({passwordCurrent,password,passwordConfirm},'password');
-//   });
-// // console.log('are you sure , parcel are you kiding me boy really a');
 var _webImmediateJs = require("core-js/modules/web.immediate.js");
 var _runtime = require("regenerator-runtime/runtime");
 var _login = require("./login");
 var _updateSettings = require("./updateSettings");
+var _stripe = require("./stripe");
 const logOutBtn = document.querySelector(".nav__el--logout");
 const loginForm = document.querySelector(".login-form");
 const userDataForm = document.querySelector(".form-user-data");
 const userPasswordForm = document.querySelector(".form-user-password");
+const bookBtn = document.getElementById("book-tour");
 if (loginForm) loginForm.addEventListener("submit", (e)=>{
     e.preventDefault();
     const email = document.getElementById("email").value;
@@ -640,12 +604,12 @@ if (logOutBtn) logOutBtn.addEventListener("click", (0, _login.logout));
 if (userDataForm) userDataForm.addEventListener("submit", async (e)=>{
     e.preventDefault();
     document.querySelector(".btn--save ").textContent = "Saving ...";
-    const name = document.getElementById("name").value;
-    const email = document.getElementById("email").value;
-    await (0, _updateSettings.updateSettings)({
-        name,
-        email
-    }, "data");
+    const form = new FormData();
+    form.append("name", document.getElementById("name").value);
+    form.append("email", document.getElementById("email").value);
+    form.append("photo", document.getElementById("photo").files[0]);
+    await (0, _updateSettings.updateSettings)(form, "data");
+    console.log(form);
     document.querySelector(".btn--save ").textContent = "Save Settings";
 });
 if (userPasswordForm) userPasswordForm.addEventListener("submit", async (e)=>{
@@ -665,9 +629,29 @@ if (userPasswordForm) userPasswordForm.addEventListener("submit", async (e)=>{
     document.getElementById("password").value = "";
     document.getElementById("password-confirm").value = "";
 });
-console.log("hi there");
+if (bookBtn) bookBtn.addEventListener("click", async (e)=>{
+    const button = e.target;
+    button.textContent = `Processing.... `;
+    button.disabled = true;
+    const { tourId } = button.dataset;
+    console.log(tourId);
+    console.log(button.dataset);
+    try {
+        await (0, _stripe.bookTour)(tourId);
+        button.textContent = "Booked";
+    } catch (error) {
+        button.textContent = "Try Again";
+        console.error(error);
+    } finally{
+        button.disabled = false;
+    }
+});
 
+<<<<<<< HEAD
 },{"core-js/modules/web.immediate.js":"49tUX","regenerator-runtime/runtime":"dXNgZ","./login":"7yHem","./updateSettings":"l3cGY"}],"49tUX":[function(require,module,exports) {
+=======
+},{"core-js/modules/web.immediate.js":"49tUX","regenerator-runtime/runtime":"dXNgZ","./login":"7yHem","./updateSettings":"l3cGY","./stripe":"10tSC"}],"49tUX":[function(require,module,exports) {
+>>>>>>> was-deleted
 "use strict";
 // TODO: Remove this module from `core-js@4` since it's split to modules listed below
 require("52e9b3eefbbce1ed");
@@ -7307,13 +7291,36 @@ const updateSettings = async (data, type)=>{
             data
         });
         if (res.data.status === "success") {
-            (0, _alert.showAlert)("success", ` updated successfuly`);
+            (0, _alert.showAlert)("success", `${type.charAt(0).toUpperCase() + type.slice(1)} updated successfully`);
             window.setTimeout(()=>{
                 location.assign("/me");
             }, 1500);
         }
+    } catch (err) {
+        console.error("Error:", err);
+        (0, _alert.showAlert)("error", err.response ? err.response.data.message : "Something went wrong");
+    }
+};
+
+},{"axios":"jo6P5","./alert":"kxdiQ","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"10tSC":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "bookTour", ()=>bookTour);
+var _axios = require("axios");
+var _axiosDefault = parcelHelpers.interopDefault(_axios);
+var _alert = require("./alert");
+const stripe = Stripe("pk_test_51PgObBByYH3XmrRBBl0CvF5uO0nI00oLcJmrXvJf7v3BysfmP61ocP6MeEZZy765iQlw7ICM8vT47ateDSMVZWfb00hTJXDfNb");
+const bookTour = async (tourId)=>{
+    try {
+        // Get checkout session endpoint APi
+        const session = await (0, _axiosDefault.default)(`http://127.0.0.1:8000/api/v1/bookings/checkout-session/${tourId}`);
+        // Create checkout from+credit card
+        await stripe.redirectToCheckout({
+            sessionId: session.data.session.id
+        });
     } catch (error) {
-        (0, _alert.showAlert)("error", err.response.data.message);
+        console.log(error);
+        (0, _alert.showAlert)("Error happened !", error);
     }
 };
 
