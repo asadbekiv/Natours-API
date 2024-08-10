@@ -24,19 +24,37 @@ if (logOutBtn) {
   logOutBtn.addEventListener('click', logout);
 }
 
+// if (userDataForm) {
+//   userDataForm.addEventListener('submit', async (e) => {
+//     e.preventDefault();
+//     document.querySelector('.btn--save ').textContent = 'Saving ...';
+//     const form = new FormData();
+//     form.append('name', document.getElementById('name').value);
+//     form.append('email', document.getElementById('email').value);
+//     form.append('photo', document.getElementById('photo').files[0]);
+
+//     await updateSettings(form, 'data');
+//     console.log(form);
+
+//     document.querySelector('.btn--save ').textContent = 'Save Settings';
+//   });
+// }
 if (userDataForm) {
-  userDataForm.addEventListener('submit', async (e) => {
+  userDataForm.addEventListener('submit', e => {
     e.preventDefault();
-    document.querySelector('.btn--save ').textContent = 'Saving ...';
     const form = new FormData();
     form.append('name', document.getElementById('name').value);
     form.append('email', document.getElementById('email').value);
     form.append('photo', document.getElementById('photo').files[0]);
 
-    await updateSettings(form, 'data');
-    console.log(form);
+    console.log('from userDataForm');
 
-    document.querySelector('.btn--save ').textContent = 'Save Settings';
+    // Logging the FormData key-value pairs
+    for (let [key, value] of form.entries()) {
+      console.log(key, value);
+    }
+
+    updateSettings(form, 'data');
   });
 }
 
