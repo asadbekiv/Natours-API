@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const { bookTour } = require('../public/js/stripe');
+// const { bookTour } = require('../public/js/stripe.js');
 
 const bookingScheme = new mongoose.Schema({
   tour: {
@@ -31,6 +31,7 @@ bookingScheme.pre(/^find/, function (next) {
     path: 'tour',
     select: 'name',
   });
+  next();
 });
 
 const Booking = mongoose.model('Booking', bookingScheme);

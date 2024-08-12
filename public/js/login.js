@@ -1,37 +1,56 @@
-import axios from 'axios';
-import { showAlert } from './alert';
+// const axios = require('axios');
+const showAlert = require('./alert.js');
+// import { showAlert } from './alert';
 
-export const login = async (email, password) => {
-  console.log(email, password);
+const login = async (email, password) => {
+  console.log('Login initiated with:', email, password);
   try {
-    const result = await axios({
+    const response = await fetch('http://127.0.0.1:8000/api/v1/users/login', {
       method: 'POST',
-      url: 'http://127.0.0.1:8000/api/v1/users/login',
-      data: {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
         email: email,
         password: password,
-      },
+      }),
     });
-    if (result.data.status === 'success') {
-      showAlert('success', 'logged in successfully !');
+
+    const result = await response.json();
+    console.log(result);
+
+    if (response.ok /*&& result.status === 'success'*/) {
+      showAlert('success', 'Logged in successfully!');
       window.setTimeout(() => {
         location.assign('/');
       }, 1500);
+    } else {
+      showAlert('error', result.message);
     }
   } catch (err) {
-    showAlert('error', err.response.data.message);
+    console.error('Fetch error:', err);
+    showAlert('error', 'An error occurred');
   }
 };
 
-export const logout = async () => {
+const logout = async () => {
+  console.log('Logout initiated');
   try {
-    const res = await axios({
+    const response = await fetch('http://127.0.0.1:8000/api/v1/users/logout', {
       method: 'GET',
-      url: 'http://127.0.0.1:8000/api/v1/users/logout',
     });
-    if (res.data.status === 'success') location.reload(true);
+
+    const result = await response.json();
+
+    if (response.ok && result.status === 'success') {
+      location.reload(true);
+    } else {
+      showAlert('error', 'Logout failed');
+    }
   } catch (err) {
-    console.log(err);
-    showAlert('error', 'Error loging out => try agin later !');
+    console.error('Fetch error:', err);
+    showAlert('error', 'Error logging out => try again later!');
   }
 };
+
+module.exports = { login, logout };

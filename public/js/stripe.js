@@ -1,23 +1,31 @@
-import axios from 'axios';
-import { showAlert } from './alert';
+// const Stripe = require('stripe');
+const showAlert = require('./alert.js');
 
-const stripe = Stripe(
-  'pk_test_51PgObBByYH3XmrRBBl0CvF5uO0nI00oLcJmrXvJf7v3BysfmP61ocP6MeEZZy765iQlw7ICM8vT47ateDSMVZWfb00hTJXDfNb',
-);
-
-export const bookTour = async (tourId) => {
+const bookTour = async (tourId) => {
   try {
-    // Get checkout session endpoint APi
-    const session = await axios(
-      `http://127.0.0.1:8000/api/v1/bookings/checkout-session/${tourId}`,
+    const stripe = Stripe(
+      'pk_test_51PgObBByYH3XmrRBBl0CvF5uO0nI00oLcJmrXvJf7v3BysfmP61ocP6MeEZZy765iQlw7ICM8vT47ateDSMVZWfb00hTJXDfNb',
     );
-    // Create checkout from+credit card
+    // Get checkout session from the API
+    const res = await fetch(
+      `http://127.0.0.1:8000/api/v1/bookings/checkout-session/${tourId}`,
+      {
+        method: 'GET',
+      },
+    ).then(function (respone) {
+      return respone.json();
+    });
+  
+    // console.log(res);
 
+    // Redirect to checkout with Stripe
     await stripe.redirectToCheckout({
-      sessionId: session.data.session.id,
+      sessionId: res.session.id,
     });
   } catch (error) {
-    console.log(error);
-    showAlert('Error happened !', error);
+    console.error('Error:', error);
+    showAlert('Error happened!', error.message);
   }
 };
+
+module.exports = bookTour;

@@ -19,7 +19,7 @@ exports.deleteOne = (Model) =>
   });
 
 exports.updateOne = (Model) =>
-  catchAsync(async (req, res,next) => {
+  catchAsync(async (req, res, next) => {
     const doc = await Model.findByIdAndUpdate(req.params.id, req.body, {
       new: true,
       runValidators: true,
@@ -30,9 +30,7 @@ exports.updateOne = (Model) =>
     }
     res.status(200).json({
       status: 'success',
-      data: {
-        data: doc,
-      },
+      data: doc,
     });
   });
 
@@ -62,9 +60,7 @@ exports.getOne = (Model, popOptions) =>
 
     res.status(200).json({
       status: 'success',
-      data: {
-        data: doc,
-      },
+      data: doc,
     });
   });
 
@@ -82,10 +78,8 @@ exports.getAll = (Model) =>
     const doc = await features.query;
     // Sending Response
     res.status(200).json({
-      status: 'success asad',
+      status: 'success',
       result: doc.length,
-      data: {
-        data: doc,
-      },
+      data: doc,
     });
   });

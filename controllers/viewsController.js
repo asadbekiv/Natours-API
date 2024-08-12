@@ -1,7 +1,7 @@
-const express = require('express');
 const catchAsync = require('./../utils/catchAsync');
-const Tour = require('./../models/tourModel');
+const Tour = require('../models/tourModel.js');
 const User = require('../models/userModel.js');
+const Booking = require('../models/bookingModel.js');
 // const app = require('../app');
 const AppError = require('../utils/appError');
 
@@ -9,8 +9,6 @@ exports.getOverview = catchAsync(async (req, res, next) => {
   // 1 Get tour Collections From the Data
   const tours = await Tour.find();
 
-  console.log(tours.length, typeof tours);
-  // console.log(tours);
   res.status(200).render('overview.pug', { title: 'All Tours ', tours });
 });
 
@@ -21,9 +19,6 @@ exports.getTour = catchAsync(async (req, res, next) => {
   });
 
   // let arrTour = Object.entries(tour);
-
-  console.log(tour.name);
-  console.log(typeof tour);
 
   if (!tour) {
     return next(new AppError('There is not Tour with that ID', 404));
@@ -45,6 +40,23 @@ exports.getLogin = (req, res, next) => {
 exports.getAccount = (req, res, next) => {
   res.status(200).render('account.pug', { title: 'Your account ' });
 };
+exports.getSignup = (req, res, next) => {
+  res.status(200).render('_signup.pug', { title: 'Create your account!  ' });
+};
+
+exports.getMyTours = async (req, res, next) => {
+  // 1 find all booking
+  const bookings = await Booking.find({ user: req.user.id });
+
+  // 2 find tours with the returned ID's
+
+  // const userIDs = bookings.map((el) => el.user);
+  // const users = await Tour.find({ _id: { $in: userIDs } });
+  const tourIDs = bookings.map((el) => el.tour);
+  const tours = await Tour.find({ _id: { $in: tourIDs } });
+
+  res.status(200).render('overview.pug', { title: 'My Tours ', tours });
+};
 
 exports.updateUserData = catchAsync(async (req, res, next) => {
   const updatedUser = await User.findByIdAndUpdate(
@@ -59,7 +71,7 @@ exports.updateUserData = catchAsync(async (req, res, next) => {
     },
   );
 
-  console.log(req.user.id, req.body.name, req.body.email );
+  // console.log(req.user.id, req.body.name, req.body.email);
 
   res
     .status(200)

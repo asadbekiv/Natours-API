@@ -46,7 +46,7 @@ exports.signup = catchAsync(async (req, res, next) => {
     passwordConfirm: req.body.passwordConfirm,
   });
   const url = `${req.protocol}://${req.get('host')}/me`;
-  console.log(url);
+ 
   await new Email(newUser, url).sendWelcome();
   const token = signToken(newUser._id);
 
@@ -63,13 +63,13 @@ exports.login = catchAsync(async (req, res, next) => {
   }
 
   const user = await User.findOne({ email }).select('+password');
-  // console.log(user, password);
+ 
 
   if (!user || !(await user.correctPassword(password, user.password))) {
     return next(new AppError('incorrect email or password ', 401));
   }
 
-  // console.log(password, user.password);
+  
   const token = signToken(user._id);
 
   createSendToken(user, 200, res);
@@ -102,7 +102,7 @@ exports.protect = catchAsync(async (req, res, next) => {
   // 2 Verification token
 
   const decoded = await promisify(jwt.verify)(token, process.env.JWT_SECRET);
-  // console.log(decoded);
+
 
   // 3 Check if user still exsist
   const currentUser = await User.findById(decoded.id);
@@ -179,7 +179,7 @@ exports.forgotPassword = catchAsync(async (req, res, next) => {
   // 2 Gemerate random reset token
   const resetToken = user.createPasswordResetToken();
   await user.save({ validateBeforeSave: false });
-  // console.log(resetToken);
+  
 
   // 3 Send it to user's eamil
   // const message = `Forgot your password ? Submit a PATCH request with your new password and passwordConfirm to: <a href='${resetURL}' target='_blank' >Press this button</a>.\n If you didn't  forget your passord.Ignore this email !`;

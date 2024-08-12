@@ -33,7 +33,7 @@ exports.uploadTourImages = upload.fields([
 ]);
 
 exports.resizeTourImages = catchAsync(async (req, res, next) => {
-  if (!req.files.imageCover /*|| !req.files.images*/) return next();
+  if (!req.files.imageCover || !req.files.images) return next();
   req.body.imageCover = `tour-${req.params.id}-${Date.now()}-cover.jpeg`;
 
   await sharp(req.files.imageCover[0].buffer)
@@ -219,7 +219,7 @@ exports.getDistances = catchAsync(async (req, res, next) => {
       $project: { distance: 1, name: 1 },
     },
   ]);
-  console.log(distances);
+  
 
   res.status(200).json({
     status: 'success !',

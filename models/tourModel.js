@@ -170,12 +170,12 @@ tourSchema.pre(/^find/, function (next) {
   });
   next();
 });
-tourSchema.post(/^find/, function (docs, next) {
-  // console.log(docs);
-  console.log(`Query takes ${Date.now() - this.start} in milliseconds`);
+// tourSchema.post(/^find/, function (docs, next) {
+//   // console.log(docs);
+//   console.log(`Query takes ${Date.now() - this.start} in milliseconds`);
 
-  next();
-});
+//   next();
+// });
 
 // Aggregation Middleware
 // tourSchema.pre('aggregate', function (next) {
@@ -185,6 +185,6 @@ tourSchema.post(/^find/, function (docs, next) {
 // });
 
 // Compile the schema into a model
-const Tours = mongoose.model('Tours', tourSchema);
+const Tour = mongoose.model('Tour', tourSchema);
 
-module.exports = Tours;
+module.exports = Tour;

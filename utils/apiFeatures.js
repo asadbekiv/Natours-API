@@ -32,7 +32,7 @@ class APIFeatures {
     if (this.queryString.fields) {
       const fields = this.queryString.fields.split(',').join(' ');
       this.query = this.query.select(fields);
-      console.log(fields);
+      // console.log(fields);
     } else {
       this.query = this.query.select('-__v');
     }
@@ -45,8 +45,8 @@ class APIFeatures {
     const limit = this.queryString.limit * 1 || 100;
     const skip = (page - 1) * limit;
 
-    console.log(page);
-    console.log(limit);
+    // console.log(page);
+    // console.log(limit);
 
     this.query = this.query.skip(skip).limit(limit);
 
