@@ -1,7 +1,6 @@
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 
-
 dotenv.config({ path: './config.env' });
 
 const app = require('./app');
@@ -26,6 +25,22 @@ mongoose
   });
 
 const port = process.env.PORT;
-app.listen(port, () => {
+const server = app.listen(port, () => {
   console.log(`App is running on port ${port}`);
+});
+
+process.on('unhandledRejection', (err) => {
+  const newLocal = 'UNHENDLED REJECTION : Shutting doen';
+  console.log(newLocal);
+  console.log(err.name, err.message);
+  server.close(() => {
+    process.exit(1);
+  });
+});
+
+process.on('SIGTERM', () => {
+  console.log('SIGTERM RECIVED.Shutting down immediately !');
+  server.close(() => {
+    console.log('Process terminated !');
+  });
 });
