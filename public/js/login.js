@@ -5,7 +5,7 @@ const showAlert = require('./alert.js');
 const login = async (email, password) => {
   console.log('Login initiated with:', email, password);
   try {
-    const response = await fetch('http://127.0.0.1:8000/api/v1/users/login', {
+    const response = await fetch('/api/v1/users/login', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -36,7 +36,7 @@ const login = async (email, password) => {
 const logout = async () => {
   console.log('Logout initiated');
   try {
-    const response = await fetch('http://127.0.0.1:8000/api/v1/users/logout', {
+    const response = await fetch('/api/v1/users/logout', {
       method: 'GET',
     });
 

@@ -8,7 +8,7 @@ const bookTour = async (tourId) => {
     );
     // Get checkout session from the API
     const res = await fetch(
-      `http://127.0.0.1:8000/api/v1/bookings/checkout-session/${tourId}`,
+      `/api/v1/bookings/checkout-session/${tourId}`,
       {
         method: 'GET',
       },
