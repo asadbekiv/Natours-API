@@ -17,7 +17,7 @@ exports.getCheckoutSession = catchAsync(async (req, res, next) => {
 
   const session = await stripe.checkout.sessions.create({
     payment_method_types: ['card'],
-    success_url: `${req.protocol}://${req.get('host')}/my-tours/?tour=${req.params.tourId}&user=${req.user.id}&price=${tour.price}`,
+    success_url: `${req.protocol}://${req.get('host')}/my-tours`,
     cancel_url: `${req.protocol}://${req.get('host')}/tour/${tour.slug}`,
     customer_email: req.user.email,
     client_reference_id: req.params.tourId,
@@ -47,19 +47,22 @@ exports.getCheckoutSession = catchAsync(async (req, res, next) => {
   });
 });
 
-exports.createBookingCheckout = catchAsync(async (req, res, next) => {
-  // This is Temperoroy , couse it is UNSECURE Every one can make booking wihtout paying.
-  const { tour, user, price } = req.query;
-  if (!tour && !user && !price) {
-    return next();
-  }
+// exports.createBookingCheckout = catchAsync(async (req, res, next) => {
+//   // This is Temperoroy , couse it is UNSECURE Every one can make booking wihtout paying.
+//   const { tour, user, price } = req.query;
+//   if (!tour && !user && !price) {
+//     return next();
+//   }
 
-  // console.log(req.originalUrl());
+//   // console.log(req.originalUrl());
 
-  await Booking.create({ tour, user, price });
-  res.redirect(req.originalUrl('?')[0]);
-});
-
+//   await Booking.create({ tour, user, price });
+//   res.redirect(req.originalUrl('?')[0]);
+// });
+// exports.webhookCheckout = (req, res, next) => {
+//   const signature = req.headers('stripe-signature');
+//   const event = stripe.webhooks.constructEvent(req.body, signature);
+// };
 exports.createBooking = factory.createOne(Booking);
 exports.getBooking = factory.getOne(Booking);
 exports.getAllBookings = factory.getAll(Booking);

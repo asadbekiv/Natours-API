@@ -8,10 +8,10 @@
   },
   "scripts": {
     "start": "node server.js",
-    "start:dev": "nodemon server.js",
+    "dev": "nodemon server.js",
     "start:prod": "NODE_ENV=production nodemon server.js",
     "debug": "ndb server.js",
-    "dev": "parcel watch ./public/js/index.js --dist-dir ./public/js/bundled",
+    "watch:js": "parcel watch ./public/js/index.js --dist-dir ./public/js/bundled",
     "build:js": "parcel build ./public/js/index.js --dist-dir ./public/js/bundled"
   },
   "author": "Asadbek Ibodullaev",
@@ -72,6 +72,6 @@
     "vm-browserify": "^1.1.2"
   },
   "engines": {
-    "node": "^10"
+    "node": "^21"
   }
 }

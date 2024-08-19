@@ -18,8 +18,10 @@ const mongoSanitize = require('express-mongo-sanitize');
 const hpp = require('hpp');
 const cookieParser = require('cookie-parser');
 const bookingRouter = require('./routes/bookingRoutes.js');
+const bookingController = require('./controllers/bookingController.js');
 const reviewRouter = require('./routes/reviewRoute.js');
 const viewRouter = require('./routes/viewsRoute.js');
+const { type } = require('os');
 
 const app = express();
 
@@ -80,6 +82,12 @@ const limiter = rateLimit({
   window: 60 * 60 * 1000,
   message: 'Too many request from his IP,please try again later',
 });
+
+// app.post(
+//   '/webhook-checkout',
+//   express.row({ type: 'application/json' }),
+//   bookingController.webhookCheckout,
+// );
 
 app.use('/api', limiter);
 
