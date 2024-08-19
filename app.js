@@ -13,6 +13,7 @@ const globalErrorHandler = require('./controllers/errorController.js');
 const rateLimit = require('express-rate-limit');
 const helmet = require('helmet');
 const xss = require('xss-clean');
+const cors = require('cors');
 const mongoSanitize = require('express-mongo-sanitize');
 const hpp = require('hpp');
 const cookieParser = require('cookie-parser');
@@ -26,6 +27,12 @@ app.enable('trust proxy');
 
 app.set('view engine', 'pug');
 app.set('views', path.join(__dirname, 'views'));
+// Implementing CORS
+// Access-Control-Allow-Origin *
+app.use(cors());
+
+app.options('*', cors());
+
 app.use('/media', express.static(`${__dirname}/public`));
 
 // app.use(helmet());
