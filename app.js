@@ -83,11 +83,11 @@ const limiter = rateLimit({
   message: 'Too many request from his IP,please try again later',
 });
 
-// app.post(
-//   '/webhook-checkout',
-//   express.row({ type: 'application/json' }),
-//   bookingController.webhookCheckout,
-// );
+app.post(
+  '/webhook-checkout',
+  express.raw({ type: 'application/json' }), 
+  bookingController.webhookCheckout,
+);
 
 app.use('/api', limiter);
 

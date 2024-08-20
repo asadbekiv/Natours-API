@@ -13,11 +13,11 @@ html
       title Natours | #{title}
 
 
-  body
+  body(data-alert=`${alert ? alert:''}`)
     include _header
 
     block content
-      h1 The is the placeholder heading
+      h1 The is the placeholder heading bro as you know
 
     include _footer
 

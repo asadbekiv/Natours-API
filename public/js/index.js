@@ -3,6 +3,7 @@ const { login, logout } = require('./login.js');
 const signup = require('./signup.js');
 const updateSettings = require('./updateSettings.js');
 const bookTour = require('./stripe.js');
+const showAlert = require('./alert.js');
 
 const logOutBtn = document.querySelector('.nav__el--logout');
 const signupForm = document.querySelector('.form--signup');
@@ -107,3 +108,6 @@ if (bookBtn) {
     }
   });
 }
+
+const alertMessage = document.querySelector('body').dataset.alert;
+if (alertMessage) showAlert('success', alertMessage, 20);
