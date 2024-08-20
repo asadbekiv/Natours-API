@@ -1,9 +1,5 @@
 'use strict';
-
-const fs = require('fs');
-
 const path = require('path');
-
 const tourRouter = require('./routes/tourRoute.js');
 const usersRouter = require('./routes/usersRoute.js');
 const morgan = require('morgan');
@@ -21,11 +17,11 @@ const bookingRouter = require('./routes/bookingRoutes.js');
 const bookingController = require('./controllers/bookingController.js');
 const reviewRouter = require('./routes/reviewRoute.js');
 const viewRouter = require('./routes/viewsRoute.js');
-const { type } = require('os');
+
 
 const app = express();
 
-app.enable('trust proxy');
+app.set('trust proxy', 1);
 
 app.set('view engine', 'pug');
 app.set('views', path.join(__dirname, 'views'));

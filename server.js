@@ -8,6 +8,8 @@ const app = require('./app');
 const DB = process.env.DATABASE;
 // console.log(process.env.EMAIL_PASSWORD);
 
+
+const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET;
 mongoose
   .connect(DB, {
     // .connect(process.env.DATABASE_LOCAL,{
