@@ -60,10 +60,14 @@ exports.getCheckoutSession = catchAsync(async (req, res, next) => {
 // });
 
 const createBookingCheckout = async (session) => {
-  const tour = session.client_reference_id;
-  const user = (await User.findOne({ email: session.customer_email })).id;
-  const price = session.line_items[0].unit_amount / 100;
-  await Booking.create({ tour, user, price });
+  try {
+    const tour = session.client_reference_id;
+    const user = (await User.findOne({ email: session.customer_email })).id;
+    const price = session.amount_total / 100; // Adjusted to use the correct field for total amount
+    await Booking.create({ tour, user, price });
+  } catch (error) {
+    console.error('Error creating booking:', error);
+  }
 };
 exports.webhookCheckout = (req, res, next) => {
   const signature = req.headers['stripe-signature'];
