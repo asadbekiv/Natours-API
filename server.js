@@ -8,15 +8,10 @@ const app = require('./app');
 const DB = process.env.DATABASE;
 // console.log(process.env.EMAIL_PASSWORD);
 
-
-const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET;
 mongoose
   .connect(DB, {
-    // .connect(process.env.DATABASE_LOCAL,{
-    // useNewUrlParser: true,
-    // useCreateIndex: true,
-    // useUnifiedTopology: true,
-    // useFindAndModify: false,
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
   })
   .then(() => {
     console.log('DB Connected successfull !');
@@ -31,18 +26,14 @@ const server = app.listen(port, () => {
   console.log(`App is running on port ${port}`);
 });
 
-process.on('unhandledRejection', (err) => {
-  const newLocal = 'UNHENDLED REJECTION : Shutting doen';
-  console.log(newLocal);
-  console.log(err.name, err.message);
-  server.close(() => {
-    process.exit(1);
-  });
-});
-
 process.on('SIGTERM', () => {
   console.log('SIGTERM RECIVED.Shutting down immediately !');
   server.close(() => {
     console.log('Process terminated !');
   });
+});
+process.on('uncaughtException', (err) => {
+  console.log('UNCAUGHT EXCEPTION! Shutting down...');
+  console.log(err.name, err.message);
+  process.exit(1);
 });
