@@ -9,10 +9,7 @@ const DB = process.env.DATABASE;
 // console.log(process.env.EMAIL_PASSWORD);
 
 mongoose
-  .connect(DB, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  })
+  .connect(DB, {})
   .then(() => {
     console.log('DB Connected successfull !');
   })

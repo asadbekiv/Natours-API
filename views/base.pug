@@ -4,12 +4,10 @@ html
     block head
       meta(charset='UTF-8')
       meta(name='viewport' content='width=device-width, initial-scale=1.0')
-      //- meta(http-equiv='Content-Security-Policy' content='script-src 'self' https://cdnjs.cloudflare.com')
       link(rel='stylesheet', href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css')
       link(rel='stylesheet', href='/media/css/style.css')
       link(rel='shortcut icon',type='image/png', href='/media/img/favicon.png')
       link(rel='stylesheet', href='https://fonts.googleapis.com/css?family=Lato:300,300i,700')
-      //- script(src='https://js.stripe.com/v3/')
       title Natours | #{title}
 
 
@@ -21,10 +19,12 @@ html
 
     include _footer
 
-    //- script(src='https://cdnjs.cloudflare.com/ajax/libs/axios/1.7.2/axios.min.js')
+
     script(src="https://cdn.jsdelivr.net/npm/core-js-bundle@3.30.2/minified.js")
     script(src="https://cdn.jsdelivr.net/npm/regenerator-runtime@0.13.11/runtime.min.js")
     script(src='/media/js/bundled/index.js')
     script(src='https://js.stripe.com/v3/')
-    //- script(src='/media/js/index.js')
+    script(src='/media/js/yandexMap.js')
+    
+    
 
