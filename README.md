@@ -1,5 +1,5 @@
 <p align="center">
-    <img height="180" src="https://www.natours.dev/img/logo-green.png#gh-light-mode-only">
+    <img height="120" src="https://www.natours.dev/img/logo-green.png#gh-light-mode-only">
 </p>
 
 
