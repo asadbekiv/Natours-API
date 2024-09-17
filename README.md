@@ -1,6 +1,9 @@
 <p align="center">
-    <img height="140" src="https://www.natours.dev/img/logo-green.png#gh-light-mode-only">
+    <img height="180" src="https://www.natours.dev/img/logo-green.png#gh-light-mode-only">
 </p>
+
+
+
 
 ## Table of contents
 
@@ -9,6 +12,8 @@
 - [Setup](#setup)
 
 ## General info
+
+Open everyone,who wants to eager seeing beautiy of World
 
 ## Technologies
 
@@ -27,7 +32,7 @@ Project is created with:
 
 ## Setup
 
-To run this project, install it locally using npm:
+To run this project, install it locally using npm and run:
 
 ```
 $ npm init
