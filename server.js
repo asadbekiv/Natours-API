@@ -1,17 +1,16 @@
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 
-dotenv.config({ path: './config.env' });
+dotenv.config({ path: './.env' });
 
 const app = require('./app');
 
 const DB = process.env.DATABASE;
-// console.log(process.env.EMAIL_PASSWORD);
 
 mongoose
   .connect(DB, {})
   .then(() => {
-    console.log('DB Connected successfull !');
+    console.log('DB Connected successfully !');
   })
   .catch((err) => {
     console.log(err);
@@ -24,7 +23,7 @@ const server = app.listen(port, () => {
 });
 
 process.on('SIGTERM', () => {
-  console.log('SIGTERM RECIVED.Shutting down immediately !');
+  console.log('SIGTERM RECEIVED.Shutting down immediately !');
   server.close(() => {
     console.log('Process terminated !');
   });
