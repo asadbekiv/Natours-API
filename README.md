@@ -35,7 +35,8 @@ Project is created with:
 To run this project, install it locally using npm and run:
 
 ```
-$ npm init
-$ npm run dev
-$ npm run watch:js
+$ nvm use
+$ npm install
+$ npm run build:js
+$ npm run watch
 ```
