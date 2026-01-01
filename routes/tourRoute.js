@@ -5,6 +5,7 @@ const router = express.Router();
 const authController = require('./../controllers/authController.js');
 const reviewController = require('./../controllers/reviewController.js');
 const reviewRouter = require('./../routes/reviewRoute.js');
+const cacheMiddleware = require('./../middlewares/cache-middleware');
 
 // router.param('id',tourController.checkID)
 
@@ -26,7 +27,7 @@ router
 
 router
   .route('/')
-  .get(tourController.getAllTours)
+  .get(cacheMiddleware.cache(36000),tourController.getAllTours)
   .post(
     authController.protect,
     authController.restrictTo('admin', 'lead-guide'),
@@ -43,7 +44,7 @@ router.route('/distances/:latlng/unit/:unit').get(tourController.getDistances);
 
 router
   .route('/:id')
-  .get(tourController.getTour)
+  .get(cacheMiddleware.cache(36000),tourController.getTour)
   .patch(
     authController.protect,
     authController.restrictTo('admin', 'lead-guide'),

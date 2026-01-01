@@ -10,7 +10,7 @@ const DB = process.env.DATABASE;
 mongoose
   .connect(DB, {})
   .then(() => {
-    console.log('DB Connected successfull !');
+    console.log('DB Connected successfully !');
   })
   .catch((err) => {
     console.log(err);
@@ -23,7 +23,7 @@ const server = app.listen(port, () => {
 });
 
 process.on('SIGTERM', () => {
-  console.log('SIGTERM RECIVED.Shutting down immediately !');
+  console.log('SIGTERM RECEIVED.Shutting down immediately !');
   server.close(() => {
     console.log('Process terminated !');
   });

@@ -2,13 +2,14 @@ const catchAsync = require('./../utils/catchAsync.js');
 const AppError = require('./../utils/appError.js');
 const { Model } = require('mongoose');
 const APIFeatures = require('./../utils/apiFeatures.js');
+const redisClient=require('./../utils/redis-client');
 
 exports.deleteOne = (Model) =>
   catchAsync(async (req, res, next) => {
     const doc = await Model.findByIdAndDelete(req.params.id);
 
     if (!doc) {
-      return next(new AppError('No Documnet Found with that ID', 404));
+      return next(new AppError('No Document Found with that ID', 404));
     }
     res.status(204).json({
       status: 'success',
@@ -37,6 +38,12 @@ exports.updateOne = (Model) =>
 exports.createOne = (Model) =>
   catchAsync(async (req, res) => {
     const doc = await Model.create(req.body); // Create a new tour using the request body
+
+    const keys=await redisClient.keys('__cache__/api/v1/tours*')
+    if(keys.length > 0){
+      await redisClient.del(keys);
+    }
+
     res.status(201).json({
       status: 'success',
       data: {
