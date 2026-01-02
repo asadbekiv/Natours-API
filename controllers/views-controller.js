@@ -1,9 +1,9 @@
-const catchAsync = require('./../utils/catchAsync');
-const Tour = require('../models/tourModel.js');
-const User = require('../models/userModel.js');
-const Booking = require('../models/bookingModel.js');
+const catchAsync = require('../utils/catch-async');
+const Tour = require('../models/tour-model.js');
+const User = require('../models/user-model.js');
+const Booking = require('../models/booking-model.js');
 // const app = require('../app');
-const AppError = require('../utils/appError');
+const AppError = require('../utils/app-error');
 
 exports.alerts = (req, res, next) => {
   const { alert } = req.query;

@@ -1,6 +1,6 @@
-const Review = require('./../models/reviewModel.js');
-const catchAsync = require('./../utils/catchAsync.js');
-const factory = require('./handlerFactory.js');
+const Review = require('../models/review-model.js');
+const catchAsync = require('../utils/catch-async.js');
+const factory = require('./handler-factory.js');
 
 exports.getAllReviews = factory.getAll(Review);
 

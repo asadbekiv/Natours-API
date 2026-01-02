@@ -1,9 +1,9 @@
 'use strict';
 
-const User = require('./../models/userModel.js');
-const catchAsync = require('./../utils/catchAsync.js');
-const AppError = require('../utils/appError.js');
-const factory = require('./handlerFactory.js');
+const User = require('../models/user-model.js');
+const catchAsync = require('../utils/catch-async.js');
+const AppError = require('../utils/app-error.js');
+const factory = require('./handler-factory.js');
 const sharp = require('sharp');
 const multer = require('multer');
 

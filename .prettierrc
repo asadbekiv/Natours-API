@@ -1,4 +1,6 @@
 {
   "singleQuote": true,
-  "editor.formatOnSave": false
+  "editor.formatOnSave": false,
+  "tabWidth": 2,
+  "semi": true
 }
