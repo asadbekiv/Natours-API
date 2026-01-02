@@ -1,10 +1,10 @@
 'use strict';
 const express = require('express');
-const tourController = require('../controllers/tourController');
+const tourController = require('../controllers/tour-controller');
 const router = express.Router();
-const authController = require('./../controllers/authController.js');
-const reviewController = require('./../controllers/reviewController.js');
-const reviewRouter = require('./../routes/reviewRoute.js');
+const authController = require('../controllers/auth-controller.js');
+const reviewController = require('../controllers/review-controller.js');
+const reviewRouter = require('./review-route.js');
 const cacheMiddleware = require('./../middlewares/cache-middleware');
 
 // router.param('id',tourController.checkID)
@@ -27,7 +27,7 @@ router
 
 router
   .route('/')
-  .get(cacheMiddleware.cache(36000),tourController.getAllTours)
+  .get(cacheMiddleware.cache(36000), tourController.getAllTours)
   .post(
     authController.protect,
     authController.restrictTo('admin', 'lead-guide'),
@@ -44,7 +44,7 @@ router.route('/distances/:latlng/unit/:unit').get(tourController.getDistances);
 
 router
   .route('/:id')
-  .get(cacheMiddleware.cache(36000),tourController.getTour)
+  .get(cacheMiddleware.cache(36000), tourController.getTour)
   .patch(
     authController.protect,
     authController.restrictTo('admin', 'lead-guide'),

@@ -1,11 +1,11 @@
 'use strict';
 const path = require('path');
-const tourRouter = require('./routes/tourRoute.js');
-const usersRouter = require('./routes/usersRoute.js');
+const tourRouter = require('./routes/tour-route.js');
+const usersRouter = require('./routes/users-route.js');
 const morgan = require('morgan');
 const express = require('express');
-const AppError = require('./utils/appError');
-const globalErrorHandler = require('./controllers/errorController.js');
+const AppError = require('./utils/app-error');
+const globalErrorHandler = require('./controllers/error-controller.js');
 const rateLimit = require('express-rate-limit');
 const helmet = require('helmet');
 const xss = require('xss-clean');
@@ -13,11 +13,10 @@ const cors = require('cors');
 const mongoSanitize = require('express-mongo-sanitize');
 const hpp = require('hpp');
 const cookieParser = require('cookie-parser');
-const bookingRouter = require('./routes/bookingRoutes.js');
-const bookingController = require('./controllers/bookingController.js');
-const reviewRouter = require('./routes/reviewRoute.js');
-const viewRouter = require('./routes/viewsRoute.js');
-
+const bookingRouter = require('./routes/booking-routes.js');
+const bookingController = require('./controllers/booking-controller.js');
+const reviewRouter = require('./routes/review-route.js');
+const viewRouter = require('./routes/views-route.js');
 
 const app = express();
 
@@ -43,11 +42,11 @@ app.use(
 
       fontSrc: ["'self'", 'https:', 'data:'],
 
-      scriptSrc: ["'self'", 'https://*.cloudflare.com'],
+      // scriptSrc: ["'self'", 'https://*.cloudflare.com'],
 
       scriptSrc: ["'self'", 'https://*.stripe.com'],
 
-      scriptSrc: ["'self'", 'http:', 'https://*.mapbox.com', 'data:'],
+      // scriptSrc: ["'self'", 'http:', 'https://*.mapbox.com', 'data:'],
 
       frameSrc: ["'self'", 'https://*.stripe.com'],
 
@@ -68,7 +67,7 @@ app.use(
   }),
 );
 
-// Developmet logging
+// Development logging
 if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'));
 }
@@ -81,7 +80,7 @@ const limiter = rateLimit({
 
 app.post(
   '/webhook-checkout',
-  express.raw({ type: 'application/json' }), 
+  express.raw({ type: 'application/json' }),
   bookingController.webhookCheckout,
 );
 

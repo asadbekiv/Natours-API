@@ -1,8 +1,8 @@
 const { promisify } = require('util');
-const User = require('../models/userModel.js');
-const catchAsync = require('./../utils/catchAsync.js');
+const User = require('../models/user-model.js');
+const catchAsync = require('../utils/catch-async.js');
 const jwt = require('jsonwebtoken');
-const AppError = require('./../utils/appError.js');
+const AppError = require('../utils/app-error.js');
 const Email = require('../utils/email.js');
 const decode = require('punycode');
 const crypto = require('crypto');
@@ -187,7 +187,9 @@ exports.forgotPassword = catchAsync(async (req, res, next) => {
   } catch (err) {
     user.passwordResetToken = undefined;
     user.passwordResetExpires = undefined;
-    await user.save({ validateBeforeSave: false });
+    await user.save({
+      validateBeforeSave: false,
+    });
     console.error('Error sending email:', err);
 
     return next(
@@ -209,7 +211,9 @@ exports.resetPassword = catchAsync(async (req, res, next) => {
 
   const user = await User.findOne({
     passwordResetToken: hashedToken,
-    passwordResetExpires: { $gt: Date.now() },
+    passwordResetExpires: {
+      $gt: Date.now(),
+    },
   });
 
   // 2) if token has not expired, and there has user,change pasword

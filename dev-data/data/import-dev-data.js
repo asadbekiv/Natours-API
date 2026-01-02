@@ -1,8 +1,8 @@
 const fs = require('fs');
 const mongoose = require('mongoose');
-const Tour = require('./../../models/tourModel.js');
-const Review = require('./../../models/reviewModel.js');
-const User = require('./../../models/userModel.js');
+const Tour = require('../../models/tour-model.js');
+const Review = require('../../models/review-model.js');
+const User = require('../../models/user-model.js');
 const dotenv = require('dotenv');
 
 dotenv.config({ path: './config.env' });

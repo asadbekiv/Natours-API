@@ -1,7 +1,7 @@
 // need things => reeview,rating,cratedAt,ref to tour,ref to user
 const mongoose = require('mongoose');
-const User = require('../models/userModel.js');
-const Tour = require('./../models/tourModel.js');
+const User = require('./user-model.js');
+const Tour = require('./tour-model.js');
 
 const reviewSchema = new mongoose.Schema(
   {
