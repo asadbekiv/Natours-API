@@ -7,7 +7,7 @@ const dotenv = require('dotenv');
 
 dotenv.config({ path: './.env' });
 
-const DB = process.env.DATABASE_LOCAL;
+const DB = process.env.DATABASE;
 
 mongoose
   .connect(DB, {
@@ -64,5 +64,7 @@ if (process.argv[2] === '--import') {
 } else if (process.argv[2] === '--delete') {
   deleteData();
 } else {
-  console.log('Usage: node dev-data/data/import-dev-data.js --import | --delete');
+  console.log(
+    'Usage: node dev-data/data/import-dev-data.js --import | --delete',
+  );
 }
