@@ -52,12 +52,13 @@ const tourSchema = new mongoose.Schema(
     },
     priceDiscount: {
       type: Number,
-      validator: {
-        function(val) {
+      validate: {
+        // NOTE: `this` only points to the document on .create()/.save(),
+        // so this validator does not run on findByIdAndUpdate.
+        validator: function (val) {
           return val < this.price;
         },
-
-        message: 'Dsicount price shouldbe below regular price',
+        message: 'Discount price ({VALUE}) should be below the regular price',
       },
     },
 

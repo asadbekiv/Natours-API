@@ -74,7 +74,7 @@ if (process.env.NODE_ENV === 'development') {
 // Limit request  from the samw API
 const limiter = rateLimit({
   max: 100,
-  window: 60 * 60 * 1000,
+  windowMs: 60 * 60 * 1000,
   message: 'Too many request from his IP,please try again later',
 });
 

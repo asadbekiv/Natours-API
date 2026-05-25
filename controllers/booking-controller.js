@@ -60,16 +60,15 @@ exports.getCheckoutSession = catchAsync(async (req, res, next) => {
 // });
 
 const createBookingCheckout = async (session) => {
-  try {
-    const tour = session.client_reference_id;
-    const user = (await User.findOne({ email: session.customer_email })).id;
-    const price = session.amount_total / 100; // Adjusted to use the correct field for total amount
-    await Booking.create({ tour, user, price });
-  } catch (error) {
-    console.error('Error creating booking:', error);
+  const tour = session.client_reference_id;
+  const user = await User.findOne({ email: session.customer_email });
+  if (!user) {
+    throw new Error(`No user found for email ${session.customer_email}`);
   }
+  const price = session.amount_total / 100; // amount_total is in the smallest currency unit
+  await Booking.create({ tour, user: user.id, price });
 };
-exports.webhookCheckout = (req, res, next) => {
+exports.webhookCheckout = async (req, res) => {
   const signature = req.headers['stripe-signature'];
   let event;
   try {
@@ -79,10 +78,19 @@ exports.webhookCheckout = (req, res, next) => {
       process.env.STRIPE_WEBHOOK_SECRET,
     );
   } catch (error) {
-    return res.status(400).send(`Webhook error bro: ${error.message}`);
+    return res.status(400).send(`Webhook error: ${error.message}`);
   }
-  if (event.type === 'checkout.session.completed')
-    createBookingCheckout(event.data.object);
+
+  try {
+    if (event.type === 'checkout.session.completed') {
+      await createBookingCheckout(event.data.object);
+    }
+  } catch (error) {
+    // Return a non-2xx status so Stripe retries delivery instead of
+    // silently losing the booking.
+    console.error('Error creating booking from webhook:', error);
+    return res.status(500).send('Failed to process checkout session');
+  }
 
   res.status(200).json({ received: true });
 };

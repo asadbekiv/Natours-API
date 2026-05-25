@@ -5,9 +5,9 @@ const Review = require('../../models/review-model.js');
 const User = require('../../models/user-model.js');
 const dotenv = require('dotenv');
 
-dotenv.config({ path: './config.env' });
+dotenv.config({ path: './.env' });
 
-const DB = process.env.DATABASE;
+const DB = process.env.DATABASE_LOCAL;
 
 mongoose
   .connect(DB, {
@@ -43,6 +43,7 @@ const importData = async (req, res) => {
   } catch (err) {
     console.log(err);
   }
+  process.exit();
 };
 // Delated all the data in collections
 
@@ -58,9 +59,9 @@ const deleteData = async (req, res) => {
   process.exit();
 };
 
-if (process.argv[2] == '--import') {
+if (process.argv[2] === '--import') {
   importData();
-} else if (process.argv[2] == '--delete') {
+} else if (process.argv[2] === '--delete') {
   deleteData();
 } else {
   console.log('Something went wrong 1');
