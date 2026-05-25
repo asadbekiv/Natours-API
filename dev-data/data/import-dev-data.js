@@ -34,7 +34,7 @@ const reviews = JSON.parse(
 
 // Importing DATA
 
-const importData = async (req, res) => {
+const importData = async () => {
   try {
     await Tour.create(tours);
     await Review.create(reviews);
@@ -47,7 +47,7 @@ const importData = async (req, res) => {
 };
 // Delated all the data in collections
 
-const deleteData = async (req, res) => {
+const deleteData = async () => {
   try {
     await Tour.deleteMany();
     await Review.deleteMany();
@@ -64,7 +64,5 @@ if (process.argv[2] === '--import') {
 } else if (process.argv[2] === '--delete') {
   deleteData();
 } else {
-  console.log('Something went wrong 1');
+  console.log('Usage: node dev-data/data/import-dev-data.js --import | --delete');
 }
-
-// console.log(process.argv);
