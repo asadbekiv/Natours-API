@@ -5,7 +5,7 @@ const Review = require('../../models/review-model.js');
 const User = require('../../models/user-model.js');
 const dotenv = require('dotenv');
 
-dotenv.config({ path: './config.env' });
+dotenv.config({ path: './.env' });
 
 const DB = process.env.DATABASE;
 
@@ -34,7 +34,7 @@ const reviews = JSON.parse(
 
 // Importing DATA
 
-const importData = async (req, res) => {
+const importData = async () => {
   try {
     await Tour.create(tours);
     await Review.create(reviews);
@@ -43,10 +43,11 @@ const importData = async (req, res) => {
   } catch (err) {
     console.log(err);
   }
+  process.exit();
 };
 // Delated all the data in collections
 
-const deleteData = async (req, res) => {
+const deleteData = async () => {
   try {
     await Tour.deleteMany();
     await Review.deleteMany();
@@ -58,12 +59,10 @@ const deleteData = async (req, res) => {
   process.exit();
 };
 
-if (process.argv[2] == '--import') {
+if (process.argv[2] === '--import') {
   importData();
-} else if (process.argv[2] == '--delete') {
+} else if (process.argv[2] === '--delete') {
   deleteData();
 } else {
-  console.log('Something went wrong 1');
+  console.log('Usage: node dev-data/data/import-dev-data.js --import | --delete');
 }
-
-// console.log(process.argv);
