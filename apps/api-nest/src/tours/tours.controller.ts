@@ -8,13 +8,15 @@ import {
   Patch,
   Post,
   Query,
+  UseGuards,
 } from '@nestjs/common';
 import { ToursService } from './tours.service';
 import { CreateTourDto } from './dto/create-tour.dto';
 import { UpdateTourDto } from './dto/update-tour.dto';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { RolesGuard } from '../auth/guards/roles.guard';
+import { Roles } from '../auth/decorators/roles.decorator';
 
-// NOTE: write routes here are currently unprotected. Auth guards
-// (protect / restrictTo) arrive with the auth + users module port.
 @Controller('tours')
 export class ToursController {
   constructor(private readonly toursService: ToursService) {}
@@ -26,6 +28,8 @@ export class ToursController {
   }
 
   @Get('monthly-plan/:year')
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('admin', 'lead-guide', 'guide')
   getMonthlyPlan(@Param('year') year: string) {
     return this.toursService.getMonthlyPlan(Number(year));
   }
@@ -57,16 +61,22 @@ export class ToursController {
   }
 
   @Post()
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('admin', 'lead-guide')
   create(@Body() dto: CreateTourDto) {
     return this.toursService.create(dto);
   }
 
   @Patch(':id')
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('admin', 'lead-guide')
   update(@Param('id') id: string, @Body() dto: UpdateTourDto) {
     return this.toursService.update(id, dto);
   }
 
   @Delete(':id')
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('admin', 'lead-guide')
   @HttpCode(204)
   remove(@Param('id') id: string) {
     return this.toursService.remove(id);

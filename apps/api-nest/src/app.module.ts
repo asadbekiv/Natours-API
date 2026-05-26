@@ -1,6 +1,8 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
+import { AuthModule } from './auth/auth.module';
+import { UsersModule } from './users/users.module';
 import { ToursModule } from './tours/tours.module';
 
 @Module({
@@ -13,6 +15,10 @@ import { ToursModule } from './tours/tours.module';
         serverSelectionTimeoutMS: 10000,
       }),
     }),
+    // AuthModule before UsersModule: the /users auth routes (signup, login,
+    // updateMyPassword, ...) must register before UsersController's ':id'.
+    AuthModule,
+    UsersModule,
     ToursModule,
   ],
 })

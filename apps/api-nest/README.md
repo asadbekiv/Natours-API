@@ -12,10 +12,15 @@ Express app keeps running/deploying until Nest reaches parity.
 | Global validation pipe | ✅ |
 | Standardized response envelope (interceptor) | ✅ |
 | Error envelope + Mongoose error mapping (filter) | ✅ |
-| **Tours** (schema, CRUD, stats, monthly-plan, geo) | ✅ reference slice |
-| Auth + Users | ⬜ (adds route guards) |
+| **Tours** (schema, CRUD, stats, monthly-plan, geo) | ✅ (write routes now guarded) |
+| **Auth + Users** (JWT, guards, signup/login/reset, /me, admin CRUD) | ✅ |
 | Reviews | ⬜ |
 | Bookings (Stripe) | ⬜ |
+
+Auth uses Bearer tokens (`Authorization: Bearer <token>`), not cookies — the
+mobile-ready direction. `JwtAuthGuard` replaces `protect`; `@Roles()` +
+`RolesGuard` replace `restrictTo`. Welcome/reset emails are stubbed (logged)
+until the mailer is ported.
 
 ## Run
 

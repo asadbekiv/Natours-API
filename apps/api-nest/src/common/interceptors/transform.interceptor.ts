@@ -29,6 +29,12 @@ export class TransformInterceptor<T>
         // 204 No Content: never attach a body.
         if (res.statusCode === 204) return data;
 
+        // Already-shaped envelopes (e.g. auth responses carrying a token)
+        // pass through untouched.
+        if (data && typeof data === 'object' && 'status' in (data as object)) {
+          return data;
+        }
+
         const body: SuccessResponse<T> = { status: 'success', data };
         if (Array.isArray(data)) body.results = data.length;
         return body;
