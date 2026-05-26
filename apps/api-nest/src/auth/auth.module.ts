@@ -18,7 +18,12 @@ import { JwtStrategy } from './strategies/jwt.strategy';
       inject: [ConfigService],
       useFactory: (config: ConfigService) => ({
         secret: config.getOrThrow<string>('JWT_SECRET'),
-        signOptions: { expiresIn: config.get<string>('JWT_EXPIRES_IN') ?? '90d' },
+        // expiresIn is typed as number | ms.StringValue (a finicky template
+        // union); the value is a runtime string like "90d", so escape the type.
+        signOptions: {
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          expiresIn: (config.get<string>('JWT_EXPIRES_IN') ?? '90d') as any,
+        },
       }),
     }),
   ],
