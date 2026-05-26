@@ -13,9 +13,7 @@ exports.deleteOne = (Model) =>
     }
     res.status(204).json({
       status: 'success',
-      data: {
-        tour: null,
-      },
+      data: null,
     });
   });
 
@@ -46,9 +44,7 @@ exports.createOne = (Model) =>
 
     res.status(201).json({
       status: 'success',
-      data: {
-        data: doc,
-      },
+      data: doc,
     });
   });
 
@@ -86,7 +82,7 @@ exports.getAll = (Model) =>
     // Sending Response
     res.status(200).json({
       status: 'success',
-      result: doc.length,
+      results: doc.length,
       data: doc,
     });
   });
