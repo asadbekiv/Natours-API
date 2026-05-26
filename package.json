@@ -2,6 +2,7 @@
   "name": "natours-monorepo",
   "version": "1.0.0",
   "private": true,
+  "packageManager": "npm@10.9.0",
   "description": "Natours monorepo — API and shared packages",
   "workspaces": [
     "apps/*",
