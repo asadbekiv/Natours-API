@@ -75,42 +75,30 @@ exports.aliasTopTour = (req, res, next) => {
 exports.getTour = factory.getOne(Tour, { path: 'reviews' });
 
 exports.getTourStats = catchAsync(async (req, res) => {
-  try {
-    const stats = await Tour.aggregate([
-      {
-        $match: { ratingsAverage: { $gte: 4.5 } },
+  const stats = await Tour.aggregate([
+    {
+      $match: { ratingsAverage: { $gte: 4.5 } },
+    },
+    {
+      $group: {
+        _id: `$difficulty`,
+        numRatings: { $sum: '$ratingsQuantity' },
+        numTours: { $sum: 1 },
+        avgRating: { $avg: '$ratingsAverage' },
+        avgPrice: { $avg: '$price' },
+        minPrice: { $min: '$price' },
+        maxPrice: { $max: '$price' },
       },
-      {
-        $group: {
-          _id: `$difficulty`,
-          numRatings: { $sum: '$ratingsQuantity' },
-          numTours: { $sum: 1 },
-          avgRating: { $avg: '$ratingsAverage' },
-          avgPrice: { $avg: '$price' },
-          minPrice: { $min: '$price' },
-          maxPrice: { $max: '$price' },
-        },
-      },
-      {
-        $sort: { avgPrice: 1 },
-      },
-      // {
-      //     $match:{_id:{$ne:'medium'}}
-      // }
-    ]);
+    },
+    {
+      $sort: { avgPrice: 1 },
+    },
+  ]);
 
-    res.status(200).json({
-      message: 'Successfully',
-      data: {
-        stats,
-      },
-    });
-  } catch (err) {
-    res.status(404).json({
-      message: 'fail',
-      status: err.message,
-    });
-  }
+  res.status(200).json({
+    status: 'success',
+    data: stats,
+  });
 });
 
 exports.getMonthlyPlan = catchAsync(async (req, res) => {
@@ -146,11 +134,9 @@ exports.getMonthlyPlan = catchAsync(async (req, res) => {
   ]);
 
   res.status(200).json({
-    message: 'Successfully',
-    lenth: plan.length,
-    data: {
-      plan,
-    },
+    status: 'success',
+    results: plan.length,
+    data: plan,
   });
 });
 
@@ -182,9 +168,9 @@ exports.getToursWithin = catchAsync(async (req, res, next) => {
   });
 
   res.status(200).json({
+    status: 'success',
     results: tours.length,
-    status: 'success !',
-    data: { data: tours },
+    data: tours,
   });
 });
 
@@ -221,8 +207,8 @@ exports.getDistances = catchAsync(async (req, res, next) => {
   ]);
 
   res.status(200).json({
-    status: 'success !',
-    result: distances.length,
-    data: { data: distances },
+    status: 'success',
+    results: distances.length,
+    data: distances,
   });
 });
