@@ -45,7 +45,9 @@ export class ToursService {
   }
 
   async findOne(id: string): Promise<Tour> {
-    const tour = await this.tourModel.findById(id).populate('reviews').exec();
+    // TODO: re-enable .populate('reviews') once the Review module is ported
+    // (the virtual references the not-yet-registered Review model).
+    const tour = await this.tourModel.findById(id).exec();
     if (!tour) throw new NotFoundException('No tour found with that ID');
     return tour;
   }
