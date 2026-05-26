@@ -1,0 +1,20 @@
+{
+  "name": "@natours/shared",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Shared TypeScript types and API contracts for Natours",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "dev": "tsc -p tsconfig.json --watch",
+    "lint": "tsc -p tsconfig.json --noEmit",
+    "clean": "rm -rf dist"
+  },
+  "devDependencies": {
+    "typescript": "^5.5.0"
+  }
+}
