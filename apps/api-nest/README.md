@@ -14,7 +14,7 @@ Express app keeps running/deploying until Nest reaches parity.
 | Error envelope + Mongoose error mapping (filter) | ✅ |
 | **Tours** (schema, CRUD, stats, monthly-plan, geo) | ✅ (write routes now guarded) |
 | **Auth + Users** (JWT, guards, signup/login/reset, /me, admin CRUD) | ✅ |
-| Reviews | ⬜ |
+| **Reviews** (nested + flat routes, rating recalculation, ownership checks) | ✅ |
 | Bookings (Stripe) | ⬜ |
 
 Auth uses Bearer tokens (`Authorization: Bearer <token>`), not cookies — the
