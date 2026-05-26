@@ -15,7 +15,7 @@ Express app keeps running/deploying until Nest reaches parity.
 | **Tours** (schema, CRUD, stats, monthly-plan, geo) | ✅ (write routes now guarded) |
 | **Auth + Users** (JWT, guards, signup/login/reset, /me, admin CRUD) | ✅ |
 | **Reviews** (nested + flat routes, rating recalculation, ownership checks) | ✅ |
-| Bookings (Stripe) | ⬜ |
+| **Bookings (Stripe checkout + webhook)** | ✅ |
 
 Auth uses Bearer tokens (`Authorization: Bearer <token>`), not cookies — the
 mobile-ready direction. `JwtAuthGuard` replaces `protect`; `@Roles()` +
