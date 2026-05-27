@@ -13,12 +13,13 @@ export class MailService {
 
   private transport(): Transporter {
     if (this.config.get<string>('NODE_ENV') === 'production') {
+      // Provider-neutral SMTP (Brevo, Resend, SendGrid, ...).
       return nodemailer.createTransport({
-        host: this.config.get<string>('MAILGUN_SMTP_SERVER'),
-        port: Number(this.config.get<string>('MAILGUN_SMTP_PORT')) || 587,
+        host: this.config.get<string>('SMTP_HOST'),
+        port: Number(this.config.get<string>('SMTP_PORT')) || 587,
         auth: {
-          user: this.config.get<string>('MAILGUN_USERNAME'),
-          pass: this.config.get<string>('MAILGUN_PASSWORD'),
+          user: this.config.get<string>('SMTP_USER'),
+          pass: this.config.get<string>('SMTP_PASS'),
         },
       });
     }
