@@ -29,14 +29,44 @@ Project is created with:
 - Mongoose
 - Map (yandex map)
 - MVC Architecture
+- npm workspaces + Turborepo monorepo
+- TypeScript (shared types package)
+
+## Project structure
+
+This repo is an npm-workspaces + Turborepo monorepo:
+
+```
+.
+├── apps/
+│   └── api/         # Express + Mongoose API and server-rendered site (@natours/api)
+└── packages/
+    └── shared/      # Shared TypeScript types & API contracts (@natours/shared)
+```
 
 ## Setup
 
-To run this project, install it locally using npm and run:
+Install once from the repo root (workspaces hoist dependencies):
 
 ```
-$ nvm use
 $ npm install
-$ npm run build:js
-$ npm run watch
+$ npm run build            # builds packages (e.g. @natours/shared)
 ```
+
+Run the API:
+
+```
+$ npm run start            # starts @natours/api from the repo root
+# or for development, from apps/api:
+$ cd apps/api && npm run dev
+```
+
+Environment variables live in `apps/api/.env` (the API reads `./.env`
+relative to its own folder, so run/deploy it with `apps/api` as the working
+directory).
+
+## Deployment (Render)
+
+The app now lives in `apps/api`, so set the Render service **Root Directory**
+to `apps/api` (Settings → Root Directory). Keep build command `npm install`
+and start command `npm start`.
