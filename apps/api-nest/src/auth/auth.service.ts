@@ -1,6 +1,8 @@
 import {
   BadRequestException,
   Injectable,
+  InternalServerErrorException,
+  Logger,
   NotFoundException,
   UnauthorizedException,
 } from '@nestjs/common';
@@ -10,6 +12,7 @@ import { Model } from 'mongoose';
 import * as bcrypt from 'bcryptjs';
 import * as crypto from 'crypto';
 import { User, UserDocument } from '../users/schemas/user.schema';
+import { MailService } from '../mail/mail.service';
 import { SignupDto } from './dto/signup.dto';
 import { LoginDto } from './dto/login.dto';
 import { ResetPasswordDto } from './dto/reset-password.dto';
@@ -18,9 +21,12 @@ import type { AuthResponse, User as UserContract } from '@natours/shared';
 
 @Injectable()
 export class AuthService {
+  private readonly logger = new Logger(AuthService.name);
+
   constructor(
     @InjectModel(User.name) private readonly userModel: Model<UserDocument>,
     private readonly jwtService: JwtService,
+    private readonly mailService: MailService,
   ) {}
 
   private buildAuthResponse(user: UserDocument): AuthResponse {
@@ -34,7 +40,7 @@ export class AuthService {
     };
   }
 
-  async signup(dto: SignupDto): Promise<AuthResponse> {
+  async signup(dto: SignupDto, welcomeUrl: string): Promise<AuthResponse> {
     if (dto.password !== dto.passwordConfirm) {
       throw new BadRequestException('Passwords do not match');
     }
@@ -43,7 +49,14 @@ export class AuthService {
       email: dto.email,
       password: dto.password,
     });
-    // TODO: send welcome email once the mailer is ported.
+    try {
+      await this.mailService.sendWelcome(user.email, user.name, welcomeUrl);
+    } catch (err) {
+      // A failed welcome email shouldn't fail signup.
+      this.logger.warn(
+        `Welcome email failed for ${user.email}: ${(err as Error).message}`,
+      );
+    }
     return this.buildAuthResponse(user);
   }
 
@@ -75,9 +88,21 @@ export class AuthService {
     user.passwordResetExpires = new Date(Date.now() + 10 * 60 * 1000);
     await user.save({ validateBeforeSave: false });
 
-    // TODO: email the link. Until the mailer is ported, log it for dev use.
-    // eslint-disable-next-line no-console
-    console.log(`Password reset URL: ${resetUrlBase}/${resetToken}`);
+    try {
+      const resetUrl = `${resetUrlBase}/${resetToken}`;
+      await this.mailService.sendPasswordReset(user.email, user.name, resetUrl);
+    } catch (err) {
+      // Roll back the token so the user can request a new one.
+      user.passwordResetToken = undefined;
+      user.passwordResetExpires = undefined;
+      await user.save({ validateBeforeSave: false });
+      this.logger.error(
+        `Reset email failed for ${user.email}: ${(err as Error).message}`,
+      );
+      throw new InternalServerErrorException(
+        'There was an error sending the email. Try again later.',
+      );
+    }
 
     return { status: 'success', message: 'Token sent to email!' };
   }

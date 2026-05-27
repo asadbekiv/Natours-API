@@ -19,8 +19,8 @@ Express app keeps running/deploying until Nest reaches parity.
 
 Auth uses Bearer tokens (`Authorization: Bearer <token>`), not cookies — the
 mobile-ready direction. `JwtAuthGuard` replaces `protect`; `@Roles()` +
-`RolesGuard` replace `restrictTo`. Welcome/reset emails are stubbed (logged)
-until the mailer is ported.
+`RolesGuard` replace `restrictTo`. Welcome and password-reset emails are sent
+via the MailService (NodeMailer; dev SMTP / prod via env).
 
 ## Run
 

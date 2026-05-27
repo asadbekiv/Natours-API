@@ -7,12 +7,14 @@ import { User, UserSchema } from '../users/schemas/user.schema';
 import { AuthService } from './auth.service';
 import { AuthController } from './auth.controller';
 import { JwtStrategy } from './strategies/jwt.strategy';
+import { MailModule } from '../mail/mail.module';
 
 @Module({
   imports: [
     // Registered here too (independent of UsersModule) so route ordering is
     // controlled purely by AppModule's import order.
     MongooseModule.forFeature([{ name: User.name, schema: UserSchema }]),
+    MailModule,
     PassportModule,
     JwtModule.registerAsync({
       inject: [ConfigService],

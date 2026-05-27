@@ -26,8 +26,9 @@ export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
   @Post('signup')
-  signup(@Body() dto: SignupDto) {
-    return this.authService.signup(dto);
+  signup(@Body() dto: SignupDto, @Req() req: Request) {
+    const welcomeUrl = `${req.protocol}://${req.get('host')}/me`;
+    return this.authService.signup(dto, welcomeUrl);
   }
 
   @Post('login')
