@@ -22,6 +22,9 @@ mobile-ready direction. `JwtAuthGuard` replaces `protect`; `@Roles()` +
 `RolesGuard` replace `restrictTo`. Welcome and password-reset emails are sent
 via the MailService (NodeMailer; dev SMTP / prod via env).
 
+**Security (Phase 3):** `helmet` security headers, CORS (allowlist via
+`CORS_ORIGIN`), and global rate limiting (`@nestjs/throttler`, 100 req/min/IP).
+
 ## Run
 
 From the repo root:
