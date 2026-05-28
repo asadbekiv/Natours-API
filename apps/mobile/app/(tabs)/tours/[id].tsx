@@ -3,8 +3,12 @@ import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import { ActivityIndicator, Button } from 'react-native-paper';
 import { Image } from 'expo-image';
 import * as WebBrowser from 'expo-web-browser';
-import { useLocalSearchParams, useNavigation } from 'expo-router';
-import { useQuery } from '@tanstack/react-query';
+import {
+  useLocalSearchParams,
+  useNavigation,
+  useRouter,
+} from 'expo-router';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import type { Tour } from '@natours/shared';
 import { api } from '../../../src/api/client';
 import { colors } from '../../../src/theme';
@@ -17,6 +21,8 @@ async function fetchTour(id: string): Promise<Tour> {
 export default function TourDetailScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const navigation = useNavigation();
+  const router = useRouter();
+  const queryClient = useQueryClient();
   const [bookingLoading, setBookingLoading] = useState(false);
   const [bookingError, setBookingError] = useState<string | null>(null);
   const q = useQuery({
@@ -37,9 +43,13 @@ export default function TourDetailScreen() {
         `/bookings/checkout-session/${id}`,
       );
       const url = res.data.session.url;
-      // Opens Stripe checkout in an in-app browser. On payment, Stripe fires
-      // the webhook → backend creates the Booking. User dismisses to return.
+      // Opens Stripe checkout in an in-app browser. The Stripe webhook on the
+      // backend creates the Booking server-side as soon as payment goes
+      // through; once the user dismisses the browser we jump to the Bookings
+      // tab and invalidate the cache so the new row shows up automatically.
       await WebBrowser.openBrowserAsync(url);
+      await queryClient.invalidateQueries({ queryKey: ['my-bookings'] });
+      router.push('/(tabs)/bookings');
     } catch (err) {
       const e = err as {
         message?: string;
