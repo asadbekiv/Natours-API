@@ -17,13 +17,11 @@ import { CursorPage } from '../cursor';
  * Mirrors the contract defined in @natours/shared.
  */
 @Injectable()
-export class TransformInterceptor<T>
-  implements NestInterceptor<T, SuccessResponse<T> | T>
-{
+export class TransformInterceptor implements NestInterceptor {
   intercept(
     context: ExecutionContext,
-    next: CallHandler<T>,
-  ): Observable<SuccessResponse<T> | T> {
+    next: CallHandler,
+  ): Observable<unknown> {
     const res = context.switchToHttp().getResponse<Response>();
     return next.handle().pipe(
       map((data) => {
@@ -46,7 +44,7 @@ export class TransformInterceptor<T>
           return data;
         }
 
-        const body: SuccessResponse<T> = { status: 'success', data };
+        const body: SuccessResponse<unknown> = { status: 'success', data };
         if (Array.isArray(data)) body.results = data.length;
         return body;
       }),
