@@ -30,9 +30,15 @@ export default function SignupScreen() {
       });
       router.replace('/(tabs)/tours');
     } catch (err) {
+      const e = err as {
+        message?: string;
+        response?: { data?: { message?: string }; status?: number };
+      };
       setError(
-        (err as { response?: { data?: { message?: string } } }).response?.data
-          ?.message ?? 'Signup failed',
+        e.response?.data?.message ??
+          (e.response
+            ? `HTTP ${e.response.status} — ${JSON.stringify(e.response.data)}`
+            : e.message ?? 'Signup failed'),
       );
     } finally {
       setLoading(false);

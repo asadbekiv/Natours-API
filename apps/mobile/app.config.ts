@@ -7,7 +7,10 @@ const config: ExpoConfig = {
   version: '0.1.0',
   orientation: 'portrait',
   userInterfaceStyle: 'automatic',
-  newArchEnabled: true,
+  // Some 0.81 libs still trip the new arch's feature-flag checks
+  // (e.g. ReactNativeFeatureFlags.enableOptimisedVirtualizedCells). Keep off
+  // for now; can be re-enabled once the ecosystem stabilises.
+  newArchEnabled: false,
   ios: {
     supportsTablet: true,
     bundleIdentifier: 'com.natours.app',
