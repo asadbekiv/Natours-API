@@ -1,5 +1,6 @@
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import { Image } from 'expo-image';
+import { Ionicons } from '@expo/vector-icons';
 import type { Review, User } from '@natours/shared';
 import { colors } from '../theme';
 
@@ -33,6 +34,31 @@ export function ReviewList({ reviews }: { reviews?: Review[] }) {
   );
 }
 
+/**
+ * Static 5-star row using Ionicons (filled + outlined). Exported so other
+ * screens (tour card, tour detail stat, etc.) can reuse it.
+ */
+export function Stars({ value, size = 14 }: { value: number; size?: number }) {
+  return (
+    <View style={starsRowStyles.row}>
+      {[1, 2, 3, 4, 5].map((i) => (
+        <Ionicons
+          key={i}
+          name={i <= value ? 'star' : 'star-outline'}
+          size={size}
+          color={i <= value ? colors.star : '#d8d8d8'}
+          style={starsRowStyles.icon}
+        />
+      ))}
+    </View>
+  );
+}
+
+const starsRowStyles = StyleSheet.create({
+  row: { flexDirection: 'row', marginTop: 2 },
+  icon: { marginRight: 1 },
+});
+
 function ReviewCard({ review }: { review: Review }) {
   const user = typeof review.user === 'object' ? (review.user as User) : null;
   const photoUrl =
@@ -55,12 +81,7 @@ function ReviewCard({ review }: { review: Review }) {
           <Text style={styles.name} numberOfLines={1}>
             {user?.name ?? 'Anonymous'}
           </Text>
-          <Text style={styles.stars}>
-            {'★'.repeat(review.rating)}
-            <Text style={styles.starsDim}>
-              {'★'.repeat(5 - review.rating)}
-            </Text>
-          </Text>
+          <Stars value={review.rating} size={13} />
         </View>
       </View>
       <Text style={styles.body} numberOfLines={4}>
@@ -108,13 +129,6 @@ const styles = StyleSheet.create({
   },
   avatarInitial: { color: '#fff', fontWeight: '700', fontSize: 13 },
   name: { fontSize: 13, fontWeight: '600', color: colors.textDark },
-  stars: {
-    fontSize: 12,
-    color: colors.star,
-    letterSpacing: 0.5,
-    marginTop: 1,
-  },
-  starsDim: { color: '#e2e2e2' },
   // Fixed min-height so cards line up regardless of review length.
   body: {
     color: colors.textDark,

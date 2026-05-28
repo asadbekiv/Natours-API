@@ -14,6 +14,7 @@ import {
   Portal,
   TextInput,
 } from 'react-native-paper';
+import { Ionicons } from '@expo/vector-icons';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import type { Booking } from '@natours/shared';
 import { api } from '../../src/api/client';
@@ -229,7 +230,11 @@ function StarPicker({
           style={styles.starPress}
           accessibilityLabel={`${i} star${i === 1 ? '' : 's'}`}
         >
-          <Text style={i <= value ? styles.starOn : styles.starOff}>★</Text>
+          <Ionicons
+            name={i <= value ? 'star' : 'star-outline'}
+            size={32}
+            color={i <= value ? colors.star : '#d8d8d8'}
+          />
         </Pressable>
       ))}
     </View>
@@ -281,8 +286,6 @@ const styles = StyleSheet.create({
   },
   starRow: { flexDirection: 'row', justifyContent: 'center', marginBottom: 12 },
   starPress: { paddingHorizontal: 6 },
-  starOn: { color: colors.brandDark, fontSize: 32 },
-  starOff: { color: '#ddd', fontSize: 32 },
   reviewInput: { backgroundColor: '#fff' },
   dialogError: { color: colors.danger, marginTop: 8 },
 });
