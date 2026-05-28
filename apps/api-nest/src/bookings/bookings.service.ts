@@ -96,6 +96,11 @@ export class BookingsService {
     await this.bookingModel.create({ tour, user: user.id, price });
   }
 
+  /** Bookings owned by the current user (newest first). */
+  findByUser(userId: string): Promise<Booking[]> {
+    return this.bookingModel.find({ user: userId }).sort('-createdAt').exec();
+  }
+
   // --- admin CRUD ---
   findAll(): Promise<Booking[]> {
     return this.bookingModel.find().exec();

@@ -16,6 +16,7 @@ export default function TabsLayout() {
         name="tours"
         options={{ title: 'Tours', headerShown: false }}
       />
+      <Tabs.Screen name="bookings" options={{ title: 'Bookings' }} />
       <Tabs.Screen name="me" options={{ title: 'Profile' }} />
     </Tabs>
   );

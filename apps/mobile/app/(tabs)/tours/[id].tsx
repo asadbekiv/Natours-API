@@ -1,7 +1,8 @@
-import { useLayoutEffect } from 'react';
+import { useLayoutEffect, useState } from 'react';
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
-import { ActivityIndicator } from 'react-native-paper';
+import { ActivityIndicator, Button } from 'react-native-paper';
 import { Image } from 'expo-image';
+import * as WebBrowser from 'expo-web-browser';
 import { useLocalSearchParams, useNavigation } from 'expo-router';
 import { useQuery } from '@tanstack/react-query';
 import type { Tour } from '@natours/shared';
@@ -16,6 +17,8 @@ async function fetchTour(id: string): Promise<Tour> {
 export default function TourDetailScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const navigation = useNavigation();
+  const [bookingLoading, setBookingLoading] = useState(false);
+  const [bookingError, setBookingError] = useState<string | null>(null);
   const q = useQuery({
     queryKey: ['tour', id],
     queryFn: () => fetchTour(id),
@@ -25,6 +28,30 @@ export default function TourDetailScreen() {
   useLayoutEffect(() => {
     if (q.data) navigation.setOptions({ title: q.data.name });
   }, [q.data, navigation]);
+
+  async function onBook() {
+    setBookingError(null);
+    setBookingLoading(true);
+    try {
+      const res = await api.get<{ session: { url: string } }>(
+        `/bookings/checkout-session/${id}`,
+      );
+      const url = res.data.session.url;
+      // Opens Stripe checkout in an in-app browser. On payment, Stripe fires
+      // the webhook → backend creates the Booking. User dismisses to return.
+      await WebBrowser.openBrowserAsync(url);
+    } catch (err) {
+      const e = err as {
+        message?: string;
+        response?: { data?: { message?: string }; status?: number };
+      };
+      setBookingError(
+        e.response?.data?.message ?? e.message ?? 'Could not start checkout',
+      );
+    } finally {
+      setBookingLoading(false);
+    }
+  }
 
   if (q.isLoading) {
     return (
@@ -77,6 +104,20 @@ export default function TourDetailScreen() {
 
         {t.description ? (
           <Text style={styles.description}>{t.description}</Text>
+        ) : null}
+
+        <Button
+          mode="contained"
+          onPress={onBook}
+          loading={bookingLoading}
+          disabled={bookingLoading}
+          style={styles.bookBtn}
+          contentStyle={styles.bookBtnContent}
+        >
+          {bookingLoading ? 'Opening checkout…' : 'Book this tour'}
+        </Button>
+        {bookingError ? (
+          <Text style={styles.bookError}>{bookingError}</Text>
         ) : null}
       </View>
     </ScrollView>
@@ -137,4 +178,7 @@ const styles = StyleSheet.create({
     lineHeight: 22,
     fontSize: 15,
   },
+  bookBtn: { marginTop: 28, borderRadius: 6 },
+  bookBtnContent: { paddingVertical: 8 },
+  bookError: { color: colors.danger, marginTop: 8, textAlign: 'center' },
 });

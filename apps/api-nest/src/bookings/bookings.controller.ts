@@ -56,6 +56,13 @@ export class BookingsController {
     return { status: 'success', session };
   }
 
+  // Current user's bookings — declared before ':id' so the static path wins.
+  @Get('my-tours')
+  @UseGuards(JwtAuthGuard)
+  findMine(@CurrentUser() user: UserDocument) {
+    return this.bookingsService.findByUser(user.id);
+  }
+
   // --- admin / lead-guide management ---
   @Get()
   @UseGuards(JwtAuthGuard, RolesGuard)
