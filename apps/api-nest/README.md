@@ -43,6 +43,12 @@ and try endpoints from the page. Controllers are tagged by domain
 decorator (in `src/common/decorators/`) wraps the response schema in the
 `{ status, results?, data }` envelope for any endpoint that uses it.
 
+**Cursor pagination (Phase 3):** `GET /tours` is cursor-paginated for mobile
+infinite scroll: response includes `nextCursor` when more pages exist; pass
+it back as `?cursor=…&limit=20` (default 20, max 100). Adding `?sort=` falls
+back to legacy `?page=` for that request only. Cursors are opaque
+base64-url-encoded `_id`s — don't try to read them.
+
 ## Run
 
 From the repo root:

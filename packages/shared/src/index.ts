@@ -1,4 +1,4 @@
-/**
+w/**
  * Shared types and API contracts for the Natours platform.
  *
  * Consumed by the API today and, after the NestJS migration, by the mobile
@@ -16,6 +16,8 @@ export interface SuccessResponse<T> {
   status: 'success';
   results?: number;
   data: T;
+  /** Opaque cursor for the next page (cursor-paginated collections). */
+  nextCursor?: string;
 }
 
 export interface ErrorResponse {

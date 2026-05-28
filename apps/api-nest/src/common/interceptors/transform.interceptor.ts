@@ -8,6 +8,7 @@ import { Response } from 'express';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import type { SuccessResponse } from '@natours/shared';
+import { CursorPage } from '../cursor';
 
 /**
  * Wraps controller return values in the standardized success envelope:
@@ -28,6 +29,16 @@ export class TransformInterceptor<T>
       map((data) => {
         // 204 No Content: never attach a body.
         if (res.statusCode === 204) return data;
+
+        // Cursor-paginated pages unwrap into envelope + nextCursor.
+        if (data instanceof CursorPage) {
+          return {
+            status: 'success',
+            results: data.items.length,
+            data: data.items,
+            ...(data.nextCursor ? { nextCursor: data.nextCursor } : {}),
+          };
+        }
 
         // Already-shaped envelopes (e.g. auth responses carrying a token)
         // pass through untouched.

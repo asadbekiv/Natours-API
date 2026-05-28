@@ -8,6 +8,7 @@ import { Model } from 'mongoose';
 import { Tour, TourDocument } from './schemas/tour.schema';
 import { CreateTourDto } from './dto/create-tour.dto';
 import { UpdateTourDto } from './dto/update-tour.dto';
+import { CursorPage, decodeCursor, encodeCursor } from '../common/cursor';
 
 @Injectable()
 export class ToursService {
@@ -15,33 +16,57 @@ export class ToursService {
     @InjectModel(Tour.name) private readonly tourModel: Model<TourDocument>,
   ) {}
 
-  async findAll(query: Record<string, unknown>): Promise<Tour[]> {
+  async findAll(
+    query: Record<string, unknown>,
+  ): Promise<CursorPage<TourDocument>> {
     // 1) Filtering (with advanced gte/gt/lte/lt operators)
     const queryObj = { ...query };
-    ['page', 'sort', 'limit', 'fields'].forEach((f) => delete queryObj[f]);
+    ['page', 'sort', 'limit', 'fields', 'cursor'].forEach(
+      (f) => delete queryObj[f],
+    );
     const queryStr = JSON.stringify(queryObj).replace(
       /\b(gte|gt|lte|lt)\b/g,
-      (match) => `$${match}`,
+      (m) => `$${m}`,
     );
-
     let dbQuery = this.tourModel.find(JSON.parse(queryStr));
 
-    // 2) Sorting
-    dbQuery = query.sort
-      ? dbQuery.sort(String(query.sort).split(',').join(' '))
-      : dbQuery.sort('-createdAt');
-
-    // 3) Field limiting
+    // 2) Field limiting
     dbQuery = query.fields
       ? dbQuery.select(String(query.fields).split(',').join(' '))
       : dbQuery.select('-__v');
 
-    // 4) Pagination
-    const page = Number(query.page) || 1;
-    const limit = Number(query.limit) || 100;
-    dbQuery = dbQuery.skip((page - 1) * limit).limit(limit);
+    const limit = Math.min(Math.max(Number(query.limit) || 20, 1), 100);
 
-    return dbQuery.exec();
+    // 3) Pagination
+    //  - Default: cursor-based, newest-first by _id (mobile infinite scroll).
+    //  - With ?sort: fall back to skip/limit, no nextCursor (cursoring over
+    //    arbitrary sort keys is more bookkeeping than this slice needs).
+    if (query.sort) {
+      dbQuery = dbQuery.sort(String(query.sort).split(',').join(' '));
+      const page = Number(query.page) || 1;
+      const items = await dbQuery
+        .skip((page - 1) * limit)
+        .limit(limit)
+        .exec();
+      return new CursorPage(items);
+    }
+
+    dbQuery = dbQuery.sort('-_id');
+    const cursorId = query.cursor
+      ? decodeCursor(String(query.cursor))
+      : null;
+    if (cursorId) {
+      dbQuery = dbQuery.where('_id').lt(cursorId as unknown as never);
+    }
+
+    // Fetch one extra to detect "more available".
+    const items = await dbQuery.limit(limit + 1).exec();
+    let nextCursor: string | undefined;
+    if (items.length > limit) {
+      items.pop();
+      nextCursor = encodeCursor(items[items.length - 1].id);
+    }
+    return new CursorPage(items, nextCursor);
   }
 
   async findOne(id: string): Promise<Tour> {
