@@ -67,6 +67,8 @@ export interface Tour {
   locations?: TourLocation[];
   guides?: Array<string | User>;
   secretTour?: boolean;
+  /** Populated when fetching a single tour via GET /tours/:id. */
+  reviews?: Review[];
 }
 
 export interface User {

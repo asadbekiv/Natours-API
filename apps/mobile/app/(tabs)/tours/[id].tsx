@@ -12,6 +12,7 @@ import {
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import type { Tour } from '@natours/shared';
 import { api } from '../../../src/api/client';
+import { ReviewList } from '../../../src/components/ReviewList';
 import { colors } from '../../../src/theme';
 
 async function fetchTour(id: string): Promise<Tour> {
@@ -118,6 +119,8 @@ export default function TourDetailScreen() {
         ) : null}
 
         <TourMap tour={t} />
+
+        <ReviewList reviews={t.reviews} />
 
         <Button
           mode="contained"

@@ -1,12 +1,20 @@
+import { useState } from 'react';
 import {
   ActivityIndicator,
+  Pressable,
   RefreshControl,
   ScrollView,
   StyleSheet,
   Text,
   View,
 } from 'react-native';
-import { useQuery } from '@tanstack/react-query';
+import {
+  Button,
+  Dialog,
+  Portal,
+  TextInput,
+} from 'react-native-paper';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import type { Booking } from '@natours/shared';
 import { api } from '../../src/api/client';
 import { colors } from '../../src/theme';
@@ -18,6 +26,7 @@ async function fetchMyBookings(): Promise<Booking[]> {
 
 export default function MyBookingsScreen() {
   const q = useQuery({ queryKey: ['my-bookings'], queryFn: fetchMyBookings });
+  const [reviewBooking, setReviewBooking] = useState<Booking | null>(null);
 
   if (q.isLoading) {
     return (
@@ -36,10 +45,12 @@ export default function MyBookingsScreen() {
 
   const bookings = q.data ?? [];
 
-  if (bookings.length === 0) {
-    return (
+  return (
+    <>
       <ScrollView
-        contentContainerStyle={styles.empty}
+        contentContainerStyle={
+          bookings.length === 0 ? styles.empty : styles.list
+        }
         refreshControl={
           <RefreshControl
             refreshing={q.isRefetching}
@@ -48,36 +59,40 @@ export default function MyBookingsScreen() {
           />
         }
       >
-        <Text style={styles.emptyTitle}>No bookings yet</Text>
-        <Text style={styles.emptyHint}>
-          Tap "Book this tour" on any tour to get started. Pull down to refresh
-          after paying.
-        </Text>
+        {bookings.length === 0 ? (
+          <>
+            <Text style={styles.emptyTitle}>No bookings yet</Text>
+            <Text style={styles.emptyHint}>
+              Tap "Book this tour" on any tour to get started. Pull down to
+              refresh after paying.
+            </Text>
+          </>
+        ) : (
+          bookings.map((b) => (
+            <BookingRow
+              key={b.id}
+              booking={b}
+              onWriteReview={() => setReviewBooking(b)}
+            />
+          ))
+        )}
       </ScrollView>
-    );
-  }
 
-  return (
-    <ScrollView
-      contentContainerStyle={styles.list}
-      refreshControl={
-        <RefreshControl
-          refreshing={q.isRefetching}
-          onRefresh={() => q.refetch()}
-          tintColor={colors.brand}
-        />
-      }
-    >
-      {bookings.map((b) => (
-        <BookingRow key={b.id} booking={b} />
-      ))}
-    </ScrollView>
+      <ReviewDialog
+        booking={reviewBooking}
+        onClose={() => setReviewBooking(null)}
+      />
+    </>
   );
 }
 
-function BookingRow({ booking }: { booking: Booking }) {
-  // The Nest pre-find populate sets booking.tour to { name, ... } and
-  // booking.user to a populated user; fall back to id strings otherwise.
+function BookingRow({
+  booking,
+  onWriteReview,
+}: {
+  booking: Booking;
+  onWriteReview: () => void;
+}) {
   const tourName =
     typeof booking.tour === 'object' && booking.tour
       ? booking.tour.name
@@ -86,16 +101,137 @@ function BookingRow({ booking }: { booking: Booking }) {
 
   return (
     <View style={styles.row}>
-      <View style={{ flex: 1 }}>
-        <Text style={styles.tour}>{tourName}</Text>
-        <Text style={styles.meta}>Booked {when}</Text>
+      <View style={styles.rowHeader}>
+        <View style={{ flex: 1 }}>
+          <Text style={styles.tour}>{tourName}</Text>
+          <Text style={styles.meta}>Booked {when}</Text>
+        </View>
+        <View style={styles.priceCol}>
+          <Text style={styles.price}>${booking.price}</Text>
+          <Text style={[styles.meta, booking.paid && styles.paid]}>
+            {booking.paid ? 'Paid' : 'Pending'}
+          </Text>
+        </View>
       </View>
-      <View style={styles.priceCol}>
-        <Text style={styles.price}>${booking.price}</Text>
-        <Text style={[styles.meta, booking.paid && styles.paid]}>
-          {booking.paid ? 'Paid' : 'Pending'}
-        </Text>
-      </View>
+      <Button
+        mode="text"
+        onPress={onWriteReview}
+        textColor={colors.brandDark}
+        style={styles.reviewBtn}
+      >
+        Write a review
+      </Button>
+    </View>
+  );
+}
+
+function ReviewDialog({
+  booking,
+  onClose,
+}: {
+  booking: Booking | null;
+  onClose: () => void;
+}) {
+  const queryClient = useQueryClient();
+  const [rating, setRating] = useState(5);
+  const [text, setText] = useState('');
+  const [error, setError] = useState<string | null>(null);
+
+  const tourId =
+    booking && typeof booking.tour === 'object'
+      ? booking.tour.id
+      : (booking?.tour as string | undefined);
+  const tourName =
+    booking && typeof booking.tour === 'object' ? booking.tour.name : '';
+
+  const mutation = useMutation({
+    mutationFn: async () => {
+      if (!tourId) throw new Error('No tour for this booking');
+      await api.post(`/tours/${tourId}/reviews`, { rating, review: text });
+    },
+    onSuccess: () => {
+      if (tourId) {
+        void queryClient.invalidateQueries({ queryKey: ['tour', tourId] });
+      }
+      handleClose();
+    },
+    onError: (err) => {
+      const e = err as {
+        message?: string;
+        response?: { data?: { message?: string }; status?: number };
+      };
+      setError(
+        e.response?.data?.message ??
+          (e.response
+            ? `HTTP ${e.response.status} — ${JSON.stringify(e.response.data)}`
+            : e.message ?? 'Could not submit review'),
+      );
+    },
+  });
+
+  function handleClose() {
+    setRating(5);
+    setText('');
+    setError(null);
+    mutation.reset();
+    onClose();
+  }
+
+  return (
+    <Portal>
+      <Dialog visible={!!booking} onDismiss={handleClose}>
+        <Dialog.Title>Leave a review</Dialog.Title>
+        <Dialog.Content>
+          {tourName ? (
+            <Text style={styles.dialogTourName}>{tourName}</Text>
+          ) : null}
+          <StarPicker value={rating} onChange={setRating} />
+          <TextInput
+            mode="outlined"
+            label="Your review"
+            value={text}
+            onChangeText={setText}
+            multiline
+            numberOfLines={4}
+            style={styles.reviewInput}
+          />
+          {error ? <Text style={styles.dialogError}>{error}</Text> : null}
+        </Dialog.Content>
+        <Dialog.Actions>
+          <Button onPress={handleClose}>Cancel</Button>
+          <Button
+            mode="contained"
+            onPress={() => mutation.mutate()}
+            loading={mutation.isPending}
+            disabled={mutation.isPending || text.trim().length === 0}
+          >
+            Submit
+          </Button>
+        </Dialog.Actions>
+      </Dialog>
+    </Portal>
+  );
+}
+
+function StarPicker({
+  value,
+  onChange,
+}: {
+  value: number;
+  onChange: (v: number) => void;
+}) {
+  return (
+    <View style={styles.starRow}>
+      {[1, 2, 3, 4, 5].map((i) => (
+        <Pressable
+          key={i}
+          onPress={() => onChange(i)}
+          style={styles.starPress}
+          accessibilityLabel={`${i} star${i === 1 ? '' : 's'}`}
+        >
+          <Text style={i <= value ? styles.starOn : styles.starOff}>★</Text>
+        </Pressable>
+      ))}
     </View>
   );
 }
@@ -105,7 +241,6 @@ const styles = StyleSheet.create({
   error: { color: colors.danger },
   list: { padding: 16 },
   row: {
-    flexDirection: 'row',
     backgroundColor: colors.cardBg,
     padding: 14,
     borderRadius: 10,
@@ -116,11 +251,14 @@ const styles = StyleSheet.create({
     shadowRadius: 3,
     shadowOffset: { width: 0, height: 1 },
   },
+  rowHeader: { flexDirection: 'row' },
   tour: { fontSize: 16, fontWeight: '600', color: colors.textDark },
   meta: { color: colors.textMuted, fontSize: 13, marginTop: 2 },
   priceCol: { alignItems: 'flex-end' },
   price: { fontSize: 16, fontWeight: '700', color: colors.brandDark },
   paid: { color: colors.brandDark, fontWeight: '600' },
+  reviewBtn: { alignSelf: 'flex-start', marginTop: 6, marginLeft: -8 },
+
   empty: {
     flexGrow: 1,
     alignItems: 'center',
@@ -134,4 +272,17 @@ const styles = StyleSheet.create({
     marginBottom: 8,
   },
   emptyHint: { color: colors.textMuted, textAlign: 'center', lineHeight: 20 },
+
+  dialogTourName: {
+    fontSize: 14,
+    fontWeight: '600',
+    color: colors.textDark,
+    marginBottom: 12,
+  },
+  starRow: { flexDirection: 'row', justifyContent: 'center', marginBottom: 12 },
+  starPress: { paddingHorizontal: 6 },
+  starOn: { color: colors.brandDark, fontSize: 32 },
+  starOff: { color: '#ddd', fontSize: 32 },
+  reviewInput: { backgroundColor: '#fff' },
+  dialogError: { color: colors.danger, marginTop: 8 },
 });
