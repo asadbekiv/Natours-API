@@ -13,6 +13,7 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { FileFieldsInterceptor } from '@nestjs/platform-express';
+import { ApiTags } from '@nestjs/swagger';
 import { ToursService } from './tours.service';
 import { CreateTourDto } from './dto/create-tour.dto';
 import { UpdateTourDto } from './dto/update-tour.dto';
@@ -22,6 +23,7 @@ import { Roles } from '../auth/decorators/roles.decorator';
 import { StorageService } from '../storage/storage.service';
 import { imageUploadOptions } from '../storage/multer-options';
 
+@ApiTags('tours')
 @Controller('tours')
 export class ToursController {
   constructor(

@@ -2,6 +2,7 @@ import 'reflect-metadata';
 import { NestFactory } from '@nestjs/core';
 import { ValidationPipe, VersioningType } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import helmet from 'helmet';
 import { AppModule } from './app.module';
 import { TransformInterceptor } from './common/interceptors/transform.interceptor';
@@ -21,8 +22,27 @@ async function bootstrap() {
   });
 
   // Routes become /api/v1/<resource> to match the existing Express API.
-  app.setGlobalPrefix('api');
+  // /docs is excluded so the Swagger UI sits at the root.
+  app.setGlobalPrefix('api', { exclude: ['docs', 'docs/(.*)'] });
   app.enableVersioning({ type: VersioningType.URI, defaultVersion: '1' });
+
+  // OpenAPI / Swagger UI at /docs (interactive contract for the mobile app).
+  const swaggerConfig = new DocumentBuilder()
+    .setTitle('Natours API')
+    .setDescription('NestJS port of the Natours tour-booking API.')
+    .setVersion('1.0')
+    .addBearerAuth()
+    .addTag('auth')
+    .addTag('users')
+    .addTag('tours')
+    .addTag('reviews')
+    .addTag('bookings')
+    .build();
+  SwaggerModule.setup(
+    'docs',
+    app,
+    SwaggerModule.createDocument(app, swaggerConfig),
+  );
 
   app.useGlobalPipes(
     new ValidationPipe({

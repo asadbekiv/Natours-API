@@ -6,6 +6,7 @@ import {
   Post,
   UseGuards,
 } from '@nestjs/common';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { ReviewsService } from './reviews.service';
 import { CreateReviewDto } from './dto/create-review.dto';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
@@ -15,6 +16,8 @@ import { CurrentUser } from '../auth/decorators/current-user.decorator';
 import type { UserDocument } from '../users/schemas/user.schema';
 
 // Nested routes: /tours/:tourId/reviews (mirrors the Express mergeParams setup).
+@ApiTags('reviews')
+@ApiBearerAuth()
 @Controller('tours/:tourId/reviews')
 @UseGuards(JwtAuthGuard)
 export class TourReviewsController {

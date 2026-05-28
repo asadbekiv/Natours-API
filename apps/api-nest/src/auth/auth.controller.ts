@@ -9,6 +9,7 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import type { Request } from 'express';
+import { ApiTags } from '@nestjs/swagger';
 import { AuthService } from './auth.service';
 import { SignupDto } from './dto/signup.dto';
 import { LoginDto } from './dto/login.dto';
@@ -22,6 +23,7 @@ import type { UserDocument } from '../users/schemas/user.schema';
 
 // Shares the /users prefix with UsersController. AuthModule is imported before
 // UsersModule in AppModule so these routes register before the ':id' route.
+@ApiTags('auth')
 @Controller('users')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}

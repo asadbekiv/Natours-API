@@ -10,6 +10,7 @@ import {
   Post,
   UseGuards,
 } from '@nestjs/common';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { ReviewsService } from './reviews.service';
 import { CreateReviewDto } from './dto/create-review.dto';
 import { UpdateReviewDto } from './dto/update-review.dto';
@@ -20,6 +21,8 @@ import { CurrentUser } from '../auth/decorators/current-user.decorator';
 import type { UserDocument } from '../users/schemas/user.schema';
 
 // Flat /reviews routes. All require authentication.
+@ApiTags('reviews')
+@ApiBearerAuth()
 @Controller('reviews')
 @UseGuards(JwtAuthGuard)
 export class ReviewsController {

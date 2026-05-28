@@ -36,6 +36,13 @@ token at `POST /users/refresh` for a new pair. Refresh tokens are opaque,
 token presented again revokes the user's entire active set). `POST
 /users/logout` (Bearer) revokes the current refresh token.
 
+**OpenAPI / Swagger (Phase 3):** interactive docs at **`/docs`**
+(`http://localhost:4000/docs`). Click **Authorize** to paste a Bearer token
+and try endpoints from the page. Controllers are tagged by domain
+(auth/users/tours/reviews/bookings). The `ApiSuccessResponse(model)`
+decorator (in `src/common/decorators/`) wraps the response schema in the
+`{ status, results?, data }` envelope for any endpoint that uses it.
+
 ## Run
 
 From the repo root:
