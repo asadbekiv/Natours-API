@@ -67,6 +67,9 @@ directory).
 
 ## Deployment (Render)
 
-The app now lives in `apps/api`, so set the Render service **Root Directory**
-to `apps/api` (Settings → Root Directory). Keep build command `npm install`
-and start command `npm start`.
+The production app is now `apps/api-nest` (NestJS). See **[`CUTOVER.md`](./CUTOVER.md)**
+for the full go-live checklist: Render service settings, env vars, the
+Stripe webhook URL change, and how to retire the legacy `apps/api` once the
+Nest deploy is stable.
+
+Interactive API docs once deployed: `/docs` (Swagger UI).
