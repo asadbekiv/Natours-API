@@ -11,6 +11,7 @@ export const colors = {
   cardBg: '#fff',
   border: '#eee',
   danger: '#c0392b',
+  star: '#f5b631', // warm gold for ratings
 };
 
 export const paperTheme = {

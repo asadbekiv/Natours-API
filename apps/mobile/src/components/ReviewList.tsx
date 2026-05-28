@@ -110,11 +110,11 @@ const styles = StyleSheet.create({
   name: { fontSize: 13, fontWeight: '600', color: colors.textDark },
   stars: {
     fontSize: 12,
-    color: colors.brandDark,
+    color: colors.star,
     letterSpacing: 0.5,
     marginTop: 1,
   },
-  starsDim: { color: '#ddd' },
+  starsDim: { color: '#e2e2e2' },
   // Fixed min-height so cards line up regardless of review length.
   body: {
     color: colors.textDark,
