@@ -8,6 +8,7 @@ import { UsersModule } from './users/users.module';
 import { ToursModule } from './tours/tours.module';
 import { ReviewsModule } from './reviews/reviews.module';
 import { BookingsModule } from './bookings/bookings.module';
+import { StorageModule } from './storage/storage.module';
 
 @Module({
   imports: [
@@ -28,6 +29,7 @@ import { BookingsModule } from './bookings/bookings.module';
     ToursModule,
     ReviewsModule,
     BookingsModule,
+    StorageModule,
   ],
   providers: [{ provide: APP_GUARD, useClass: ThrottlerGuard }],
 })

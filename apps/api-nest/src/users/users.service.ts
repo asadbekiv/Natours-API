@@ -6,7 +6,6 @@ import {
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { User, UserDocument } from './schemas/user.schema';
-import { UpdateMeDto } from './dto/update-me.dto';
 
 @Injectable()
 export class UsersService {
@@ -24,9 +23,12 @@ export class UsersService {
     return user;
   }
 
-  async updateMe(id: string, dto: UpdateMeDto): Promise<UserDocument> {
+  async updateMe(
+    id: string,
+    data: { name?: string; email?: string; photo?: string },
+  ): Promise<UserDocument> {
     const user = await this.userModel
-      .findByIdAndUpdate(id, dto, { new: true, runValidators: true })
+      .findByIdAndUpdate(id, data, { new: true, runValidators: true })
       .exec();
     if (!user) throw new NotFoundException('No user found with that ID');
     return user;
