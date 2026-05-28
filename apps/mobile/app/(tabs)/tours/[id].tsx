@@ -3,6 +3,7 @@ import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import { ActivityIndicator, Button } from 'react-native-paper';
 import { Image } from 'expo-image';
 import * as WebBrowser from 'expo-web-browser';
+import MapView, { Marker } from 'react-native-maps';
 import {
   useLocalSearchParams,
   useNavigation,
@@ -116,6 +117,8 @@ export default function TourDetailScreen() {
           <Text style={styles.description}>{t.description}</Text>
         ) : null}
 
+        <TourMap tour={t} />
+
         <Button
           mode="contained"
           onPress={onBook}
@@ -139,6 +142,76 @@ function Stat({ label, value }: { label: string; value: string }) {
     <View style={styles.stat}>
       <Text style={styles.statLabel}>{label}</Text>
       <Text style={styles.statValue}>{value}</Text>
+    </View>
+  );
+}
+
+interface MapPoint {
+  id: string;
+  lat: number;
+  lng: number;
+  title: string;
+  description?: string;
+}
+
+function TourMap({ tour }: { tour: Tour }) {
+  // Tour locations are GeoJSON [lng, lat]; react-native-maps wants {lat, lng}.
+  const points: MapPoint[] = [];
+  if (tour.startLocation?.coordinates) {
+    const [lng, lat] = tour.startLocation.coordinates;
+    points.push({
+      id: 'start',
+      lat,
+      lng,
+      title: 'Start',
+      description:
+        tour.startLocation.description ?? tour.startLocation.address ?? '',
+    });
+  }
+  tour.locations?.forEach((loc, i) => {
+    if (loc.coordinates) {
+      const [lng, lat] = loc.coordinates;
+      points.push({
+        id: `loc-${i}`,
+        lat,
+        lng,
+        title: loc.description ?? `Day ${loc.day ?? i + 1}`,
+        description: loc.day != null ? `Day ${loc.day}` : undefined,
+      });
+    }
+  });
+
+  if (points.length === 0) return null;
+
+  // Fit the initial region around all the points, with some padding.
+  const lats = points.map((p) => p.lat);
+  const lngs = points.map((p) => p.lng);
+  const minLat = Math.min(...lats);
+  const maxLat = Math.max(...lats);
+  const minLng = Math.min(...lngs);
+  const maxLng = Math.max(...lngs);
+
+  const region = {
+    latitude: (minLat + maxLat) / 2,
+    longitude: (minLng + maxLng) / 2,
+    latitudeDelta: Math.max(0.2, (maxLat - minLat) * 1.6),
+    longitudeDelta: Math.max(0.2, (maxLng - minLng) * 1.6),
+  };
+
+  return (
+    <View style={styles.mapWrap}>
+      <Text style={styles.mapTitle}>Where you'll go</Text>
+      <MapView style={styles.map} initialRegion={region}>
+        {points.map((p) => (
+          <Marker
+            key={p.id}
+            coordinate={{ latitude: p.lat, longitude: p.lng }}
+            title={p.title}
+            description={p.description}
+            pinColor={colors.brandDark}
+          />
+        ))}
+      </MapView>
     </View>
   );
 }
@@ -191,4 +264,12 @@ const styles = StyleSheet.create({
   bookBtn: { marginTop: 28, borderRadius: 6 },
   bookBtnContent: { paddingVertical: 8 },
   bookError: { color: colors.danger, marginTop: 8, textAlign: 'center' },
+  mapWrap: { marginTop: 24 },
+  mapTitle: {
+    fontSize: 18,
+    fontWeight: '600',
+    color: colors.textDark,
+    marginBottom: 8,
+  },
+  map: { width: '100%', height: 240, borderRadius: 8 },
 });
