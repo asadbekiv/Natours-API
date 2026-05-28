@@ -16,7 +16,7 @@ const config: ExpoConfig = {
     package: 'com.natours.app',
     adaptiveIcon: { backgroundColor: '#55c57a' },
   },
-  plugins: ['expo-router'],
+  plugins: ['expo-router', 'expo-asset', 'expo-font'],
   experiments: { typedRoutes: true },
   extra: {
     apiUrl: process.env.EXPO_PUBLIC_API_URL ?? 'http://localhost:4000/api/v1',
