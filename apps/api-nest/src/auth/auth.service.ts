@@ -13,6 +13,7 @@ import * as bcrypt from 'bcryptjs';
 import * as crypto from 'crypto';
 import { User, UserDocument } from '../users/schemas/user.schema';
 import { MailService } from '../mail/mail.service';
+import { RefreshTokensService } from './refresh-tokens.service';
 import { SignupDto } from './dto/signup.dto';
 import { LoginDto } from './dto/login.dto';
 import { ResetPasswordDto } from './dto/reset-password.dto';
@@ -27,15 +28,22 @@ export class AuthService {
     @InjectModel(User.name) private readonly userModel: Model<UserDocument>,
     private readonly jwtService: JwtService,
     private readonly mailService: MailService,
+    private readonly refreshTokensService: RefreshTokensService,
   ) {}
 
-  private buildAuthResponse(user: UserDocument): AuthResponse {
+  private async buildAuthResponse(
+    user: UserDocument,
+    existingRefreshToken?: string,
+  ): Promise<AuthResponse> {
     const token = this.jwtService.sign({ sub: user.id });
+    const refreshToken =
+      existingRefreshToken ?? (await this.refreshTokensService.issue(user.id));
     // Strip sensitive fields before returning.
     user.password = undefined as unknown as string;
     return {
       status: 'success',
       token,
+      refreshToken,
       data: { user: user as unknown as UserContract },
     };
   }
@@ -151,5 +159,22 @@ export class AuthService {
     user.password = dto.password;
     await user.save();
     return this.buildAuthResponse(user);
+  }
+
+  async refresh(rawToken: string): Promise<AuthResponse> {
+    const { userId, newRaw } =
+      await this.refreshTokensService.rotate(rawToken);
+    const user = await this.userModel.findById(userId).exec();
+    if (!user) {
+      throw new UnauthorizedException('User no longer exists');
+    }
+    return this.buildAuthResponse(user, newRaw);
+  }
+
+  async logout(
+    rawToken: string,
+  ): Promise<{ status: 'success'; message: string }> {
+    await this.refreshTokensService.revoke(rawToken);
+    return { status: 'success', message: 'Logged out' };
   }
 }

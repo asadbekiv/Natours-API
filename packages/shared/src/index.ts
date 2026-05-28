@@ -100,8 +100,15 @@ export interface Booking {
 
 export interface AuthResponse {
   status: 'success';
+  /** Short-lived access token (JWT). */
   token: string;
+  /** Long-lived refresh token (opaque). Exchange at POST /users/refresh. */
+  refreshToken: string;
   data: { user: User };
+}
+
+export interface RefreshRequest {
+  refreshToken: string;
 }
 
 export interface LoginRequest {

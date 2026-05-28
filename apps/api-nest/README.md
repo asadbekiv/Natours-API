@@ -29,6 +29,13 @@ via the MailService (NodeMailer; dev SMTP / prod via env).
 `imageCover` + `images` on PATCH /tours/:id are uploaded to **ImageKit** via
 `StorageService`; the returned URL is stored in Mongo. Image-only, 5 MB cap.
 
+**Refresh-token auth (Phase 3):** access tokens are short-lived
+(`JWT_EXPIRES_IN`, default `15m`); clients exchange a long-lived refresh
+token at `POST /users/refresh` for a new pair. Refresh tokens are opaque,
+**stored hashed** in Mongo with **rotation + reuse detection** (a revoked
+token presented again revokes the user's entire active set). `POST
+/users/logout` (Bearer) revokes the current refresh token.
+
 ## Run
 
 From the repo root:

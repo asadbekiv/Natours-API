@@ -4,16 +4,24 @@ import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
 import { ConfigService } from '@nestjs/config';
 import { User, UserSchema } from '../users/schemas/user.schema';
+import {
+  RefreshToken,
+  RefreshTokenSchema,
+} from './schemas/refresh-token.schema';
 import { AuthService } from './auth.service';
 import { AuthController } from './auth.controller';
 import { JwtStrategy } from './strategies/jwt.strategy';
+import { RefreshTokensService } from './refresh-tokens.service';
 import { MailModule } from '../mail/mail.module';
 
 @Module({
   imports: [
     // Registered here too (independent of UsersModule) so route ordering is
     // controlled purely by AppModule's import order.
-    MongooseModule.forFeature([{ name: User.name, schema: UserSchema }]),
+    MongooseModule.forFeature([
+      { name: User.name, schema: UserSchema },
+      { name: RefreshToken.name, schema: RefreshTokenSchema },
+    ]),
     MailModule,
     PassportModule,
     JwtModule.registerAsync({
@@ -30,6 +38,6 @@ import { MailModule } from '../mail/mail.module';
     }),
   ],
   controllers: [AuthController],
-  providers: [AuthService, JwtStrategy],
+  providers: [AuthService, JwtStrategy, RefreshTokensService],
 })
 export class AuthModule {}
