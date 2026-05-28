@@ -28,6 +28,8 @@ interface AuthState {
   signIn: (email: string, password: string) => Promise<void>;
   signUp: (input: SignupInput) => Promise<void>;
   signOut: () => Promise<void>;
+  /** Replace the current user (e.g. after PATCH /users/updateMe). */
+  updateUser: (user: User) => void;
 }
 
 const AuthContext = createContext<AuthState | null>(null);
@@ -80,8 +82,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setUser(null);
   }, []);
 
+  const updateUser = useCallback((u: User) => setUser(u), []);
+
   return (
-    <AuthContext.Provider value={{ user, loading, signIn, signUp, signOut }}>
+    <AuthContext.Provider
+      value={{ user, loading, signIn, signUp, signOut, updateUser }}
+    >
       {children}
     </AuthContext.Provider>
   );

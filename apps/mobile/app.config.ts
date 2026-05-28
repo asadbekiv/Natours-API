@@ -14,6 +14,10 @@ const config: ExpoConfig = {
   ios: {
     supportsTablet: true,
     bundleIdentifier: 'com.natours.app',
+    infoPlist: {
+      NSPhotoLibraryUsageDescription:
+        'Allow Natours to access your photos so you can update your profile picture.',
+    },
   },
   android: {
     package: 'com.natours.app',
