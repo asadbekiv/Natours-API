@@ -1,20 +1,21 @@
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { v2 as cloudinary, type UploadApiResponse } from 'cloudinary';
-import { Readable } from 'stream';
+import ImageKit from 'imagekit';
 
 /**
- * Uploads buffers to Cloudinary and returns the secure URL.
- * Cloudinary handles storage + on-the-fly resize/optimize + CDN delivery.
+ * Uploads buffers to ImageKit and returns the public URL.
+ * ImageKit handles storage + on-the-fly resize/optimize (via URL params)
+ * + CDN delivery.
  */
 @Injectable()
 export class StorageService {
+  private readonly imagekit: ImageKit;
+
   constructor(config: ConfigService) {
-    cloudinary.config({
-      cloud_name: config.getOrThrow<string>('CLOUDINARY_CLOUD_NAME'),
-      api_key: config.getOrThrow<string>('CLOUDINARY_API_KEY'),
-      api_secret: config.getOrThrow<string>('CLOUDINARY_API_SECRET'),
-      secure: true,
+    this.imagekit = new ImageKit({
+      publicKey: config.getOrThrow<string>('IMAGEKIT_PUBLIC_KEY'),
+      privateKey: config.getOrThrow<string>('IMAGEKIT_PRIVATE_KEY'),
+      urlEndpoint: config.getOrThrow<string>('IMAGEKIT_URL_ENDPOINT'),
     });
   }
 
@@ -23,29 +24,22 @@ export class StorageService {
     folder: string,
     publicId?: string,
   ): Promise<string> {
-    const result = await new Promise<UploadApiResponse>((resolve, reject) => {
-      const stream = cloudinary.uploader.upload_stream(
-        {
-          folder,
-          public_id: publicId,
-          resource_type: 'image',
-          overwrite: true,
-        },
-        (err, res) => {
-          if (err || !res) {
-            reject(err ?? new Error('Cloudinary upload failed'));
-            return;
-          }
-          resolve(res);
-        },
-      );
-      Readable.from(buffer).pipe(stream);
-    }).catch((err: Error) => {
+    try {
+      // useUniqueFileName=false + overwriteFile=true → "user-<id>" replaces
+      // on re-upload instead of accumulating duplicates.
+      const fileName = publicId ? `${publicId}.jpg` : `upload-${Date.now()}.jpg`;
+      const result = await this.imagekit.upload({
+        file: buffer,
+        fileName,
+        folder: `/${folder}`,
+        useUniqueFileName: false,
+        overwriteFile: true,
+      });
+      return result.url;
+    } catch (err) {
       throw new InternalServerErrorException(
-        `Image upload failed: ${err.message}`,
+        `Image upload failed: ${(err as Error).message}`,
       );
-    });
-
-    return result.secure_url;
+    }
   }
 }

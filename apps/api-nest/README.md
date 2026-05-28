@@ -26,8 +26,8 @@ via the MailService (NodeMailer; dev SMTP / prod via env).
 `CORS_ORIGIN`), and global rate limiting (`@nestjs/throttler`, 100 req/min/IP).
 
 **Image uploads (Phase 3):** user `photo` on PATCH /users/updateMe and tour
-`imageCover` + `images` on PATCH /tours/:id stream to Cloudinary via
-`StorageService`; the `secure_url` is stored in Mongo. Image-only, 5 MB cap.
+`imageCover` + `images` on PATCH /tours/:id are uploaded to **ImageKit** via
+`StorageService`; the returned URL is stored in Mongo. Image-only, 5 MB cap.
 
 ## Run
 
