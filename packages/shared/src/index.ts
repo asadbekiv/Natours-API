@@ -1,4 +1,4 @@
-w/**
+/**
  * Shared types and API contracts for the Natours platform.
  *
  * Consumed by the API today and, after the NestJS migration, by the mobile
