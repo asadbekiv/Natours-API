@@ -50,6 +50,7 @@ export class UsersController {
         photo.buffer,
         'natours/users',
         `user-${user.id}`,
+        { width: 500, height: 500, fit: 'cover' },
       );
     }
     return this.usersService.updateMe(user.id, updates);

@@ -97,11 +97,17 @@ export class ToursController {
     } = {},
   ) {
     const extra: { imageCover?: string; images?: string[] } = {};
+    const tourResize = {
+      width: 2000,
+      height: 1333,
+      fit: 'cover' as const,
+    };
     if (files.imageCover?.[0]) {
       extra.imageCover = await this.storageService.uploadImage(
         files.imageCover[0].buffer,
         'natours/tours',
         `tour-${id}-cover`,
+        tourResize,
       );
     }
     if (files.images?.length) {
@@ -111,6 +117,7 @@ export class ToursController {
             f.buffer,
             'natours/tours',
             `tour-${id}-${i + 1}`,
+            tourResize,
           ),
         ),
       );

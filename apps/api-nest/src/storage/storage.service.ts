@@ -1,11 +1,20 @@
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import ImageKit from 'imagekit';
+import sharp from 'sharp';
+
+export interface ResizeOptions {
+  width?: number;
+  height?: number;
+  /** 'cover' crops to exact dimensions (default), 'inside' preserves aspect. */
+  fit?: 'cover' | 'inside';
+}
 
 /**
- * Uploads buffers to ImageKit and returns the public URL.
- * ImageKit handles storage + on-the-fly resize/optimize (via URL params)
- * + CDN delivery.
+ * Resizes images with Sharp and uploads to ImageKit. Returns the public URL.
+ *
+ * Resizing is mandatory: ImageKit's free tier refuses to serve images above
+ * 25 MP, and we don't need huge originals for a tour/avatar app anyway.
  */
 @Injectable()
 export class StorageService {
@@ -23,13 +32,23 @@ export class StorageService {
     buffer: Buffer,
     folder: string,
     publicId?: string,
+    resize: ResizeOptions = {},
   ): Promise<string> {
+    const width = resize.width ?? 2000;
+    const height = resize.height ?? 2000;
+    const fit = resize.fit ?? 'inside';
+
+    const processed = await sharp(buffer)
+      .resize(width, height, { fit, withoutEnlargement: true })
+      .jpeg({ quality: 90 })
+      .toBuffer();
+
     try {
-      // useUniqueFileName=false + overwriteFile=true → "user-<id>" replaces
-      // on re-upload instead of accumulating duplicates.
-      const fileName = publicId ? `${publicId}.jpg` : `upload-${Date.now()}.jpg`;
+      const fileName = publicId
+        ? `${publicId}.jpg`
+        : `upload-${Date.now()}.jpg`;
       const result = await this.imagekit.upload({
-        file: buffer,
+        file: processed,
         fileName,
         folder: `/${folder}`,
         useUniqueFileName: false,
