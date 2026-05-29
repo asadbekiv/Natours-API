@@ -16,6 +16,7 @@ import { fetchMyBookings, myBookingsKey } from '../../../src/api/bookings';
 import { useAuth } from '../../../src/auth/auth-context';
 import { ReviewList } from '../../../src/components/ReviewList';
 import { ReviewDialog } from '../../../src/components/ReviewDialog';
+import { TourGallery } from '../../../src/components/TourGallery';
 import { colors } from '../../../src/theme';
 
 async function fetchTour(id: string): Promise<Tour> {
@@ -114,6 +115,8 @@ export default function TourDetailScreen() {
       ) : (
         <View style={[styles.cover, styles.coverPlaceholder]} />
       )}
+
+      <TourGallery images={t.images} />
 
       <View style={styles.body}>
         <Text style={styles.title}>{t.name}</Text>
