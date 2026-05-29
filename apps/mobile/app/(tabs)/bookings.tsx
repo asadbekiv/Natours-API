@@ -61,7 +61,8 @@ export default function MyBookingsScreen() {
         ) : (
           bookings.map((b) => (
             <BookingRow
-              key={b.id}
+              // Defensive: older responses lacked the `id` virtual.
+              key={b.id ?? (b as unknown as { _id: string })._id}
               booking={b}
               onWriteReview={() => setReviewBooking(b)}
             />

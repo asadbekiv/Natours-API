@@ -3,7 +3,11 @@ import { HydratedDocument, Types } from 'mongoose';
 
 export type BookingDocument = HydratedDocument<Booking>;
 
-@Schema()
+@Schema({
+  // Surface the `id` virtual in JSON so clients can use a stable string key.
+  toJSON: { virtuals: true },
+  toObject: { virtuals: true },
+})
 export class Booking {
   @Prop({
     type: Types.ObjectId,

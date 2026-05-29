@@ -5,7 +5,11 @@ import type { UserRole } from '@natours/shared';
 
 export type UserDocument = HydratedDocument<User>;
 
-@Schema()
+@Schema({
+  // Surface the `id` virtual in JSON so clients can use a stable string key.
+  toJSON: { virtuals: true },
+  toObject: { virtuals: true },
+})
 export class User {
   @Prop({ trim: true })
   name: string;
