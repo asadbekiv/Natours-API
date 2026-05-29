@@ -17,7 +17,14 @@ import { colors } from '../../../src/theme';
 
 async function fetchTour(id: string): Promise<Tour> {
   const res = await api.get<{ data: Tour }>(`/tours/${id}`);
-  return res.data.data;
+  const tour = res.data.data;
+  // eslint-disable-next-line no-console
+  console.log('[tour] fetched', {
+    id,
+    name: tour.name,
+    reviewsCount: tour.reviews?.length ?? 0,
+  });
+  return tour;
 }
 
 export default function TourDetailScreen() {
