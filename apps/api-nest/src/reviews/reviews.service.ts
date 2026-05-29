@@ -33,11 +33,13 @@ export class ReviewsService {
     userId: string,
     tourId: string,
   ): Promise<Review> {
+    // Cast explicitly so the BSON is a real ObjectId (Mongoose's auto-cast
+    // does this too, but the intent shouldn't depend on a default).
     const review = await this.reviewModel.create({
       review: dto.review,
       rating: dto.rating,
-      tour: tourId,
-      user: userId,
+      tour: new Types.ObjectId(tourId),
+      user: new Types.ObjectId(userId),
     });
     await this.recalcTourRatings(review.tour);
     return review;

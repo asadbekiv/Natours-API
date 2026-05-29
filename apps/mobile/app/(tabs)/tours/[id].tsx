@@ -133,14 +133,15 @@ export default function TourDetailScreen() {
 
         <Text style={styles.price}>${t.price}</Text>
 
-        {/* Reviews promoted up — social proof shouldn't be buried at the bottom. */}
-        <ReviewList reviews={t.reviews} />
-
         {t.description ? (
           <Text style={styles.description}>{t.description}</Text>
         ) : null}
 
         <TourMap tour={t} />
+
+        {/* Reviews live between the map and the booking buttons so the CTA
+            stays the last thing in the scroll. */}
+        <ReviewList reviews={t.reviews} />
 
         {canReview ? (
           <Button
