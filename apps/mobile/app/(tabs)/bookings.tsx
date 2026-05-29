@@ -11,11 +11,21 @@ import { Button, Snackbar } from 'react-native-paper';
 import { useQuery } from '@tanstack/react-query';
 import type { Booking } from '@natours/shared';
 import { fetchMyBookings, myBookingsKey } from '../../src/api/bookings';
+import {
+  fetchMyReviews,
+  myReviewsKey,
+  reviewedTourIdSet,
+} from '../../src/api/reviews';
 import { ReviewDialog } from '../../src/components/ReviewDialog';
 import { colors } from '../../src/theme';
 
 export default function MyBookingsScreen() {
   const q = useQuery({ queryKey: myBookingsKey, queryFn: fetchMyBookings });
+  const reviewsQ = useQuery({
+    queryKey: myReviewsKey,
+    queryFn: fetchMyReviews,
+  });
+  const reviewedTours = reviewedTourIdSet(reviewsQ.data);
   const [reviewBooking, setReviewBooking] = useState<Booking | null>(null);
   const [snack, setSnack] = useState(false);
 
@@ -59,14 +69,19 @@ export default function MyBookingsScreen() {
             </Text>
           </>
         ) : (
-          bookings.map((b) => (
-            <BookingRow
-              // Defensive: older responses lacked the `id` virtual.
-              key={b.id ?? (b as unknown as { _id: string })._id}
-              booking={b}
-              onWriteReview={() => setReviewBooking(b)}
-            />
-          ))
+          bookings.map((b) => {
+            const tourId = getTourId(b);
+            const alreadyReviewed = !!tourId && reviewedTours.has(tourId);
+            return (
+              <BookingRow
+                // Defensive: older responses lacked the `id` virtual.
+                key={b.id ?? (b as unknown as { _id: string })._id}
+                booking={b}
+                alreadyReviewed={alreadyReviewed}
+                onWriteReview={() => setReviewBooking(b)}
+              />
+            );
+          })
         )}
       </ScrollView>
 
@@ -92,9 +107,11 @@ export default function MyBookingsScreen() {
 
 function BookingRow({
   booking,
+  alreadyReviewed,
   onWriteReview,
 }: {
   booking: Booking;
+  alreadyReviewed: boolean;
   onWriteReview: () => void;
 }) {
   const tourName = getTourName(booking) ?? `Tour ${booking.tour}`;
@@ -114,14 +131,18 @@ function BookingRow({
           </Text>
         </View>
       </View>
-      <Button
-        mode="text"
-        onPress={onWriteReview}
-        textColor={colors.brandDark}
-        style={styles.reviewBtn}
-      >
-        Write a review
-      </Button>
+      {alreadyReviewed ? (
+        <Text style={styles.reviewed}>Reviewed ✓</Text>
+      ) : (
+        <Button
+          mode="text"
+          onPress={onWriteReview}
+          textColor={colors.brandDark}
+          style={styles.reviewBtn}
+        >
+          Write a review
+        </Button>
+      )}
     </View>
   );
 }
@@ -168,6 +189,12 @@ const styles = StyleSheet.create({
   price: { fontSize: 16, fontWeight: '700', color: colors.brandDark },
   paid: { color: colors.brandDark, fontWeight: '600' },
   reviewBtn: { alignSelf: 'flex-start', marginTop: 6, marginLeft: -8 },
+  reviewed: {
+    marginTop: 8,
+    color: colors.brandDark,
+    fontWeight: '600',
+    fontSize: 13,
+  },
 
   empty: {
     flexGrow: 1,

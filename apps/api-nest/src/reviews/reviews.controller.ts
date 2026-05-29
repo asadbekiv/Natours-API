@@ -33,6 +33,12 @@ export class ReviewsController {
     return this.reviewsService.findAll();
   }
 
+  // Current user's reviews — declared before ':id' so the static path wins.
+  @Get('my-reviews')
+  findMine(@CurrentUser() user: UserDocument) {
+    return this.reviewsService.findByUser(user.id);
+  }
+
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.reviewsService.findOne(id);

@@ -1,6 +1,17 @@
+import { Image } from 'expo-image';
 import { Tabs } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import { colors } from '../../src/theme';
+
+const logo = require('../../assets/logo.png');
+
+const headerLogo = () => (
+  <Image
+    source={logo}
+    style={{ width: 110, height: 32 }}
+    contentFit="contain"
+  />
+);
 
 type IoniconName = React.ComponentProps<typeof Ionicons>['name'];
 
@@ -39,6 +50,8 @@ export default function TabsLayout() {
         name="bookings"
         options={{
           title: 'Bookings',
+          headerTitle: headerLogo,
+          headerTitleAlign: 'center',
           tabBarIcon: tabIcon('ticket', 'ticket-outline'),
         }}
       />
@@ -46,6 +59,8 @@ export default function TabsLayout() {
         name="me"
         options={{
           title: 'Profile',
+          headerTitle: headerLogo,
+          headerTitleAlign: 'center',
           tabBarIcon: tabIcon('person', 'person-outline'),
         }}
       />

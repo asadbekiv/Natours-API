@@ -4,6 +4,7 @@ import { Button, Dialog, Portal, TextInput } from 'react-native-paper';
 import { Ionicons } from '@expo/vector-icons';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { api } from '../api/client';
+import { myReviewsKey } from '../api/reviews';
 import { colors } from '../theme';
 
 interface Props {
@@ -46,6 +47,8 @@ export function ReviewDialog({
       if (tourId) {
         void queryClient.invalidateQueries({ queryKey: ['tour', tourId] });
       }
+      // Invalidate the my-reviews list so the booking-row button hides.
+      void queryClient.invalidateQueries({ queryKey: myReviewsKey });
       onSubmitted?.();
       handleClose();
     },

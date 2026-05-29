@@ -22,6 +22,11 @@ export class ReviewsService {
     return this.reviewModel.find(tourId ? { tour: tourId } : {}).exec();
   }
 
+  /** Reviews authored by the current user, newest first. */
+  findByUser(userId: string): Promise<Review[]> {
+    return this.reviewModel.find({ user: userId }).sort('-createdAt').exec();
+  }
+
   async findOne(id: string): Promise<Review> {
     const review = await this.reviewModel.findById(id).exec();
     if (!review) throw new NotFoundException('No review found with that ID');
