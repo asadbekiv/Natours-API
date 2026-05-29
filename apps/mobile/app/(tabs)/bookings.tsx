@@ -138,17 +138,33 @@ function ReviewDialog({
   const [text, setText] = useState('');
   const [error, setError] = useState<string | null>(null);
 
-  const tourId =
+  // booking.tour may be a populated subdoc ({ _id, id?, name }) or a plain id string.
+  const tourObj =
     booking && typeof booking.tour === 'object'
-      ? booking.tour.id
-      : (booking?.tour as string | undefined);
+      ? (booking.tour as Record<string, unknown>)
+      : null;
+  const tourId =
+    (tourObj?.id as string | undefined) ??
+    (tourObj?._id as string | undefined) ??
+    (typeof booking?.tour === 'string' ? booking.tour : undefined);
   const tourName =
-    booking && typeof booking.tour === 'object' ? booking.tour.name : '';
+    (tourObj?.name as string | undefined) ?? '';
 
   const mutation = useMutation({
     mutationFn: async () => {
-      if (!tourId) throw new Error('No tour for this booking');
-      await api.post(`/tours/${tourId}/reviews`, { rating, review: text });
+      if (!tourId) throw new Error('No tour found on this booking');
+      // eslint-disable-next-line no-console
+      console.log('[review] submitting', {
+        tourId,
+        rating,
+        reviewLen: text.length,
+      });
+      const res = await api.post(`/tours/${tourId}/reviews`, {
+        rating,
+        review: text,
+      });
+      // eslint-disable-next-line no-console
+      console.log('[review] success', res.status, res.data);
     },
     onSuccess: () => {
       if (tourId) {
