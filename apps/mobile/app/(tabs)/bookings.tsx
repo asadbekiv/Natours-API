@@ -12,6 +12,7 @@ import {
   Button,
   Dialog,
   Portal,
+  Snackbar,
   TextInput,
 } from 'react-native-paper';
 import { Ionicons } from '@expo/vector-icons';
@@ -28,6 +29,7 @@ async function fetchMyBookings(): Promise<Booking[]> {
 export default function MyBookingsScreen() {
   const q = useQuery({ queryKey: ['my-bookings'], queryFn: fetchMyBookings });
   const [reviewBooking, setReviewBooking] = useState<Booking | null>(null);
+  const [snack, setSnack] = useState(false);
 
   if (q.isLoading) {
     return (
@@ -82,7 +84,17 @@ export default function MyBookingsScreen() {
       <ReviewDialog
         booking={reviewBooking}
         onClose={() => setReviewBooking(null)}
+        onSubmitted={() => setSnack(true)}
       />
+
+      <Snackbar
+        visible={snack}
+        onDismiss={() => setSnack(false)}
+        duration={2500}
+        style={{ backgroundColor: colors.brandDark }}
+      >
+        Review posted ✓ — open the tour to see it.
+      </Snackbar>
     </>
   );
 }
@@ -129,9 +141,11 @@ function BookingRow({
 function ReviewDialog({
   booking,
   onClose,
+  onSubmitted,
 }: {
   booking: Booking | null;
   onClose: () => void;
+  onSubmitted: () => void;
 }) {
   const queryClient = useQueryClient();
   const [rating, setRating] = useState(5);
@@ -170,6 +184,7 @@ function ReviewDialog({
       if (tourId) {
         void queryClient.invalidateQueries({ queryKey: ['tour', tourId] });
       }
+      onSubmitted();
       handleClose();
     },
     onError: (err) => {
