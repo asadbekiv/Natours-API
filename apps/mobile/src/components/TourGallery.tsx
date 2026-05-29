@@ -73,7 +73,9 @@ export function TourGallery({ images }: { images: string[] | undefined }) {
 }
 
 const styles = StyleSheet.create({
-  wrap: { marginTop: 12, marginBottom: 8 },
+  // Sits at the very top of the scroll on tour detail (it replaced the
+  // standalone cover image), so no top margin.
+  wrap: { marginTop: 0, marginBottom: 8 },
   image: {
     width: IMAGE_WIDTH,
     height: IMAGE_HEIGHT,

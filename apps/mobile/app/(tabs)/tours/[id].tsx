@@ -96,7 +96,12 @@ export default function TourDetailScreen() {
   }
 
   const t = q.data;
-  const coverUrl = /^https?:\/\//i.test(t.imageCover) ? t.imageCover : null;
+  // Cover + every entry in `images` make up the gallery. Only absolute
+  // URLs survive — legacy filename-only seed tours hide the gallery and
+  // fall back to a coloured placeholder.
+  const galleryUrls = [t.imageCover, ...(t.images ?? [])].filter(
+    (u): u is string => !!u && /^https?:\/\//i.test(u),
+  );
 
   // Booked → eligible to review. Already reviewed → hide the button.
   const hasBooking = bookingMatchesTour(bookingsQ.data, id);
@@ -105,18 +110,11 @@ export default function TourDetailScreen() {
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
-      {coverUrl ? (
-        <Image
-          source={coverUrl}
-          style={styles.cover}
-          contentFit="cover"
-          transition={300}
-        />
+      {galleryUrls.length > 0 ? (
+        <TourGallery images={galleryUrls} />
       ) : (
         <View style={[styles.cover, styles.coverPlaceholder]} />
       )}
-
-      <TourGallery images={t.images} />
 
       <View style={styles.body}>
         <Text style={styles.title}>{t.name}</Text>
@@ -306,7 +304,8 @@ const styles = StyleSheet.create({
   container: { paddingBottom: 32 },
   center: { flex: 1, justifyContent: 'center', alignItems: 'center' },
   error: { color: colors.danger },
-  cover: { width: '100%', height: 260, backgroundColor: '#eee' },
+  // Only used as the empty-gallery placeholder now.
+  cover: { width: '100%', height: 240, backgroundColor: '#eee' },
   coverPlaceholder: { backgroundColor: colors.brandLight, opacity: 0.3 },
   body: { padding: 20 },
   title: { fontSize: 26, fontWeight: '700', color: colors.textDark },
