@@ -1,33 +1,21 @@
 import { useState } from 'react';
 import {
   ActivityIndicator,
-  Pressable,
   RefreshControl,
   ScrollView,
   StyleSheet,
   Text,
   View,
 } from 'react-native';
-import {
-  Button,
-  Dialog,
-  Portal,
-  Snackbar,
-  TextInput,
-} from 'react-native-paper';
-import { Ionicons } from '@expo/vector-icons';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { Button, Snackbar } from 'react-native-paper';
+import { useQuery } from '@tanstack/react-query';
 import type { Booking } from '@natours/shared';
-import { api } from '../../src/api/client';
+import { fetchMyBookings, myBookingsKey } from '../../src/api/bookings';
+import { ReviewDialog } from '../../src/components/ReviewDialog';
 import { colors } from '../../src/theme';
 
-async function fetchMyBookings(): Promise<Booking[]> {
-  const res = await api.get<{ data: Booking[] }>('/bookings/my-tours');
-  return res.data.data;
-}
-
 export default function MyBookingsScreen() {
-  const q = useQuery({ queryKey: ['my-bookings'], queryFn: fetchMyBookings });
+  const q = useQuery({ queryKey: myBookingsKey, queryFn: fetchMyBookings });
   const [reviewBooking, setReviewBooking] = useState<Booking | null>(null);
   const [snack, setSnack] = useState(false);
 
@@ -82,7 +70,9 @@ export default function MyBookingsScreen() {
       </ScrollView>
 
       <ReviewDialog
-        booking={reviewBooking}
+        visible={!!reviewBooking}
+        tourId={getTourId(reviewBooking)}
+        tourName={getTourName(reviewBooking)}
         onClose={() => setReviewBooking(null)}
         onSubmitted={() => setSnack(true)}
       />
@@ -106,10 +96,7 @@ function BookingRow({
   booking: Booking;
   onWriteReview: () => void;
 }) {
-  const tourName =
-    typeof booking.tour === 'object' && booking.tour
-      ? booking.tour.name
-      : `Tour ${booking.tour}`;
+  const tourName = getTourName(booking) ?? `Tour ${booking.tour}`;
   const when = new Date(booking.createdAt).toLocaleDateString();
 
   return (
@@ -138,138 +125,24 @@ function BookingRow({
   );
 }
 
-function ReviewDialog({
-  booking,
-  onClose,
-  onSubmitted,
-}: {
-  booking: Booking | null;
-  onClose: () => void;
-  onSubmitted: () => void;
-}) {
-  const queryClient = useQueryClient();
-  const [rating, setRating] = useState(5);
-  const [text, setText] = useState('');
-  const [error, setError] = useState<string | null>(null);
-
-  // booking.tour may be a populated subdoc ({ _id, id?, name }) or a plain id string.
-  const tourObj =
-    booking && typeof booking.tour === 'object'
-      ? (booking.tour as Record<string, unknown>)
-      : null;
-  const tourId =
-    (tourObj?.id as string | undefined) ??
-    (tourObj?._id as string | undefined) ??
-    (typeof booking?.tour === 'string' ? booking.tour : undefined);
-  const tourName =
-    (tourObj?.name as string | undefined) ?? '';
-
-  const mutation = useMutation({
-    mutationFn: async () => {
-      if (!tourId) throw new Error('No tour found on this booking');
-      // eslint-disable-next-line no-console
-      console.log('[review] submitting', {
-        tourId,
-        rating,
-        reviewLen: text.length,
-      });
-      const res = await api.post(`/tours/${tourId}/reviews`, {
-        rating,
-        review: text,
-      });
-      // eslint-disable-next-line no-console
-      console.log('[review] success', res.status, res.data);
-    },
-    onSuccess: () => {
-      if (tourId) {
-        void queryClient.invalidateQueries({ queryKey: ['tour', tourId] });
-      }
-      onSubmitted();
-      handleClose();
-    },
-    onError: (err) => {
-      const e = err as {
-        message?: string;
-        response?: { data?: { message?: string }; status?: number };
-      };
-      setError(
-        e.response?.data?.message ??
-          (e.response
-            ? `HTTP ${e.response.status} — ${JSON.stringify(e.response.data)}`
-            : e.message ?? 'Could not submit review'),
-      );
-    },
-  });
-
-  function handleClose() {
-    setRating(5);
-    setText('');
-    setError(null);
-    mutation.reset();
-    onClose();
+// --- helpers: booking.tour may be a populated subdoc or a plain id string. ---
+function getTourId(booking: Booking | null): string | undefined {
+  if (!booking) return undefined;
+  if (typeof booking.tour === 'object' && booking.tour) {
+    const t = booking.tour as Record<string, unknown>;
+    return (t.id as string | undefined) ?? (t._id as string | undefined);
   }
-
-  return (
-    <Portal>
-      <Dialog visible={!!booking} onDismiss={handleClose}>
-        <Dialog.Title>Leave a review</Dialog.Title>
-        <Dialog.Content>
-          {tourName ? (
-            <Text style={styles.dialogTourName}>{tourName}</Text>
-          ) : null}
-          <StarPicker value={rating} onChange={setRating} />
-          <TextInput
-            mode="outlined"
-            label="Your review"
-            value={text}
-            onChangeText={setText}
-            multiline
-            numberOfLines={4}
-            style={styles.reviewInput}
-          />
-          {error ? <Text style={styles.dialogError}>{error}</Text> : null}
-        </Dialog.Content>
-        <Dialog.Actions>
-          <Button onPress={handleClose}>Cancel</Button>
-          <Button
-            mode="contained"
-            onPress={() => mutation.mutate()}
-            loading={mutation.isPending}
-            disabled={mutation.isPending || text.trim().length === 0}
-          >
-            Submit
-          </Button>
-        </Dialog.Actions>
-      </Dialog>
-    </Portal>
-  );
+  return typeof booking.tour === 'string' ? booking.tour : undefined;
 }
 
-function StarPicker({
-  value,
-  onChange,
-}: {
-  value: number;
-  onChange: (v: number) => void;
-}) {
-  return (
-    <View style={styles.starRow}>
-      {[1, 2, 3, 4, 5].map((i) => (
-        <Pressable
-          key={i}
-          onPress={() => onChange(i)}
-          style={styles.starPress}
-          accessibilityLabel={`${i} star${i === 1 ? '' : 's'}`}
-        >
-          <Ionicons
-            name={i <= value ? 'star' : 'star-outline'}
-            size={32}
-            color={i <= value ? colors.star : '#d8d8d8'}
-          />
-        </Pressable>
-      ))}
-    </View>
-  );
+function getTourName(booking: Booking | null): string | undefined {
+  if (!booking) return undefined;
+  if (typeof booking.tour === 'object' && booking.tour) {
+    return (booking.tour as Record<string, unknown>).name as
+      | string
+      | undefined;
+  }
+  return undefined;
 }
 
 const styles = StyleSheet.create({
@@ -308,15 +181,4 @@ const styles = StyleSheet.create({
     marginBottom: 8,
   },
   emptyHint: { color: colors.textMuted, textAlign: 'center', lineHeight: 20 },
-
-  dialogTourName: {
-    fontSize: 14,
-    fontWeight: '600',
-    color: colors.textDark,
-    marginBottom: 12,
-  },
-  starRow: { flexDirection: 'row', justifyContent: 'center', marginBottom: 12 },
-  starPress: { paddingHorizontal: 6 },
-  reviewInput: { backgroundColor: '#fff' },
-  dialogError: { color: colors.danger, marginTop: 8 },
 });

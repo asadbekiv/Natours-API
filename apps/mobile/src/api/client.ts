@@ -12,9 +12,6 @@ const baseURL: string =
   process.env.EXPO_PUBLIC_API_URL ??
   'http://localhost:4000/api/v1';
 
-// eslint-disable-next-line no-console
-console.log('[api] baseURL =', baseURL);
-
 export const api = axios.create({ baseURL, timeout: 15000 });
 
 // Attach the current access token to every outgoing request.

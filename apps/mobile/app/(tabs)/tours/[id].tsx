@@ -1,6 +1,6 @@
 import { useLayoutEffect, useState } from 'react';
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
-import { ActivityIndicator, Button } from 'react-native-paper';
+import { ActivityIndicator, Button, Snackbar } from 'react-native-paper';
 import { Image } from 'expo-image';
 import * as WebBrowser from 'expo-web-browser';
 import MapView, { Marker } from 'react-native-maps';
@@ -10,21 +10,17 @@ import {
   useRouter,
 } from 'expo-router';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
-import type { Tour } from '@natours/shared';
+import type { Booking, Tour } from '@natours/shared';
 import { api } from '../../../src/api/client';
+import { fetchMyBookings, myBookingsKey } from '../../../src/api/bookings';
+import { useAuth } from '../../../src/auth/auth-context';
 import { ReviewList } from '../../../src/components/ReviewList';
+import { ReviewDialog } from '../../../src/components/ReviewDialog';
 import { colors } from '../../../src/theme';
 
 async function fetchTour(id: string): Promise<Tour> {
   const res = await api.get<{ data: Tour }>(`/tours/${id}`);
-  const tour = res.data.data;
-  // eslint-disable-next-line no-console
-  console.log('[tour] fetched', {
-    id,
-    name: tour.name,
-    reviewsCount: tour.reviews?.length ?? 0,
-  });
-  return tour;
+  return res.data.data;
 }
 
 export default function TourDetailScreen() {
@@ -32,12 +28,23 @@ export default function TourDetailScreen() {
   const navigation = useNavigation();
   const router = useRouter();
   const queryClient = useQueryClient();
+  const { user } = useAuth();
   const [bookingLoading, setBookingLoading] = useState(false);
   const [bookingError, setBookingError] = useState<string | null>(null);
+  const [reviewOpen, setReviewOpen] = useState(false);
+  const [reviewPostedSnack, setReviewPostedSnack] = useState(false);
+
   const q = useQuery({
     queryKey: ['tour', id],
     queryFn: () => fetchTour(id),
     enabled: !!id,
+  });
+
+  // Used to decide whether to surface a "Write a review" button on this screen.
+  const bookingsQ = useQuery({
+    queryKey: myBookingsKey,
+    queryFn: fetchMyBookings,
+    enabled: !!user,
   });
 
   useLayoutEffect(() => {
@@ -90,6 +97,11 @@ export default function TourDetailScreen() {
   const t = q.data;
   const coverUrl = /^https?:\/\//i.test(t.imageCover) ? t.imageCover : null;
 
+  // Booked → eligible to review. Already reviewed → hide the button.
+  const hasBooking = bookingMatchesTour(bookingsQ.data, id);
+  const alreadyReviewed = userHasReviewed(t.reviews, user?.id);
+  const canReview = !!user && hasBooking && !alreadyReviewed;
+
   return (
     <ScrollView contentContainerStyle={styles.container}>
       {coverUrl ? (
@@ -130,6 +142,18 @@ export default function TourDetailScreen() {
 
         <TourMap tour={t} />
 
+        {canReview ? (
+          <Button
+            mode="outlined"
+            onPress={() => setReviewOpen(true)}
+            style={styles.reviewBtn}
+            contentStyle={styles.bookBtnContent}
+            textColor={colors.brandDark}
+          >
+            Write a review
+          </Button>
+        ) : null}
+
         <Button
           mode="contained"
           onPress={onBook}
@@ -144,8 +168,55 @@ export default function TourDetailScreen() {
           <Text style={styles.bookError}>{bookingError}</Text>
         ) : null}
       </View>
+
+      <ReviewDialog
+        visible={reviewOpen}
+        tourId={id}
+        tourName={t.name}
+        onClose={() => setReviewOpen(false)}
+        onSubmitted={() => setReviewPostedSnack(true)}
+      />
+
+      <Snackbar
+        visible={reviewPostedSnack}
+        onDismiss={() => setReviewPostedSnack(false)}
+        duration={2500}
+        style={{ backgroundColor: colors.brandDark }}
+      >
+        Review posted ✓
+      </Snackbar>
     </ScrollView>
   );
+}
+
+// --- helpers --------------------------------------------------------------
+
+function bookingMatchesTour(
+  bookings: Booking[] | undefined,
+  tourId: string | undefined,
+): boolean {
+  if (!bookings || !tourId) return false;
+  return bookings.some((b) => {
+    if (typeof b.tour === 'object' && b.tour) {
+      const t = b.tour as Record<string, unknown>;
+      return t.id === tourId || t._id === tourId;
+    }
+    return b.tour === tourId;
+  });
+}
+
+function userHasReviewed(
+  reviews: Tour['reviews'] | undefined,
+  userId: string | undefined,
+): boolean {
+  if (!reviews || !userId) return false;
+  return reviews.some((r) => {
+    if (typeof r.user === 'object' && r.user) {
+      const u = r.user as Record<string, unknown>;
+      return u.id === userId || u._id === userId;
+    }
+    return r.user === userId;
+  });
 }
 
 function Stat({ label, value }: { label: string; value: string }) {
@@ -272,7 +343,12 @@ const styles = StyleSheet.create({
     lineHeight: 22,
     fontSize: 15,
   },
-  bookBtn: { marginTop: 28, borderRadius: 6 },
+  bookBtn: { marginTop: 12, borderRadius: 6 },
+  reviewBtn: {
+    marginTop: 28,
+    borderRadius: 6,
+    borderColor: colors.brandDark,
+  },
   bookBtnContent: { paddingVertical: 8 },
   bookError: { color: colors.danger, marginTop: 8, textAlign: 'center' },
   mapWrap: { marginTop: 24 },

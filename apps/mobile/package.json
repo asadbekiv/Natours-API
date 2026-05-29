@@ -11,6 +11,7 @@
     "lint": "tsc -p tsconfig.json --noEmit"
   },
   "dependencies": {
+    "@expo/vector-icons": "^15.0.3",
     "@natours/shared": "*",
     "@tanstack/react-query": "^5.51.0",
     "axios": "^1.7.0",
