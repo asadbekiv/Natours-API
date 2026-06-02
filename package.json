@@ -15,6 +15,7 @@
     "start": "npm run start --workspace=@natours/api"
   },
   "devDependencies": {
+    "@types/react": "~19.1.10",
     "turbo": "^2.0.0"
   },
   "overrides": {
@@ -22,5 +23,8 @@
   },
   "engines": {
     "node": ">=20"
+  },
+  "dependencies": {
+    "@expo/metro-runtime": "~6.1.2"
   }
 }
