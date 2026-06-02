@@ -1,0 +1,53 @@
+import {
+  CallHandler,
+  ExecutionContext,
+  Injectable,
+  NestInterceptor,
+} from '@nestjs/common';
+import { Response } from 'express';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+import type { SuccessResponse } from '@natours/shared';
+import { CursorPage } from '../cursor';
+
+/**
+ * Wraps controller return values in the standardized success envelope:
+ *   { status: 'success', data }                 (single resource)
+ *   { status: 'success', results, data }         (collection)
+ * Mirrors the contract defined in @natours/shared.
+ */
+@Injectable()
+export class TransformInterceptor implements NestInterceptor {
+  intercept(
+    context: ExecutionContext,
+    next: CallHandler,
+  ): Observable<unknown> {
+    const res = context.switchToHttp().getResponse<Response>();
+    return next.handle().pipe(
+      map((data) => {
+        // 204 No Content: never attach a body.
+        if (res.statusCode === 204) return data;
+
+        // Cursor-paginated pages unwrap into envelope + nextCursor.
+        if (data instanceof CursorPage) {
+          return {
+            status: 'success',
+            results: data.items.length,
+            data: data.items,
+            ...(data.nextCursor ? { nextCursor: data.nextCursor } : {}),
+          };
+        }
+
+        // Already-shaped envelopes (e.g. auth responses carrying a token)
+        // pass through untouched.
+        if (data && typeof data === 'object' && 'status' in (data as object)) {
+          return data;
+        }
+
+        const body: SuccessResponse<unknown> = { status: 'success', data };
+        if (Array.isArray(data)) body.results = data.length;
+        return body;
+      }),
+    );
+  }
+}
